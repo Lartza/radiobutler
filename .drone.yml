@@ -19,8 +19,7 @@ steps:
 - name: deploy
   image: plugins/webhook
   settings:
-    signature-header: X-Drone-Signature
-    signature-secret:
+    signature_secret:
       from_secret: webhook_secret
     urls: https://webhook.ltn.fi/hooks/radiodns
   when:
