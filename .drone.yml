@@ -16,11 +16,12 @@ steps:
   - pip install -r requirements.txt
   - python manage.py test
 
-- name: send
+- name: deploy
   image: plugins/webhook
   settings:
-    token:
-      from_secret: token
+    signature-header: X-Drone-Signature
+    signature-secret:
+      from_secret: webhook_secret
     urls: https://webhook.ltn.fi/hooks/radiodns
   when:
     branch:
