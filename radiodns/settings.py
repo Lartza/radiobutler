@@ -30,7 +30,10 @@ except KeyError:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+try:
+    ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(',')
+except KeyError:
+    ALLOWED_HOSTS = []
 
 
 # Application definition
