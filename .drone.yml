@@ -1,0 +1,29 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: build
+  image: node
+  commands:
+  - npm install --prefix ./frontend
+  - npm run --prefix ./frontend dev
+
+- name: test
+  image: python
+  commands:
+  - pip install -r requirements.txt
+  - python manage.py test
+
+- name: send
+  image: plugins/webhook
+  settings:
+    token:
+      from_secret: token
+    urls: https://webhook.ltn.fi/hooks/radiodns
+  when:
+    branch:
+    - main
+    status:
+    - success
