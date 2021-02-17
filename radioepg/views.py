@@ -1,3 +1,5 @@
+from django.shortcuts import render
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -22,3 +24,9 @@ class BearerViewSet(viewsets.ModelViewSet):
     queryset = Bearer.objects.all()
     serializer_class = BearerSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+def service_information(request):
+    services = Service.objects.all()
+    context = {'services': services}
+    return render(request, 'radioepg/SI.xml', context, content_type='text/xml')

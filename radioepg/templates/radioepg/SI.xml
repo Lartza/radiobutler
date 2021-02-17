@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serviceInformation xmlns="http://www.worlddab.org/schemas/spi/33"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xml="http://www.w3.org/XML/1998/namespace"
+                    xsi:schemaLocation="http://www.worlddab.org/schemas/spi/33 http://www.worlddab.org/schemas/spi/33/spi_33.xsd"
+                    xml:lang="en">
+    {% if services %}
+    <services>
+        {% for service in services %}
+        <service>
+            <shortName>{{ service.short_name }}</shortName>
+            <mediumName>{{ service.medium_name }}</mediumName>
+            {% for bearer in service.bearers.all %}
+            <bearer id="{{ bearer.bearer_id }}"/>
+            {% endfor %}
+        </service>
+        {% endfor %}
+    </services>
+    {% endif %}
+</serviceInformation>
