@@ -11,7 +11,7 @@ class BearerSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ServiceSerializer(serializers.HyperlinkedModelSerializer):
-    bearers = BearerSerializer(many=True)
+    bearers = BearerSerializer(many=True, read_only=True)
 
     class Meta:
         model = Service

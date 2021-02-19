@@ -3,7 +3,7 @@
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     xmlns:xml="http://www.w3.org/XML/1998/namespace"
                     xsi:schemaLocation="http://www.worlddab.org/schemas/spi/33 http://www.worlddab.org/schemas/spi/33/spi_33.xsd"
-                    xml:lang="en">
+                    xml:lang="fi">
     {% if services %}
     <services>
         {% for service in services %}
@@ -11,8 +11,21 @@
             <shortName>{{ service.short_name }}</shortName>
             <mediumName>{{ service.medium_name }}</mediumName>
             {% for bearer in service.bearers.all %}
-            <bearer id="{{ bearer.bearer_id }}"/>
+            {% if bearer.mime_value %}
+                <bearer id="{{ bearer.bearer_id }}" mimeValue="{{ bearer.mime_value }}"/>
+            {% else %}
+                <bearer id="{{ bearer.bearer_id }}"/>
+            {% endif %}
             {% endfor %}
+            {% if service.short_description %}
+            <mediaDescription>
+                <shortDescription>{{ service.short_description }}</shortDescription>
+            </mediaDescription>
+            {% endif %}
+            {% if service.link %}
+            <link mimeValue="text/html" uri="{{ service.link }}"/>
+            {% endif %}
+            <radiodns fqdn="{{ service.fqdn }}" serviceIdentifier="{{ service.service_identifier }}"/>
         </service>
         {% endfor %}
     </services>

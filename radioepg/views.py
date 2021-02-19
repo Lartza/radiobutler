@@ -29,4 +29,5 @@ class BearerViewSet(viewsets.ModelViewSet):
 def service_information(request):
     services = Service.objects.all()
     context = {'services': services}
+
     return render(request, 'radioepg/SI.xml', context, content_type='text/xml')
