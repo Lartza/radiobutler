@@ -1,5 +1,7 @@
 from django.db import models
 
+from .storage import LogoStorage
+
 
 class Service(models.Model):
     short_name = models.CharField(max_length=8)
@@ -8,6 +10,7 @@ class Service(models.Model):
     link = models.CharField(max_length=2000, blank=True)
     fqdn = models.CharField(max_length=255)
     service_identifier = models.CharField(max_length=16)
+    logo = models.ImageField(upload_to='logos/', storage=LogoStorage(), null=True)
 
     def __str__(self):
         return self.short_name

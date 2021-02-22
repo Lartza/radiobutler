@@ -133,3 +133,9 @@ try:
     STATIC_ROOT = os.environ['STATIC_ROOT']
 except KeyError:
     pass
+
+MEDIA_URL = '/media/'
+try:
+    MEDIA_ROOT = os.environ['MEDIA_ROOT']
+except KeyError:
+    MEDIA_ROOT = 'media/'
