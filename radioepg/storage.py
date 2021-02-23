@@ -70,7 +70,7 @@ class LogoStorage(OverwriteStorage):
         im = Image.open(content)
         for t in [(32, 32), (112, 32), (128, 128), (320, 240)]:
             imt = im.resize(t)
-            imt.save(name.replace('.png', f'_{t[0]}.png'), 'PNG')
+            imt.save(self.path(name.replace('.png', f'_{t[0]}.png')), 'PNG')
 
         # 600 x 600 original
         return self._save(name, content)
