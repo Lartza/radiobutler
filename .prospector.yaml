@@ -17,3 +17,6 @@ mypy:
 
 bandit:
   run: true
+
+dodgy:
+  run: false

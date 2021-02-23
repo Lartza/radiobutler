@@ -7,10 +7,11 @@ from .models import Service
 class ServiceTest(APITestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='testuser', email='asdf@asdf.com', password='testpassword')
+        self.user = User.objects.create_user(username='testuser', email='asdf@asdf.com',  # nosec
+                                             password='testpassword')
 
     def test_create_service(self):
-        self.client.login(username='testuser', password='testpassword')
+        self.client.login(username='testuser', password='testpassword')  # nosec
         response = self.client.post('/api/services/',
                                     {'short_name': 'Testi', 'medium_name': 'Testikanava', 'fqdn': 'radiodns.test',
                                      'service_identifier': 'testservice'})
