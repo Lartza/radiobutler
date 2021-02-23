@@ -4,16 +4,23 @@ type: docker
 name: default
 
 steps:
-- name: build
+- name: build-frontend
   image: node
   commands:
   - npm install --prefix ./frontend
   - npm run --prefix ./frontend dev
 
-- name: test
+- name: lint-python
+  image: python
+  failure: ignore
+  commands:
+  - pip install -r requirements-dev.txt
+  - prospector
+
+- name: test-python
   image: python
   commands:
-  - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
   - python manage.py test
 
 - name: deploy
@@ -27,3 +34,78 @@ steps:
     - main
     status:
     - success
+
+---
+kind: pipeline
+type: docker
+name: python-3-8
+
+steps:
+- name: build-frontend
+  image: node
+  commands:
+  - npm install --prefix ./frontend
+  - npm run --prefix ./frontend dev
+
+- name: lint-python
+  image: python:3.8
+  failure: ignore
+  commands:
+  - pip install -r requirements-dev.txt
+  - prospector
+
+- name: test-python
+  image: python:3.8
+  commands:
+  - pip install -r requirements-dev.txt
+  - python manage.py test
+
+---
+kind: pipeline
+type: docker
+name: python-3-7
+
+steps:
+- name: build-frontend
+  image: node
+  commands:
+  - npm install --prefix ./frontend
+  - npm run --prefix ./frontend dev
+
+- name: lint-python
+  image: python:3.7
+  failure: ignore
+  commands:
+  - pip install -r requirements-dev.txt
+  - prospector
+
+- name: test-python
+  image: python:3.7
+  commands:
+  - pip install -r requirements-dev.txt
+  - python manage.py test
+
+---
+kind: pipeline
+type: docker
+name: python-3-6
+
+steps:
+- name: build-frontend
+  image: node
+  commands:
+  - npm install --prefix ./frontend
+  - npm run --prefix ./frontend dev
+
+- name: lint-python
+  image: python:3.6
+  failure: ignore
+  commands:
+  - pip install -r requirements-dev.txt
+  - prospector
+
+- name: test-python
+  image: python:3.6
+  commands:
+  - pip install -r requirements-dev.txt
+  - python manage.py test

@@ -1,0 +1,19 @@
+test-warnings: true
+
+uses:
+  - django
+
+ignore-paths:
+  - .mypy_cache
+  - media
+  - migrations
+  - node_modules
+  - venv
+  - __pycache__
+  - manage.py
+
+mypy:
+  run: true
+
+bandit:
+  run: true
