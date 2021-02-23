@@ -21,7 +21,8 @@ steps:
   image: python
   commands:
   - pip install -r requirements-dev.txt
-  - python manage.py test
+  - coverage run manage.py test
+  - coverage report
 
 - name: deploy
   image: plugins/webhook
@@ -58,7 +59,8 @@ steps:
   image: python:3.8
   commands:
   - pip install -r requirements-dev.txt
-  - python manage.py test
+  - coverage run manage.py test
+  - coverage report
 
 ---
 kind: pipeline
@@ -83,7 +85,8 @@ steps:
   image: python:3.7
   commands:
   - pip install -r requirements-dev.txt
-  - python manage.py test
+  - coverage run manage.py test
+  - coverage report
 
 ---
 kind: pipeline
@@ -108,4 +111,5 @@ steps:
   image: python:3.6
   commands:
   - pip install -r requirements-dev.txt
-  - python manage.py test
+  - coverage run manage.py test
+  - coverage report

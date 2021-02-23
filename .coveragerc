@@ -1,0 +1,11 @@
+[run]
+source = .
+omit = manage.py
+       */node_modules/*
+       radiodns/asgi.py
+       radiodns/wsgi.py
+       venv/*
+
+[report]
+show_missing=True
+skip_covered=True
