@@ -30,10 +30,10 @@ def service_information(request):
     services = Service.objects.all()
     for service in services:
         if service.logo:
-            service.logo32url = str(service.logo.url).replace('.png', '_32.png')
-            service.logo112url = str(service.logo.url).replace('.png', '_112.png')
-            service.logo128url = str(service.logo.url).replace('.png', '_128.png')
-            service.logo320url = str(service.logo.url).replace('.png', '_320.png')
+            service.logo32url = service.logo.url.replace('.png', '_32.png')
+            service.logo112url = service.logo.url.replace('.png', '_112.png')
+            service.logo128url = service.logo.url.replace('.png', '_128.png')
+            service.logo320url = service.logo.url.replace('.png', '_320.png')
     context = {'services': services}
 
     return render(request, 'radioepg/SI.xml', context, content_type='text/xml')

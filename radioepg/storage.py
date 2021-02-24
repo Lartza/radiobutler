@@ -33,44 +33,13 @@ class OverwriteStorage(FileSystemStorage):
 
 class LogoStorage(OverwriteStorage):
 
-    def save(self, name, content, max_length=None):
-        """
-        Save new content to the file specified by name. The content should be
-        a proper File object or any Python file-like object, ready to be read
-        from the beginning.
-        """
-        # Get the proper name for the file, as it will actually be saved.
-        if name is None:
-            name = content.name
-
-        if not hasattr(content, 'chunks'):
-            content = File(content, name)
-
-        name = self.get_available_name(name, max_length=max_length)
-
-        full_path = self.path(name)
-
-        # Create any intermediate directories that do not exist.
-        directory = os.path.dirname(full_path)
-        try:
-            if self.directory_permissions_mode is not None:
-                # Set the umask because os.makedirs() doesn't apply the "mode"
-                # argument to intermediate-level directories.
-                old_umask = os.umask(0o777 & ~self.directory_permissions_mode)
-                try:
-                    os.makedirs(directory, self.directory_permissions_mode, exist_ok=True)
-                finally:
-                    os.umask(old_umask)
-            else:
-                os.makedirs(directory, exist_ok=True)
-        except FileExistsError:
-            raise FileExistsError('%s exists and is not a directory.' % directory)
+    def _save(self, name, content):
+        parent_return = super()._save(name, content)
 
         # Hack to resize and save the logo to the required sizes
         im = Image.open(content)
         for t in [(32, 32), (112, 32), (128, 128), (320, 240)]:
             imt = im.resize(t)
-            imt.save(self.path(name.replace('.png', f'_{t[0]}.png')), 'PNG')
+            imt.save(self.path(name).replace('.png', f'_{t[0]}.png'), 'PNG')
 
-        # 600 x 600 original
-        return self._save(name, content)
+        return parent_return
