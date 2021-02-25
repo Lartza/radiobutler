@@ -12,7 +12,7 @@ from .models import Service, Bearer
 
 def image():
     img = Image.new('RGB', (600, 600), '#ff0000')
-    tmp = tempfile.TemporaryFile(prefix='logo', suffix='.png')
+    tmp = tempfile.NamedTemporaryFile(prefix='logo', suffix='.png')
     img.save(tmp, format='PNG')
     tmp.seek(0)
     return tmp
