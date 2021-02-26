@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>React says Hello World!</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'frontend/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'frontend/style.css' %}" />
 </head>
 <body>
 <div id="app">
@@ -10,6 +13,5 @@
 </div>
 <footer><a href="/api">API</a></footer>
 </body>
-{% load static %}
 <script src="{% static 'frontend/main.js' %}"></script>
 </html>
