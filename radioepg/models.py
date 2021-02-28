@@ -17,7 +17,7 @@ class Service(models.Model):
 
 
 class Bearer(models.Model):
-    bearer_id = models.TextField()
+    bearer_id = models.TextField(unique=True)
     service = models.ForeignKey(Service, related_name='bearers', on_delete=models.CASCADE)
     cost = models.IntegerField()
     mime_value = models.CharField(max_length=255, blank=True)
