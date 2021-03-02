@@ -10,7 +10,7 @@ body {
 header {
     display: block;
     background-color: #f0f0f0;
-    max-height: 150px;
+    height: 100px;
 }
 
 ul {
@@ -29,10 +29,10 @@ li a {
     display: block;
     color: #73308a;
     font-family: 'Lato', Helvetica, sans-serif;
-    font-size: 1.3em;
+    font-size: 1em;
     font-weight: bold;
     text-align: center;
-    padding: 0px 16px;
+    padding: 10px 16px;
     text-decoration: none;
 }
 
@@ -46,7 +46,7 @@ li a:hover {
 
 h1 {
     font-family: 'Lato', Helvetica, sans-serif;
-    font-size: 2.1em;
+    font-size: 2em;
     font-weight: bold;
 }
 
@@ -61,18 +61,28 @@ h2 {
 }
 
 input[type=text], input[type=url], textarea {
-    border: 1px solid #eaeaea;
+    border: 1px solid #c5c5c5;
     border-radius: 6px;
-    max-width: 500px;
-    margin: 8px 0;
+    width: 400px;
+    margin: 10px 0;
     box-sizing: border-box;
 }
 
-input[type=text]:focus {
-    border: solid #6f6f6f;
+input[type=button], input[type=submit] {
+    background-color: #73308a;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
 }
 
-input[type=button], input[type=submit], input[type=file] {
+input[type=file] {
+    padding: 10px 0;
+}
+
+button {
     background-color: #73308a;
     border: none;
     color: white;
