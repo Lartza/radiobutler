@@ -14,31 +14,35 @@
 </header>
 <nav>
     <ul>
-        <li><a href="index.html">Start Page</a></li>
-        <li><a href="service.html">Station Information</a></li>
-        <li><a href="slideshow.html">Slideshow</a></li>
+        <li><a href="index">Start Page</a></li>
+        <li><a href="service">Station Information</a></li>
+        <li><a href="slideshow">Slideshow</a></li>
     </ul>
 </nav>
 <div class="content">
 <h1>Edit Station Information</h1>
 <form>
     <h2>Name</h2>
-    <label for="shortname">Short name (8 chars) </label>
+    <label for="shortname">Short name (8 chars) </label><br>
     <input type="text" id="shortname" name="short_name"><br><br>
-    <label for="mediumname">Medium name (16 chars) </label>
+    <label for="mediumname">Medium name (16 chars) </label><br>
     <input type="text" id="mediumname" name="medium_name"><br><br>
 
     <h2>Description</h2>
-    <label for="desc">Short description (180 chars)</label>
-    <input type="text" id="desc" name="short_description"><br><br>
+    <label for="desc">Short description (180 chars)</label><br>
+    <textarea id="desc" name="short_description" rows="6"></textarea>
 
     <h2>Website</h2>
-    <label for="link">Link URL</label>
+    <label for="link">Link URL</label><br>
     <input type="url" id="link" name="link"><br><br>
 
     <h2>Logo</h2>
+    <label for="logo">Logo (type: jpeg, size: 600 x 600 px)</label><br>
+    <input type="file" id="logo" name="logo"><br><br>
 
-    <input type="submit" value="SAVE">
+    <h2>Bearers</h2>
+
+    <input type="submit" value="SAVE"><br><br>
 </form>
 </div>
 <div id="app">
