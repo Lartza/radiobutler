@@ -4,7 +4,6 @@ body {
     font-family: Calibri, Helvetica, sans-serif;
     font-size: 1em;
     background-color: white;
-    padding: 0px 50px;
 }
 
 header {
@@ -62,10 +61,13 @@ h2 {
 
 input[type=text], input[type=url], textarea {
     border: 1px solid #c5c5c5;
-    border-radius: 6px;
-    width: 400px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 500px;
     margin: 10px 0;
+    padding: 6px 10px;
     box-sizing: border-box;
+    display: inline-block;
 }
 
 input[type=button], input[type=submit] {
@@ -76,6 +78,10 @@ input[type=button], input[type=submit] {
     text-decoration: none;
     margin: 4px 2px;
     cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color:#5e2870;
 }
 
 input[type=file] {
