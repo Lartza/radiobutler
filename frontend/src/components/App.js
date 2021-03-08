@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {render} from "react-dom";
 
-/* React form
+// React form
 class MyForm extends React.Component {
   constructor(props) {
     super(props);
@@ -34,7 +34,7 @@ class MyForm extends React.Component {
         <input type="text" name="mediumname" onChange={this.myChangeHandler} />
         <br></br>
         <h2>Description</h2>
-        <label for="sshort_description">Short description (180 chars)</label>
+        <label for="short_description">Short description (180 chars)</label>
         <br></br>
         <textarea
           id="desc"
@@ -70,8 +70,8 @@ class MyForm extends React.Component {
     );
   }
 }
-*/
 
+/*
 class App extends Component {
     constructor(props) {
         super(props);
@@ -110,8 +110,9 @@ class App extends Component {
         );
     }
 }
+*/
 
-export default App;
+export default MyForm;
 
 const container = document.getElementById("app");
-render(<App/>, container);
+render(<MyForm/>, container);
