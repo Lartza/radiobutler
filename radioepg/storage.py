@@ -1,5 +1,4 @@
 from django.core.files.storage import FileSystemStorage
-from django.core.files import File
 from django.conf import settings
 import os
 
