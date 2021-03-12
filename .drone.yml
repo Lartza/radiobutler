@@ -9,7 +9,7 @@ steps:
   failure: ignore
   commands:
   - npm ci --prefix ./frontend
-  - npx --prefix ./frontend eslint frontend/src
+  - npx --prefix ./frontend eslint --ext .js,.jsx frontend/src
 
 - name: build-frontend
   image: node
