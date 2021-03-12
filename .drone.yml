@@ -4,10 +4,17 @@ type: docker
 name: default
 
 steps:
+- name: lint-javascript
+  image: node
+  failure: ignore
+  commands:
+  - npm ci --prefix ./frontend
+  - npx --prefix ./frontend eslint frontend/src
+
 - name: build-frontend
   image: node
   commands:
-  - npm install --prefix ./frontend
+  - npm ci --prefix ./frontend
   - npm run --prefix ./frontend dev
 
 - name: lint-python
@@ -45,15 +52,8 @@ steps:
 - name: build-frontend
   image: node
   commands:
-  - npm install --prefix ./frontend
+  - npm ci --prefix ./frontend
   - npm run --prefix ./frontend dev
-
-- name: lint-python
-  image: python:3.8
-  failure: ignore
-  commands:
-  - pip install -r requirements-dev.txt
-  - prospector
 
 - name: test-python
   image: python:3.8
@@ -71,15 +71,8 @@ steps:
 - name: build-frontend
   image: node
   commands:
-  - npm install --prefix ./frontend
+  - npm ci --prefix ./frontend
   - npm run --prefix ./frontend dev
-
-- name: lint-python
-  image: python:3.7
-  failure: ignore
-  commands:
-  - pip install -r requirements-dev.txt
-  - prospector
 
 - name: test-python
   image: python:3.7
@@ -97,7 +90,7 @@ steps:
 - name: build-frontend
   image: node
   commands:
-  - npm install --prefix ./frontend
+  - npm ci --prefix ./frontend
   - npm run --prefix ./frontend dev
 
 - name: lint-python
