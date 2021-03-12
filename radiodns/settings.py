@@ -139,3 +139,5 @@ try:
     MEDIA_ROOT = os.environ['MEDIA_ROOT']
 except KeyError:
     MEDIA_ROOT = 'media/'
+
+LOGIN_REDIRECT_URL = '/'
