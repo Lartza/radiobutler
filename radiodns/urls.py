@@ -19,9 +19,18 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework import routers
+from radioepg.urls import router as radioepg_router
+from radiovis.urls import router as radiovis_router
+
+router = routers.DefaultRouter()
+router.registry.extend(radioepg_router.registry)
+router.registry.extend(radiovis_router.registry)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('frontend.urls')),
-    path('', include('radioepg.urls')),
+    path('api/', include(router.urls)),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

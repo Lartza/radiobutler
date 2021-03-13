@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Service, Bearer, ImageSlide
+from .models import Service, Bearer
 
 
 class BearerSerializer(serializers.HyperlinkedModelSerializer):
@@ -68,11 +68,4 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Service
-        fields = '__all__'
-
-
-class ImageSlideSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = ImageSlide
         fields = '__all__'

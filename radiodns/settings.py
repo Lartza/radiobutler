@@ -41,6 +41,7 @@ except KeyError:
 INSTALLED_APPS = [
     'frontend.apps.FrontendConfig',
     'radioepg.apps.RadioepgConfig',
+    'radiovis.apps.RadiovisConfig',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
