@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     display: block;
     color: #6f6f6f;
@@ -59,7 +63,40 @@ h2 {
     padding: 10px 25px;
 }
 
-input[type=text], input[type=url], textarea {
+.main {
+    float: left;
+    width: 70%;
+}
+
+.right {
+    float: left;
+    width: 30%;
+    background-color: #f0f0f0;
+    padding-left: 20px;
+    margin-top: 25px;
+}
+
+/* Clear floats after the columns */
+.content:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+/* Responsive layout */
+@media screen and (max-width: 600px) {
+    .main, .right {
+        width: 100%;
+    }
+}
+
+/* Style for most input types */
+input[type=text],
+input[type=url],
+input[type=email],
+input[type=password],
+input[type=datetime-local],
+textarea {
     border: 1px solid #c5c5c5;
     border-radius: 5px;
     width: 100%;
@@ -102,4 +139,5 @@ footer {
     display: block;
     background-color: #f0f0f0;
     padding: 10px 25px;
+    margin-top: 20px;
 }
