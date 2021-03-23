@@ -96,6 +96,7 @@ input[type=url],
 input[type=email],
 input[type=password],
 input[type=datetime-local],
+select,
 textarea {
     border: 1px solid #c5c5c5;
     border-radius: 5px;
@@ -113,6 +114,7 @@ input[type=button], input[type=submit] {
     color: white;
     padding: 10px 15px;
     text-decoration: none;
+    text-transform: uppercase;
     margin: 4px 2px;
     cursor: pointer;
 }
