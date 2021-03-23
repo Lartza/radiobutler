@@ -137,7 +137,7 @@ class MyForm extends React.Component {
         <label htmlFor="shortname">Short name (8 chars) </label>
         <br />
         <input
-          value={shortName}
+          defaultValue={shortName}
           type="text"
           name="short_name"
           id="shortname"
@@ -148,7 +148,7 @@ class MyForm extends React.Component {
         <label htmlFor="mediumname">Medium name (16 chars) </label>
         <br />
         <input
-          value={mediumName}
+          defaultValue={mediumName}
           type="text"
           id="mediumname"
           name="medium_name"
@@ -160,7 +160,7 @@ class MyForm extends React.Component {
         <label htmlFor="desc">Short description (180 chars)</label>
         <br />
         <textarea
-          value={shortDescription}
+          defaultValue={shortDescription}
           id="desc"
           name="short_description"
           onChange={this.myChangeHandler.bind(this)}
@@ -171,7 +171,7 @@ class MyForm extends React.Component {
         <label htmlFor="link">Website link</label>
         <br />
         <input
-          value={link}
+          defaultValue={link}
           type="text"
           id="link"
           name="link"
@@ -190,13 +190,13 @@ class MyForm extends React.Component {
         <h2>RadioDNS Parameters</h2>
         <label htmlFor="fqdn">FQDN</label>
         <br />
-        <input value={fqdn} type="text" name="fqdn" id="fqdn" onChange={this.myChangeHandler.bind(this)} />
+        <input defaultValue={fqdn} type="text" name="fqdn" id="fqdn" onChange={this.myChangeHandler.bind(this)} />
         <br />
 
         <label htmlFor="service_identifier">Service Identifier</label>
         <br />
         <input
-          value={serviceIdentifier}
+          defaultValue={serviceIdentifier}
           type="text"
           name="service_identifier"
           id="fqdn"

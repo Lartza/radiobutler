@@ -9,3 +9,8 @@ def index(request):
 @login_required
 def service(request):
     return render(request, 'frontend/service.html')
+
+
+@login_required
+def slideshow(request):
+    return render(request, 'frontend/slideshow.html')
