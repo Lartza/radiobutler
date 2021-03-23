@@ -154,8 +154,8 @@ except KeyError:
 try:
     STOMP_USERNAME = os.environ['STOMP_USERNAME']
 except KeyError:
-    STOMP_USERNAME = 'lartza'
+    STOMP_USERNAME = 'guest'
 try:
     STOMP_PASSWORD = os.environ['STOMP_PASSWORD']
 except KeyError:
-    STOMP_PASSWORD = 'R02g6jb2ShUHmdvJ10uS'
+    STOMP_PASSWORD = ''
