@@ -31,5 +31,7 @@ pylint:
     max-parents: 12
 
 pep8:
+  disable:
+    - N815
   options:
     max-line-length: 119

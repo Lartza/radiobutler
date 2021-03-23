@@ -159,3 +159,7 @@ try:
     STOMP_PASSWORD = os.environ['STOMP_PASSWORD']
 except KeyError:
     STOMP_PASSWORD = ''
+
+REST_FRAMEWORK = {
+    'URL_FIELD_NAME': 'apiurl'
+}

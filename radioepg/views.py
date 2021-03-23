@@ -27,6 +27,22 @@ def service_information(request):
             service.logo112url = service.logo.url.replace('.png', '_112.png')
             service.logo128url = service.logo.url.replace('.png', '_128.png')
             service.logo320url = service.logo.url.replace('.png', '_320.png')
+
+        bearer_elements = []
+        for bearer in service.bearers.all():
+            if bearer.platform == 'fm':
+                integer, decimal = str(bearer.frequency).split('.')
+                frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
+                bearer_element = f'<bearer id="fm:{bearer.pi:1}{bearer.ecc}.{bearer.pi}.{frequency}" ' \
+                                 f'cost="{bearer.cost}"/>'
+            elif bearer.platform == 'ip':
+                bearer_element = f'<bearer id="{bearer.url}" mimeValue="{bearer.mimeValue}" cost="{bearer.cost}"'
+                if bearer.bitrate:
+                    bearer_element += f' bitrate="{bearer.bitrate}"'
+                bearer_element += '/>'
+            bearer_elements.append(bearer_element)
+        service.bearer_elements = bearer_elements
+
     context = {'services': services}
 
     return render(request, 'radioepg/SI.xml', context, content_type='text/xml')

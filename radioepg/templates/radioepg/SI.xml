@@ -8,18 +8,14 @@
     <services>
         {% for service in services %}
         <service>
-            <shortName>{{ service.short_name }}</shortName>
-            <mediumName>{{ service.medium_name }}</mediumName>
-            {% for bearer in service.bearers.all %}
-            {% if bearer.mime_value %}
-                <bearer id="{{ bearer.bearer_id }}" mimeValue="{{ bearer.mime_value }}"/>
-            {% else %}
-                <bearer id="{{ bearer.bearer_id }}"/>
-            {% endif %}
+            <shortName>{{ service.shortName }}</shortName>
+            <mediumName>{{ service.mediumName }}</mediumName>
+            {% for bearer in service.bearer_elements %}
+                {{ bearer|safe }}
             {% endfor %}
-            {% if service.short_description %}
+            {% if service.shortDescription %}
             <mediaDescription>
-                <shortDescription>{{ service.short_description }}</shortDescription>
+                <shortDescription>{{ service.shortDescription }}</shortDescription>
             </mediaDescription>
             {% endif %}
             {% if service.logo %}
@@ -47,7 +43,7 @@
             {% if service.link %}
             <link mimeValue="text/html" uri="{{ service.link }}"/>
             {% endif %}
-            <radiodns fqdn="{{ service.fqdn }}" serviceIdentifier="{{ service.service_identifier }}"/>
+            <radiodns fqdn="{{ service.fqdn }}" serviceIdentifier="{{ service.serviceIdentifier }}"/>
         </service>
         {% endfor %}
     </services>

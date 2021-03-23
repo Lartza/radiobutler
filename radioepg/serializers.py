@@ -9,11 +9,31 @@ class BearerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Bearer
         fields = '__all__'
-        extra_kwargs: dict = {
-            'bearer_id': {
-                'validators': [],
-            }
-        }
+
+    def create(self, validated_data):
+        validated_data['ecc'] = validated_data['ecc'].lower()
+        validated_data['pi'] = validated_data['pi'].lower()
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        validated_data['ecc'] = validated_data['ecc'].lower()
+        validated_data['pi'] = validated_data['pi'].lower()
+        return super().update(instance, validated_data)
+
+    def validate(self, attrs):
+        if attrs['platform'] == 'fm':
+            if attrs['ecc'] == '':
+                raise serializers.ValidationError({'ecc': 'ECC is required for FM bearers'})
+            if attrs['pi'] == '':
+                raise serializers.ValidationError({'pi': 'PI is required for FM bearers'})
+            if attrs['frequency'] == '':
+                raise serializers.ValidationError({'frequency': 'Frequency is required for FM bearers'})
+        if attrs['platform'] == 'ip':
+            if attrs['url'] == '':
+                raise serializers.ValidationError({'url': 'URL is required for IP bearers'})
+            if attrs['mimeValue'] == '':
+                raise serializers.ValidationError({'url': 'mimeValue is required for IP bearers'})
+        return attrs
 
 
 class ServiceSerializer(serializers.HyperlinkedModelSerializer):
@@ -47,14 +67,18 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
 
         # Update or create bearers from nested data
         for bearer_data in bearers_data:
-            # Match bearer for update based on primary key or bearer_id
+            # Match bearer for update based on primary key or details
             try:
                 bearer = Bearer.objects.get(pk=bearer_data['id'])
             except KeyError:
                 try:
-                    bearer = Bearer.objects.get(bearer_id=bearer_data['bearer_id'])
+                    bearer = Bearer.objects.get(platform=bearer_data['platform'], ecc=bearer_data['ecc'],
+                                                pi=bearer_data['pi'])
                 except Bearer.DoesNotExist:
-                    bearer = None
+                    try:
+                        bearer = Bearer.objects.get(platform=bearer_data['platform'], ecc=bearer_data['url'])
+                    except Bearer.DoesNotExist:
+                        bearer = None
 
             # If matched, update fields for that bearer, otherwise create a new one
             if bearer:

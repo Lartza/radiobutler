@@ -29,15 +29,15 @@ class ServiceTest(APITestCase):
 
         self.client.force_login(self.user)
         response = self.client.post(reverse('service-list'),
-                                    {'short_name': 'Testi', 'medium_name': 'Testikanava', 'fqdn': 'radiodns.test',
-                                     'service_identifier': 'testservice', 'logo': tmp})
+                                    {'shortName': 'Testi', 'mediumName': 'Testikanava', 'fqdn': 'radiodns.test',
+                                     'serviceIdentifier': 'testservice', 'logo': tmp})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         self.assertEqual(Service.objects.count(), 1)
         service = Service.objects.get()
         self.assertTrue(os.path.exists(service.logo.path.replace('.png', '_32.png')))
-        self.assertEqual(service.short_name, 'Testi')
-        self.assertEqual(service.medium_name, 'Testikanava')
+        self.assertEqual(service.shortName, 'Testi')
+        self.assertEqual(service.mediumName, 'Testikanava')
 
     @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
     def test_put_service(self):
@@ -45,40 +45,40 @@ class ServiceTest(APITestCase):
 
         self.client.force_login(self.user)
         response = self.client.post(reverse('service-list'),
-                                    {'short_name': 'Testi', 'medium_name': 'Testikanava', 'fqdn': 'radiodns.test',
-                                     'service_identifier': 'testservice', 'logo': tmp})
+                                    {'shortName': 'Testi', 'mediumName': 'Testikanava', 'fqdn': 'radiodns.test',
+                                     'serviceIdentifier': 'testservice', 'logo': tmp})
         logo = Service.objects.get().logo
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         tmp.seek(0)
         response = self.client.put(reverse('service-detail', args=[1]),
-                                   {'short_name': 'Testi2', 'medium_name': 'Testikanava2', 'fqdn': 'radiodns.test',
-                                    'service_identifier': 'testservice', 'logo': tmp})
+                                   {'shortName': 'Testi2', 'mediumName': 'Testikanava2', 'fqdn': 'radiodns.test',
+                                    'serviceIdentifier': 'testservice', 'logo': tmp})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertEqual(Service.objects.count(), 1)
         service = Service.objects.get()
-        self.assertEqual(service.short_name, 'Testi2')
+        self.assertEqual(service.shortName, 'Testi2')
         self.assertEqual(service.logo, logo)
 
     def test_patch_service(self):
         self.client.force_login(self.user)
         response = self.client.post(reverse('service-list'),
-                                    {'short_name': 'Testi', 'medium_name': 'Testikanava', 'fqdn': 'radiodns.test',
-                                     'service_identifier': 'testservice'})
+                                    {'shortName': 'Testi', 'mediumName': 'Testikanava', 'fqdn': 'radiodns.test',
+                                     'serviceIdentifier': 'testservice'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        response = self.client.patch(reverse('service-detail', args=[1]), {'short_description': 'Lorem ipsum'})
+        response = self.client.patch(reverse('service-detail', args=[1]), {'shortDescription': 'Lorem ipsum'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertEqual(Service.objects.count(), 1)
         service = Service.objects.get()
-        self.assertEqual(service.short_description, 'Lorem ipsum')
+        self.assertEqual(service.shortDescription, 'Lorem ipsum')
 
     def test_service_str(self):
         Service.objects.create(short_name='Testi')
         service = Service.objects.get()
-        self.assertEqual(str(service), service.short_name)
+        self.assertEqual(str(service), service.shortName)
 
 
 class BearerTest(APITestCase):

@@ -4,23 +4,30 @@ from .storage import LogoStorage
 
 
 class Service(models.Model):
-    short_name = models.CharField(max_length=8)
-    medium_name = models.CharField(max_length=16)
-    short_description = models.CharField(max_length=180, blank=True)
+    shortName = models.CharField(max_length=8)
+    mediumName = models.CharField(max_length=16)
+    shortDescription = models.CharField(max_length=180, blank=True)
     link = models.CharField(max_length=2000, blank=True)
     fqdn = models.CharField(max_length=255)
-    service_identifier = models.CharField(max_length=16)
+    serviceIdentifier = models.CharField(max_length=16)
     logo = models.ImageField(upload_to='logos/', storage=LogoStorage(), null=True)
 
     def __str__(self):
-        return self.short_name
+        return self.shortName
 
 
 class Bearer(models.Model):
-    bearer_id = models.TextField(unique=True)
+    platform = models.CharField(max_length=2)
+    ecc = models.CharField(max_length=2, blank=True)
+    pi = models.CharField(max_length=4, blank=True)
+    frequency = models.FloatField(null=True, blank=True)
+    url = models.CharField(max_length=2000, blank=True)
+    mimeValue = models.CharField(max_length=255, blank=True)
+    bitrate = models.IntegerField(null=True, blank=True)
+    cost = models.IntegerField(default=30)
     service = models.ForeignKey(Service, related_name='bearers', on_delete=models.CASCADE)
-    cost = models.IntegerField()
-    mime_value = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
-        return self.bearer_id
+        if self.platform == 'fm':
+            return f'{self.platform} {self.ecc} {self.pi} {self.frequency} {self.cost}'
+        return f'{self.platform} {self.url} {self.mimeValue} {self.bitrate} {self.cost}'
