@@ -139,7 +139,7 @@ class MyForm extends React.Component {
     return (
       <form onSubmit={this.mySubmitHandler.bind(this)}>
         <h2>Name</h2>
-        <label htmlFor="shortname">Short name (8 chars) </label>
+        <label htmlFor="shortname">Short name (max 8 chars) </label>
         <br />
         <input
           defaultValue={shortName}
@@ -150,7 +150,7 @@ class MyForm extends React.Component {
         />
         <span style={{color: "red"}}>{this.state.errors["shortName"]}</span>
         <br />
-        <label htmlFor="mediumname">Medium name (16 chars) </label>
+        <label htmlFor="mediumname">Medium name (max 16 chars) </label>
         <br />
         <input
           defaultValue={mediumName}
@@ -162,7 +162,7 @@ class MyForm extends React.Component {
         <span style={{color: "red"}}>{this.state.errors["mediumName"]}</span>
         <br />
         <h2>Description</h2>
-        <label htmlFor="desc">Short description (180 chars)</label>
+        <label htmlFor="desc">Short description (max 180 chars)</label>
         <br />
         <textarea
           defaultValue={shortDescription}
@@ -185,7 +185,7 @@ class MyForm extends React.Component {
         <br />
 
         <h2>Logo</h2>
-        <label htmlFor="logo">Image type: jpeg, image size: 600 x 600 px</label>
+        <label htmlFor="logo">Image type: jpeg, size: 600 x 600 px</label>
         <br />
         <input type="file" name="logo" id="logo" onChange={this.myChangeHandler.bind(this)} />
         <br />
@@ -194,7 +194,7 @@ class MyForm extends React.Component {
         <h2>Bearers</h2>
 
         <label htmlFor="bearer1Platform">Bearer 1 platform</label>
-
+        <br />
         <select name="platform" id="bearer1Platform">
         <option value="fm">FM-RDS</option>
         </select>
@@ -231,16 +231,16 @@ class MyForm extends React.Component {
           name="frequency"
           onChange={this.myChangeHandler.bind(this)}
         />
-        <br />
+        <br /><br />
 
         <label htmlFor="bearer2Platform">Bearer 2 platform</label>
-
+        <br />
         <select name="platform" id="bearer1Platform">
         <option value="ip">IP</option>
         </select>
         <br />
 
-        <label htmlFor="url">IP URL </label>
+        <label htmlFor="url">IP URL</label>
         <br />
         <input
           defaultValue={url}
@@ -252,7 +252,7 @@ class MyForm extends React.Component {
         <br />
 
         <label htmlFor="audio/mpeg">IP MIME</label>
-
+        <br />
         <select name="audio/mpeg" id="bearer1Platform">
         <option value="audio/mpeg">mp3</option>
         </select>
