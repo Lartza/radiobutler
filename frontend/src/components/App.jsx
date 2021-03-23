@@ -15,8 +15,42 @@ class MyForm extends React.Component {
       fqdn: '',
       serviceIdentifier: '',
       logo: '',
+      errors: {}
     };
   }
+
+  //Returns True if fields are valid and updates states.errors
+  validator () {
+    let fields = this.state;
+    let errors = {};
+    let isFormValid = true;
+
+    //short name - 8 chars max
+    if (!fields["shortName"]) {
+      isFormValid = false;
+      errors["shortName"] = "Required!";
+    }
+    if (typeof fields["shortName"] !== "undefined") {
+      if (fields["shortName"].length > 8) {
+        isFormValid = false;
+        errors["shortName"] = "Maximum eight (8) characters.";
+      }
+    }
+
+    //mediumname - 16 chars max
+    if (!fields["mediumName"]) {
+      isFormValid = false;
+      errors["mediumName"] = "Required!";
+    }
+    if (typeof fields["mediumName"] !== "undefined") {
+      if (fields["mediumName"].length > 16) {
+        isFormValid = false;
+        errors["mediumName"] = "Maximum sixteen (16) characters.";
+      }
+    }
+    this.setState({errors: errors});
+    return isFormValid;
+   }
 
   componentDidMount() {
     fetch('/api/services/')
@@ -52,42 +86,44 @@ class MyForm extends React.Component {
 
   mySubmitHandler(event) {
     event.preventDefault();
-    const form = event.target;
-    const data = new FormData(form);
+    if (this.validator()){
+      const form = event.target;
+      const data = new FormData(form);
 
-    const cookies = new Cookies();
+      const cookies = new Cookies();
 
-    const { url } = this.state;
-    if (url === '') {
-      fetch('/api/services/', {
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': cookies.get('csrftoken'),
-        },
-        body: data,
-      }).then((r) => r.json())
-        .then((json) => {
-          console.log(json);
-        });
-    } else {
-      fetch(url, {
-        method: 'PUT',
-        headers: {
-          'X-CSRFToken': cookies.get('csrftoken'),
-        },
-        body: data,
-      }).then((r) => {
-        if (!r.ok) {
-          throw r;
-        }
-        return r.json();
-      }).then((json) => {
-        console.log(json);
-      }).catch((err) => {
-        err.text().then((errorMessage) => {
-          alert(errorMessage);
-        });
-      });
+      const { url } = this.state;
+      if (url === '') {
+        fetch('/api/services/', {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': cookies.get('csrftoken'),
+          },
+          body: data,
+        }).then((r) => r.json())
+          .then((json) => {
+            console.log(json);
+          });
+      } else {
+        fetch(url, {
+          method: 'PUT',
+         headers: {
+           'X-CSRFToken': cookies.get('csrftoken'),
+         },
+         body: data,
+        }).then((r) => {
+         if (!r.ok) {
+            throw r;
+         }
+          return r.json();
+       }).then((json) => {
+         console.log(json);
+       }).catch((err) => {
+         err.text().then((errorMessage) => {
+           alert(errorMessage);
+         });
+       });
+     }
     }
   }
 
@@ -107,6 +143,7 @@ class MyForm extends React.Component {
           id="shortname"
           onChange={this.myChangeHandler.bind(this)}
         />
+        <span style={{color: "red"}}>{this.state.errors["shortName"]}</span>
         <br />
         <label htmlFor="mediumname">Medium name (16 chars) </label>
         <br />
@@ -117,6 +154,7 @@ class MyForm extends React.Component {
           name="medium_name"
           onChange={this.myChangeHandler.bind(this)}
         />
+        <span style={{color: "red"}}>{this.state.errors["mediumName"]}</span>
         <br />
         <h2>Description</h2>
         <label htmlFor="desc">Short description (180 chars)</label>
