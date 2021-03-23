@@ -142,3 +142,20 @@ except KeyError:
     MEDIA_ROOT = 'media/'
 
 LOGIN_REDIRECT_URL = '/'
+
+try:
+    STOMP_HOST = os.environ['STOMP_HOST']
+except KeyError:
+    STOMP_HOST = 'radiodns.ltn.fi'
+try:
+    STOMP_PORT = int(os.environ['STOMP_PORT'])
+except KeyError:
+    STOMP_PORT = 61613
+try:
+    STOMP_USERNAME = os.environ['STOMP_USERNAME']
+except KeyError:
+    STOMP_USERNAME = 'lartza'
+try:
+    STOMP_PASSWORD = os.environ['STOMP_PASSWORD']
+except KeyError:
+    STOMP_PASSWORD = 'R02g6jb2ShUHmdvJ10uS'

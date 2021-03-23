@@ -1,3 +1,4 @@
+strictness: veryhigh
 test-warnings: true
 
 uses:
@@ -20,3 +21,15 @@ bandit:
 
 dodgy:
   run: false
+
+pylint:
+  enable:
+    - useless-suppression
+  options:
+    max-line-length: 119
+    good-names: pk
+    max-parents: 12
+
+pep8:
+  options:
+    max-line-length: 119
