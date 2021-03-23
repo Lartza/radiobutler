@@ -6,7 +6,7 @@ class MyForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: '',
+      apiurl: '',
       bearers: [],
       shortName: '',
       mediumName: '',
@@ -15,6 +15,11 @@ class MyForm extends React.Component {
       fqdn: '',
       serviceIdentifier: '',
       logo: '',
+      ecc: '',
+      pi: '',
+      frequency: '',
+      bitrate: '',
+      url: '',
       errors: {}
     };
   }
@@ -59,12 +64,12 @@ class MyForm extends React.Component {
         const service = json[0];
         if (service !== undefined) {
           const {
-            url, bearers, short_name: shortName, medium_name: mediumName,
+            apiurl, bearers, short_name: shortName, medium_name: mediumName,
             short_description: shortDescription, link, fqdn,
             service_identifier: serviceIdentifier, logo,
           } = service;
           this.setState({
-            url,
+            apiurl,
             bearers,
             shortName,
             mediumName,
@@ -92,8 +97,8 @@ class MyForm extends React.Component {
 
       const cookies = new Cookies();
 
-      const { url } = this.state;
-      if (url === '') {
+      const { apiurl } = this.state;
+      if (apiurl === '') {
         fetch('/api/services/', {
           method: 'POST',
           headers: {
@@ -105,7 +110,7 @@ class MyForm extends React.Component {
             console.log(json);
           });
       } else {
-        fetch(url, {
+        fetch(apiurl, {
           method: 'PUT',
          headers: {
            'X-CSRFToken': cookies.get('csrftoken'),
@@ -129,7 +134,7 @@ class MyForm extends React.Component {
 
   render() {
     const {
-      shortName, mediumName, shortDescription, link, logo, fqdn, serviceIdentifier,
+      shortName, mediumName, shortDescription, link, logo, fqdn, ecc, pi, frequency, url, bitrate, serviceIdentifier,
     } = this.state;
     return (
       <form onSubmit={this.mySubmitHandler.bind(this)}>
@@ -139,7 +144,7 @@ class MyForm extends React.Component {
         <input
           defaultValue={shortName}
           type="text"
-          name="short_name"
+          name="shortName"
           id="shortname"
           onChange={this.myChangeHandler.bind(this)}
         />
@@ -151,7 +156,7 @@ class MyForm extends React.Component {
           defaultValue={mediumName}
           type="text"
           id="mediumname"
-          name="medium_name"
+          name="mediumName"
           onChange={this.myChangeHandler.bind(this)}
         />
         <span style={{color: "red"}}>{this.state.errors["mediumName"]}</span>
@@ -162,7 +167,7 @@ class MyForm extends React.Component {
         <textarea
           defaultValue={shortDescription}
           id="desc"
-          name="short_description"
+          name="shortDescription"
           onChange={this.myChangeHandler.bind(this)}
         />
         <br />
@@ -187,6 +192,83 @@ class MyForm extends React.Component {
         {logo !== null && logo.startsWith('file://') && <img alt="Logo" src={logo} />}
 
         <h2>Bearers</h2>
+
+        <label htmlFor="bearer1Platform">Bearer 1 platform</label>
+
+        <select name="platform" id="bearer1Platform">
+        <option value="fm">FM-RDS</option>
+        </select>
+        <br />
+
+        <label htmlFor="ecc">RDS ECC </label>
+        <br />
+        <input
+          defaultValue={ecc}
+          type="text"
+          id="ecc"
+          name="ecc"
+          onChange={this.myChangeHandler.bind(this)}
+        />
+        <br />
+
+        <label htmlFor="pi">RDS PI </label>
+        <br />
+        <input
+          defaultValue={pi}
+          type="text"
+          id="pi"
+          name="pi"
+          onChange={this.myChangeHandler.bind(this)}
+        />
+        <br />
+
+        <label htmlFor="frequency">Frequency (MHz) </label>
+        <br />
+        <input
+          defaultValue={frequency}
+          type="text"
+          id="frequency"
+          name="frequency"
+          onChange={this.myChangeHandler.bind(this)}
+        />
+        <br />
+
+        <label htmlFor="bearer2Platform">Bearer 2 platform</label>
+
+        <select name="platform" id="bearer1Platform">
+        <option value="ip">IP</option>
+        </select>
+        <br />
+
+        <label htmlFor="url">IP URL </label>
+        <br />
+        <input
+          defaultValue={url}
+          type="text"
+          id="url"
+          name="url"
+          onChange={this.myChangeHandler.bind(this)}
+        />
+        <br />
+
+        <label htmlFor="audio/mpeg">IP MIME</label>
+
+        <select name="audio/mpeg" id="bearer1Platform">
+        <option value="audio/mpeg">mp3</option>
+        </select>
+        <br />
+
+        <label htmlFor="bitrate">IP bitrate (kbps) </label>
+        <br />
+        <input
+          defaultValue={bitrate}
+          type="text"
+          id="bitrate"
+          name="bitrate"
+          onChange={this.myChangeHandler.bind(this)}
+        />
+        <br />
+
         <h2>RadioDNS Parameters</h2>
         <label htmlFor="fqdn">FQDN</label>
         <br />
@@ -198,11 +280,13 @@ class MyForm extends React.Component {
         <input
           defaultValue={serviceIdentifier}
           type="text"
-          name="service_identifier"
+          name="serviceIdentifier"
           id="fqdn"
           onChange={this.myChangeHandler.bind(this)}
         />
         <br />
+
+
 
         <input type="submit" value="SAVE" />
       </form>
