@@ -76,7 +76,7 @@ class ServiceTest(APITestCase):
         self.assertEqual(service.shortDescription, 'Lorem ipsum')
 
     def test_service_str(self):
-        Service.objects.create(short_name='Testi')
+        Service.objects.create(shortName='Testi')
         service = Service.objects.get()
         self.assertEqual(str(service), service.shortName)
 
@@ -85,11 +85,11 @@ class BearerTest(APITestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = User.objects.create_user(username='testuser', email='asdf@asdf.com')
-        Service.objects.create(short_name='Testi')
+        Service.objects.create(shortName='Testi')
 
     def test_create_bearer(self):
         self.client.force_login(self.user)
-        response = self.client.post(reverse('bearer-list'), {'bearer_id': 'fm:test',
+        response = self.client.post(reverse('bearer-list'), {'platform': 'fm', 'ecc': '00', 'pi': 'test', 'frequency': 7.7,
                                                              'service': reverse('service-detail', args=[1]),
                                                              'cost': 50})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -97,9 +97,9 @@ class BearerTest(APITestCase):
         self.assertEqual(Bearer.objects.count(), 1)
 
     def test_bearer_str(self):
-        Bearer.objects.create(bearer_id='fm:test', service_id=1, cost=50)
+        Bearer.objects.create(platform='fm', ecc='00', pi='test', frequency=7.7, service_id=1, cost=50)
         bearer = Bearer.objects.get()
-        self.assertEqual(str(bearer), bearer.bearer_id)
+        self.assertEqual(str(bearer), f'{bearer.platform} {bearer.ecc} {bearer.pi} {bearer.frequency} {bearer.cost}')
 
 
 class ServiceInformationTest(APITestCase):
