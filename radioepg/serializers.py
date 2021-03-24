@@ -70,14 +70,14 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
             # Match bearer for update based on primary key or details
             try:
                 bearer = Bearer.objects.get(pk=bearer_data['id'])
-            except KeyError:
+            except (Bearer.DoesNotExist, KeyError):
                 try:
                     bearer = Bearer.objects.get(platform=bearer_data['platform'], ecc=bearer_data['ecc'],
                                                 pi=bearer_data['pi'])
-                except Bearer.DoesNotExist:
+                except (Bearer.DoesNotExist, KeyError):
                     try:
                         bearer = Bearer.objects.get(platform=bearer_data['platform'], ecc=bearer_data['url'])
-                    except Bearer.DoesNotExist:
+                    except (Bearer.DoesNotExist, KeyError):
                         bearer = None
 
             # If matched, update fields for that bearer, otherwise create a new one

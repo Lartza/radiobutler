@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'radioepg.apps.RadioepgConfig',
     'radiovis.apps.RadiovisConfig',
     'rest_framework',
+    'drf_nested_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

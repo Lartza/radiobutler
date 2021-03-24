@@ -4,13 +4,13 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import JSONParser
+from drf_nested_forms.parsers import NestedMultiPartParser
 
 from .models import Service, Bearer
 from .serializers import ServiceSerializer, BearerSerializer
-from .parsers import ServiceInformationParser
 
 
-@parser_classes([JSONParser, ServiceInformationParser])
+@parser_classes([JSONParser, NestedMultiPartParser])
 class ServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
