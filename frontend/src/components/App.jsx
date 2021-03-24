@@ -7,7 +7,6 @@ class MyForm extends React.Component {
     super(props);
     this.state = {
       apiurl: '',
-      bearers: [],
       shortName: '',
       mediumName: '',
       shortDescription: '',
@@ -15,9 +14,11 @@ class MyForm extends React.Component {
       fqdn: '',
       serviceIdentifier: '',
       logo: '',
+      platform1: '',
       ecc: '',
       pi: '',
       frequency: '',
+      platform2: '',
       bitrate: '',
       url: '',
       errors: {}
@@ -64,13 +65,17 @@ class MyForm extends React.Component {
         const service = json[0];
         if (service !== undefined) {
           const {
-            apiurl, bearers, short_name: shortName, medium_name: mediumName,
-            short_description: shortDescription, link, fqdn,
-            service_identifier: serviceIdentifier, logo,
+            apiurl, bearers, shortName, mediumName,
+            shortDescription, link, fqdn,
+            serviceIdentifier, logo,
           } = service;
+          let platform1, ecc, pi, frequency, platform2, url, mimeValue, bitrate;
+          if (bearers.length !== 0) {
+            let {platform: platform1, ecc, pi, frequency} = bearers[1];
+            let {platform: platform2, url, mimeValue, bitrate} = bearers[0];
+          }
           this.setState({
             apiurl,
-            bearers,
             shortName,
             mediumName,
             shortDescription,
@@ -78,6 +83,14 @@ class MyForm extends React.Component {
             fqdn,
             serviceIdentifier,
             logo,
+            platform1,
+            ecc,
+            pi,
+            frequency,
+            platform2,
+            url,
+            mimeValue,
+            bitrate
           });
         }
       });
@@ -94,6 +107,18 @@ class MyForm extends React.Component {
     if (this.validator()){
       const form = event.target;
       const data = new FormData(form);
+
+      let bearer1 = {'platform1': data.get('platform1'), 'ecc': data.get('ecc'), 'pi': data.get('pi'),
+        'frequency': data.get('frequency')}
+      let bearer2 = {'platform2': data.get('platform2'), 'url': data.get('url'), 'mimeValue': data.get('mimeValue'),
+        'bitrate': data.get('bitrate')}
+
+      for(const key in ['platform1', 'ecc', 'pi', 'frequency', 'platform2', 'url', 'mimeValue', 'bitrate']) {
+        data.delete(key);
+      }
+
+      let bearers = [bearer1, bearer2]
+      data.append('bearers', JSON.stringify(bearers))
 
       const cookies = new Cookies();
 
@@ -134,7 +159,7 @@ class MyForm extends React.Component {
 
   render() {
     const {
-      shortName, mediumName, shortDescription, link, logo, fqdn, ecc, pi, frequency, url, bitrate, serviceIdentifier,
+      shortName, mediumName, shortDescription, link, logo, fqdn, platform1, ecc, pi, frequency, platform2, url, bitrate, serviceIdentifier,
     } = this.state;
     return (
       <form onSubmit={this.mySubmitHandler.bind(this)}>
@@ -195,7 +220,7 @@ class MyForm extends React.Component {
 
         <label htmlFor="bearer1Platform">Bearer 1 platform</label>
         <br />
-        <select name="platform" id="bearer1Platform">
+        <select name="platform1" id="bearer1Platform" defaultValue={platform1} onChange={this.myChangeHandler.bind(this)}>
         <option value="fm">FM-RDS</option>
         </select>
         <br />
@@ -235,7 +260,7 @@ class MyForm extends React.Component {
 
         <label htmlFor="bearer2Platform">Bearer 2 platform</label>
         <br />
-        <select name="platform" id="bearer1Platform">
+        <select name="platform2" id="bearer1Platform" defaultValue={platform2} onChange={this.myChangeHandler.bind(this)}>
         <option value="ip">IP</option>
         </select>
         <br />
