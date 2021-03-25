@@ -7,22 +7,33 @@
     <div class="main">
         <form>
         <h2>Images</h2>
-        <label for="image">Image type: jpeg, png</label><br>
-        <input type="file" id="image" name="image"><br>
-        <img src="https://via.placeholder.com/400x300" alt="Uploaded image" width="400" height="300"><br><br>
-        <label for="image_link">Link URL </label><br>
-        <input type="url" id="image_link" name="image_link"><br><br>
-        <label for="trigger_time">Trigger time</label><br>
-        <input type="datetime-local" id="trigger_time" name="trigger_time"><br><br>
+        <label for="image">Image type: jpeg, png</label>
+        <br>
+        <input type="file" id="image" name="image">
+        <br>
+        <img src="https://via.placeholder.com/320x240" alt="Uploaded image" width="320" height="240">
+        <br><br>
+        <label for="image_link">Link URL </label>
+        <br>
+        <input type="url" id="image_link" name="image_link">
+        <br><br>
+        <label for="trigger_time">Trigger time</label>
+        <br>
+        <input type="datetime-local" id="trigger_time" name="trigger_time">
+        <br><br>
 
-        <input type="submit" value="SEND IMAGE"><br><br>
+        <input type="submit" value="SEND IMAGE">
+        <br><br>
         </form>
         <form>
         <h2>Text message</h2>
-        <label for="message">Message (255 chars)</label><br>
-        <textarea id="message" name="message" rows="6"></textarea><br><br>
+        <label for="message">Message (max 128 chars)</label>
+        <br>
+        <textarea id="message" name="message" rows="6"></textarea>
+        <br><br>
 
-        <input type="submit" value="SEND TEXT"><br><br>
+        <input type="submit" value="SEND TEXT">
+        <br><br>
         </form>
     </div>
     <div class="right">
@@ -30,9 +41,9 @@
         <p><b>Message:</b></p>
         <p>(Active text message here)</p>
         <p><b>Image:</b></p>
-        <img src="https://via.placeholder.com/400x300" alt="Now showing" width="400" height="300">
+        <img src="https://via.placeholder.com/320x240" alt="Now showing" width="320" height="240">
         <h2>Next up - Show all</h2>
-        <img src="https://via.placeholder.com/400x300" alt="Next up" width="400" height="300">
+        <img src="https://via.placeholder.com/320x240" alt="Next up" width="320" height="240">
         <p>Next image at (date and time here)</p>
     </div>
     </div>
