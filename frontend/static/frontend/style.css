@@ -92,6 +92,7 @@ h2 {
 
 /* Style for most input types */
 input[type=text],
+input[type=number],
 input[type=url],
 input[type=email],
 input[type=password],
