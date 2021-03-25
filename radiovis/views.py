@@ -15,10 +15,13 @@ from .serializers import ImageSlideSerializer
 
 
 class ErrorListener(stomp.ConnectionListener):
+    """Listener for making error messages from the server available."""
     def __init__(self):
+        """Initializes instance variables."""
         self.error = None
 
     def on_error(self, headers, body):
+        """Stores received error."""
         self.error = body
 
 
@@ -29,6 +32,7 @@ class ImageSlideViewSet(viewsets.ModelViewSet):
 
     @action(detail=True)
     def send(self, request, pk=None):  # pylint: disable=unused-argument
+        """Sends SHOW messages to Stomp server."""
         headers = {}
         slide = self.get_object()
 
@@ -43,9 +47,10 @@ class ImageSlideViewSet(viewsets.ModelViewSet):
         try:
             # Reduce blocking by reconnecting only once
             conn = stomp.Connection([(STOMP_HOST, STOMP_PORT)], reconnect_attempts_max=1)
-            # Create listener to catch errors from Stomp
+            # Create listener to catch error messages from Stomp
             lst = ErrorListener()
             conn.set_listener('', lst)
+
             conn.connect(STOMP_USERNAME, STOMP_PASSWORD, wait=True)
             conn.send(body=f'SHOW {request.scheme}://{request.META.get("HTTP_HOST")}{slide.image.url}',
                       headers=headers,
@@ -53,6 +58,7 @@ class ImageSlideViewSet(viewsets.ModelViewSet):
             conn.disconnect()
             time.sleep(2)
 
+            # Check for received error messages
             if lst.error:
                 return Response(f'{lst.error}', status=status.HTTP_502_BAD_GATEWAY)
             slide.sent = True
@@ -69,17 +75,23 @@ class TextSlideViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, pk=None):  # pylint: disable=unused-argument,no-self-use
+        """Sends TEXT messages to Stomp server without creating any objects."""
         text = request.data['text']
 
         try:
+            # Reduce blocking by reconnecting only once
             conn = stomp.Connection([(STOMP_HOST, STOMP_PORT)], reconnect_attempts_max=1)
+            # Create listener to catch error messages from Stomp
             lst = ErrorListener()
             conn.set_listener('', lst)
+
             conn.connect(STOMP_USERNAME, STOMP_PASSWORD, wait=True)
             conn.send(body=f'TEXT {text}',
                       destination='/topic/fm/6e1/6024/09840/text')
             conn.disconnect()
             time.sleep(2)
+
+            # Check for received error messages
             if lst.error:
                 return Response(f'{lst.error}', status=status.HTTP_502_BAD_GATEWAY)
             return Response(f'Sent: TEXT {text}')

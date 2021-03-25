@@ -89,7 +89,8 @@ class BearerTest(APITestCase):
 
     def test_create_bearer(self):
         self.client.force_login(self.user)
-        response = self.client.post(reverse('bearer-list'), {'platform': 'fm', 'ecc': '00', 'pi': 'test', 'frequency': 7.7,
+        response = self.client.post(reverse('bearer-list'), {'platform': 'fm', 'ecc': '00', 'pi': 'test',
+                                                             'frequency': 7.7,
                                                              'service': reverse('service-detail', args=[1]),
                                                              'cost': 50})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

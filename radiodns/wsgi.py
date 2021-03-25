@@ -1,5 +1,4 @@
-"""
-WSGI config for radiodns project.
+"""WSGI config for radiodns project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

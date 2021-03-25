@@ -1,0 +1,5 @@
+[pydocstyle]
+convention = google
+match = ^(?!test).*\.py
+match-dir = ^(?!venv|media|migrations).*
+add_ignore = D100,D101,D104,D106

@@ -23,6 +23,7 @@ steps:
   commands:
   - pip install -r requirements-dev.txt
   - prospector
+  - pydocstyle
 
 - name: test-python
   image: python

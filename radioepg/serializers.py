@@ -11,16 +11,19 @@ class BearerSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
+        """Normalizes bearer data before creating object."""
         validated_data['ecc'] = validated_data['ecc'].lower()
         validated_data['pi'] = validated_data['pi'].lower()
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
+        """Normalizes bearer data before updating object."""
         validated_data['ecc'] = validated_data['ecc'].lower()
         validated_data['pi'] = validated_data['pi'].lower()
         return super().update(instance, validated_data)
 
     def validate(self, attrs):
+        """Validates bearers based on their platform."""
         if attrs['platform'] == 'fm':
             if attrs['ecc'] == '':
                 raise serializers.ValidationError({'ecc': 'ECC is required for FM bearers'})
@@ -40,7 +43,7 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
     bearers = BearerSerializer(many=True, required=False, allow_null=True)
 
     def create(self, validated_data):
-        # Create bearers from nested data and associate with the created service
+        """Creates service objects handling nested bearers."""
         bearers_data = []
         try:
             bearers_data = validated_data.pop('bearers')
@@ -52,6 +55,10 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
         return service
 
     def update(self, instance, validated_data):
+        """Updates service objects handling nested bearers.
+
+        Based on the method of the request, deletes old bearers what weren't included in the request.
+        """
         bearers_data = []
         try:
             bearers_data = validated_data.pop('bearers')

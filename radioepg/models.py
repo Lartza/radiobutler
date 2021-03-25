@@ -13,6 +13,7 @@ class Service(models.Model):
     logo = models.ImageField(upload_to='logos/', storage=LogoStorage(), null=True)
 
     def __str__(self):
+        """Returns shortName as a string representation for Service."""
         return self.shortName
 
 
@@ -28,6 +29,7 @@ class Bearer(models.Model):
     service = models.ForeignKey(Service, related_name='bearers', on_delete=models.CASCADE)
 
     def __str__(self):
+        """Returns a string representation of Bearer based on platform."""
         if self.platform == 'fm':
             return f'{self.platform} {self.ecc} {self.pi} {self.frequency} {self.cost}'
         return f'{self.platform} {self.url} {self.mimeValue} {self.bitrate} {self.cost}'

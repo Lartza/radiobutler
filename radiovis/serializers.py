@@ -8,7 +8,7 @@ from .models import ImageSlide
 
 
 def resave_png(image_data):
-    # Resave PNG files to simplify and (hopefully) increase compatibility
+    """Resaves PNG files to simplify and (hopefully) increase compatibility."""
     image = Image.open(image_data)
     buffer = BytesIO()
     image.save(buffer, format='PNG')
@@ -23,11 +23,13 @@ class ImageSlideSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
+        """Creates ImageSlide objects, resaving PNG files."""
         if validated_data['image'].content_type == 'image/png':
             validated_data['image'] = resave_png(validated_data['image'])
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
+        """Updates ImageSlide objects, resaving PNG files."""
         if validated_data['image'].content_type == 'image/png':
             validated_data['image'] = resave_png(validated_data['image'])
         return super().update(instance, validated_data)
