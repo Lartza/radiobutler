@@ -118,7 +118,6 @@ class MyForm extends React.Component {
       const data = new FormData(form);
 
       const { apiurl } = this.state;
-      console.log(apiurl);
       const names = ['platform1', 'ecc', 'pi', 'frequency', 'platform2', 'url', 'mimeValue', 'bitrate'];
 
       if (data.get('ecc') !== '') {
@@ -183,7 +182,7 @@ class MyForm extends React.Component {
   render() {
     const {
       shortName, mediumName, shortDescription, link, logo, fqdn, platform1, ecc, pi, frequency,
-      platform2, url, mimeValue, bitrate, serviceIdentifier,
+      platform2, url, mimeValue, bitrate, serviceIdentifier, errors,
     } = this.state;
     return (
       <form onSubmit={this.mySubmitHandler.bind(this)}>
@@ -197,7 +196,7 @@ class MyForm extends React.Component {
           id="shortname"
           onChange={this.myChangeHandler.bind(this)}
         />
-        <span style={{ color: 'red' }}>{this.state.errors.shortName}</span>
+        <span style={{ color: 'red' }}>{errors.shortName}</span>
         <br />
         <label htmlFor="mediumname">Medium name (max 16 chars) </label>
         <br />
@@ -208,7 +207,7 @@ class MyForm extends React.Component {
           name="mediumName"
           onChange={this.myChangeHandler.bind(this)}
         />
-        <span style={{ color: 'red' }}>{this.state.errors.mediumName}</span>
+        <span style={{ color: 'red' }}>{errors.mediumName}</span>
         <br />
         <h2>Description</h2>
         <label htmlFor="desc">Short description (max 180 chars)</label>
@@ -260,7 +259,7 @@ class MyForm extends React.Component {
         />
         <br />
 
-        <label htmlFor="pi">RDS PI </label>
+        <label htmlFor="pi">RDS PI</label>
         <br />
         <input
           defaultValue={pi}

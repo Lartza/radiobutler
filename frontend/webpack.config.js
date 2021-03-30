@@ -1,5 +1,8 @@
 module.exports = {
-  entry: './src/index.jsx',
+  entry: {
+    si: './src/si.jsx',
+    slideshow: './src/slideshow.jsx',
+  },
   module: {
     rules: [
       {
