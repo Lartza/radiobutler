@@ -3,15 +3,14 @@ import stomp
 
 from rest_framework import viewsets
 from rest_framework import permissions
-from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from stomp.exception import ConnectFailedException
 
 from radiodns.settings import STOMP_HOST, STOMP_PORT, STOMP_USERNAME, STOMP_PASSWORD
 
-from .models import ImageSlide
-from .serializers import ImageSlideSerializer
+from .models import ImageSlide, TextSlide
+from .serializers import ImageSlideSerializer, TextSlideSerializer
 
 
 class ErrorListener(stomp.ConnectionListener):
@@ -30,8 +29,7 @@ class ImageSlideViewSet(viewsets.ModelViewSet):
     serializer_class = ImageSlideSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    @action(detail=True)
-    def send(self, request, pk=None):  # pylint: disable=unused-argument
+    def create(self, request, *args, **kwargs):
         """Sends SHOW messages to Stomp server."""
         headers = {}
         slide = self.get_object()
@@ -64,18 +62,19 @@ class ImageSlideViewSet(viewsets.ModelViewSet):
             slide.sent = True
             slide.save()
 
-            return Response(f'Sent: SHOW {request.scheme}://{request.META.get("HTTP_HOST")}{slide.image.url}'
-                            f' headers: {headers}')
+            return super().create(request, *args, **kwargs)
         except ConnectFailedException:
             return Response(f'Connection to stomp server {STOMP_HOST}:{STOMP_PORT} failed',
                             status=status.HTTP_502_BAD_GATEWAY)
 
 
-class TextSlideViewSet(viewsets.ViewSet):
+class TextSlideViewSet(viewsets.ModelViewSet):
+    queryset = TextSlide.objects.all()
+    serializer_class = TextSlideSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def create(self, request, pk=None):  # pylint: disable=unused-argument,no-self-use
-        """Sends TEXT messages to Stomp server without creating any objects."""
+    def create(self, request, *args, **kwargs):
+        """Send TEXT messages to Stomp server without creating any objects."""
         text = request.data['text']
 
         try:
@@ -94,7 +93,7 @@ class TextSlideViewSet(viewsets.ViewSet):
             # Check for received error messages
             if lst.error:
                 return Response(f'{lst.error}', status=status.HTTP_502_BAD_GATEWAY)
-            return Response(f'Sent: TEXT {text}')
+            return super().create(request, *args, **kwargs)
         except ConnectFailedException:
             return Response(f'Connection to stomp server {STOMP_HOST}:{STOMP_PORT} failed',
                             status=status.HTTP_502_BAD_GATEWAY)

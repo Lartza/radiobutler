@@ -4,7 +4,7 @@ from rest_framework import serializers
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
-from .models import ImageSlide
+from .models import ImageSlide, TextSlide
 
 
 def resave_png(image_data):
@@ -33,3 +33,10 @@ class ImageSlideSerializer(serializers.HyperlinkedModelSerializer):
         if validated_data['image'].content_type == 'image/png':
             validated_data['image'] = resave_png(validated_data['image'])
         return super().update(instance, validated_data)
+
+
+class TextSlideSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = TextSlide
+        fields = '__all__'
