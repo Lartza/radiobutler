@@ -26,3 +26,10 @@ def slideshow(request):
     """Renders the Visual Slideshow page when authenticated."""
     context = {'commit': get_commit()}
     return render(request, 'frontend/slideshow.html', context)
+
+
+@login_required
+def gallery(request):
+    """Renders the Visual Slideshow page when authenticated."""
+    context = {'commit': get_commit()}
+    return render(request, 'frontend/gallery.html', context)

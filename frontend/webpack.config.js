@@ -2,6 +2,7 @@ module.exports = {
   entry: {
     si: './src/si.jsx',
     slideshow: './src/slideshow.jsx',
+    gallery: './src/gallery.jsx',
   },
   module: {
     rules: [
