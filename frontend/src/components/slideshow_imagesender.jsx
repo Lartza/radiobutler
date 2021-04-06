@@ -2,7 +2,7 @@ import React from 'react';
 import Cookies from 'universal-cookie/es6';
 
 class ImageSlideSender extends React.Component {
-  static mySubmitHandler(event) {
+  mySubmitHandler(event) {
     event.preventDefault();
     const form = event.target;
     const data = new FormData(form);
