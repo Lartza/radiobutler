@@ -66,7 +66,7 @@ class ImageSlideSender extends React.Component {
           <br />
           <input type="hidden" id="image" name="image" value={apiurl} />
           <br />
-          <img src={image} alt="Uploaded image" width="320" height="240" />
+          <img src={image} alt="Selected image" width="320" height="240" />
           <br />
           <br />
           <label htmlFor="image_link">Link URL </label>
