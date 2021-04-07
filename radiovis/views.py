@@ -1,11 +1,14 @@
 import time
+from datetime import datetime, timezone
+
 import stomp
 
-from rest_framework import viewsets
-from rest_framework import permissions
+from django.db.models import ProtectedError
+
+from rest_framework import viewsets, permissions, status
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 from stomp.exception import ConnectFailedException
-from datetime import datetime, timezone
 
 from radiodns.settings import STOMP_HOST, STOMP_PORT, STOMP_USERNAME, STOMP_PASSWORD
 
@@ -90,6 +93,15 @@ class ImageSlideViewSet(viewsets.ModelViewSet):
         instance = serializer.save()
         send_stomp_image(instance, self.request.build_absolute_uri(instance.image.image.url))
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        try:
+            self.perform_destroy(instance)
+        except ProtectedError as e:
+            e = str(e).split(',', 1)
+            return Response({'error': e[0].strip("('"), 'object': e[1].strip(" )")}, status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class TextSlideViewSet(viewsets.ModelViewSet):
     queryset = TextSlide.objects.all()
@@ -100,9 +112,27 @@ class TextSlideViewSet(viewsets.ModelViewSet):
         instance = serializer.save()
         send_stomp_text(instance)
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        try:
+            self.perform_destroy(instance)
+        except ProtectedError as e:
+            e = str(e).split(',', 1)
+            return Response({'error': e[0].strip("('"), 'object': e[1].strip(" )")}, status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = PageNumberPagination
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        try:
+            self.perform_destroy(instance)
+        except ProtectedError:
+            return Response('Image is linked to a slide that has to be stored for 21 days due to legal requirements',
+                            status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_204_NO_CONTENT)
