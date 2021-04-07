@@ -6,7 +6,7 @@ import {
 
 const Receiver = () => (
   <StompSessionProvider
-    url="ws://radiodns.ltn.fi:61614/stomp"
+    url="wss://radiodns.ltn.fi/stomp"
   >
     <h2>Now showing</h2>
     <p><b>Message:</b></p>
