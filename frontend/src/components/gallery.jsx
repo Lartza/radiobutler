@@ -50,13 +50,15 @@ class Gallery extends React.Component {
     const imgElements = Object.values(images).map((i) => <img key={i.apiurl} data-apiurl={i.apiurl} src={i.image} onClick={this.props.passedFunction} />);
     return (
       <div id="gallery">
+        <h2>Add a new image to the gallery</h2>
         <form onSubmit={this.mySubmitHandler.bind(this)}>
-          <label htmlFor="image">Image type: jpeg, size: 600 x 600 px</label>
+          <label htmlFor="image">Image type: jpeg, png</label>
           <br />
           <input type="file" name="image" id="image" onChange={this.myChangeHandler.bind(this)} />
           <input type="submit" value="UPLOAD" />
         </form>
-        <div id="list">{imgElements}</div>
+        <h2>Gallery items</h2>
+        <div class="gallery-container" id="list">{imgElements}</div>
       </div>
     );
   }

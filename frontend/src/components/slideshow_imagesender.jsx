@@ -49,18 +49,19 @@ class ImageSlideSender extends React.Component {
     const { apiurl, image } = this.state;
     return (
       <div>
+        <h2>Images</h2>
         <div>
-          <button onClick={this.handleOpenModal}>Trigger Modal</button>
+          <button onClick={this.handleOpenModal}>Open gallery</button>
           <ReactModal
             isOpen={this.state.showModal}
             contentLabel="Minimal Modal Example"
           >
-            <button onClick={this.handleCloseModal}>Close Modal</button>
+            <button onClick={this.handleCloseModal}>Close gallery</button>
             <Gallery passedFunction={this.passedFunction} />
           </ReactModal>
         </div>
         <form onSubmit={this.mySubmitHandler.bind(this)}>
-          <h2>Images</h2>
+
           <label htmlFor="image">Image type: jpeg, png</label>
           <br />
           <input type="hidden" id="image" name="image" value={apiurl} />
