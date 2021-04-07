@@ -243,7 +243,12 @@ class MyForm extends React.Component {
 
         <label htmlFor="bearer1Platform">Bearer 1 platform</label>
         <br />
-        <select name="platform1" id="bearer1Platform" defaultValue={platform1} onChange={this.myChangeHandler.bind(this)}>
+        <select
+          name="platform1"
+          id="bearer1Platform"
+          defaultValue={platform1}
+          onChange={this.myChangeHandler.bind(this)}
+        >
           <option value="fm">FM-RDS</option>
         </select>
         <br />
@@ -285,7 +290,12 @@ class MyForm extends React.Component {
 
         <label htmlFor="bearer2Platform">Bearer 2 platform</label>
         <br />
-        <select name="platform2" id="bearer1Platform" defaultValue={platform2} onChange={this.myChangeHandler.bind(this)}>
+        <select
+          name="platform2"
+          id="bearer1Platform"
+          defaultValue={platform2}
+          onChange={this.myChangeHandler.bind(this)}
+        >
           <option value="ip">IP</option>
         </select>
         <br />

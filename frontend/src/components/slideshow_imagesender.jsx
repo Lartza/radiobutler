@@ -1,7 +1,7 @@
 import React from 'react';
 import Cookies from 'universal-cookie/es6';
 import ReactModal from 'react-modal';
-import Gallery from './gallery.jsx';
+import Gallery from './gallery';
 
 class ImageSlideSender extends React.Component {
   constructor(props) {
@@ -14,7 +14,15 @@ class ImageSlideSender extends React.Component {
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
-    this.passedFunction = this.passedFunction.bind(this);
+    this.selectImage = this.selectImage.bind(this);
+  }
+
+  handleOpenModal() {
+    this.setState({ showModal: true });
+  }
+
+  handleCloseModal() {
+    this.setState({ showModal: false });
   }
 
   mySubmitHandler(event) {
@@ -35,29 +43,21 @@ class ImageSlideSender extends React.Component {
       });
   }
 
-  handleOpenModal() {
-    this.setState({ showModal: true });
-  }
-
-  handleCloseModal() {
-    this.setState({ showModal: false });
-  }
-
-  passedFunction(event) { this.setState({ apiurl: event.target.getAttribute('data-apiurl'), image: event.target.src }); }
+  selectImage(event) { this.setState({ apiurl: event.target.getAttribute('data-apiurl'), image: event.target.src }); }
 
   render() {
-    const { apiurl, image } = this.state;
+    const { apiurl, image, showModal } = this.state;
     return (
       <div>
         <h2>Images</h2>
         <div>
-          <button onClick={this.handleOpenModal}>Open gallery</button>
+          <button type="button" onClick={this.handleOpenModal}>Open gallery</button>
           <ReactModal
-            isOpen={this.state.showModal}
+            isOpen={showModal}
             contentLabel="Minimal Modal Example"
           >
-            <button onClick={this.handleCloseModal}>Close gallery</button>
-            <Gallery passedFunction={this.passedFunction} />
+            <button type="button" onClick={this.handleCloseModal}>Close gallery</button>
+            <Gallery selectImage={this.selectImagen} />
           </ReactModal>
         </div>
         <form onSubmit={this.mySubmitHandler.bind(this)}>

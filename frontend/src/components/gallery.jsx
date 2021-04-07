@@ -9,16 +9,16 @@ class Gallery extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.reloadGallery();
+  }
+
   reloadGallery() {
     fetch('/api/images/')
       .then((response) => response.json())
       .then((json) => {
         this.setState({ images: json });
       });
-  }
-
-  componentDidMount() {
-    this.reloadGallery();
   }
 
   myChangeHandler(event) {
@@ -47,7 +47,10 @@ class Gallery extends React.Component {
 
   render() {
     const { images } = this.state;
-    const imgElements = Object.values(images).map((i) => <img key={i.apiurl} data-apiurl={i.apiurl} src={i.image} onClick={this.props.passedFunction} />);
+    const { selectImage } = this.props;
+    const imgElements = Object.values(images).map(
+      (i) => <img key={i.apiurl} data-apiurl={i.apiurl} src={i.image} onClick={selectImage} />,
+    );
     return (
       <div id="gallery">
         <h2>Add a new image to the gallery</h2>
@@ -58,7 +61,7 @@ class Gallery extends React.Component {
           <input type="submit" value="UPLOAD" />
         </form>
         <h2>Gallery items</h2>
-        <div class="gallery-container" id="list">{imgElements}</div>
+        <div className="gallery-container" id="list">{imgElements}</div>
       </div>
     );
   }
