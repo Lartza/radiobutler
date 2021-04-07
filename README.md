@@ -10,7 +10,7 @@ Creating RadioDNS-application for Radio Moreeni
 - _Stomp server (Apache ActiveMQ Artemis tested, required for Visual Slideshow)_
 
 ### Setup
-To setup a local development environment after cloning follow these instructions.
+To set up a local development environment after cloning follow these instructions.
 
 Creating a venv is highly recommended\
 You can let your chosen IDE handle this or run\

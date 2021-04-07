@@ -79,9 +79,9 @@ class ErrorListener(stomp.ConnectionListener):
         """Initializes instance variables."""
         self.error = None
 
-    def on_error(self, headers, body):
+    def on_error(self, frame):
         """Stores received error."""
-        self.error = body
+        self.error = frame.body
 
 
 class ImageSlideViewSet(viewsets.ModelViewSet):

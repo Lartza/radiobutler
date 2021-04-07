@@ -163,3 +163,5 @@ except KeyError:
 REST_FRAMEWORK = {
     'URL_FIELD_NAME': 'apiurl'
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
