@@ -57,7 +57,7 @@ class ImageSlideSender extends React.Component {
             contentLabel="Minimal Modal Example"
           >
             <button type="button" onClick={this.handleCloseModal}>Close gallery</button>
-            <Gallery selectImage={this.selectImagen} />
+            <Gallery selectImage={this.selectImage} />
           </ReactModal>
         </div>
         <form onSubmit={this.mySubmitHandler.bind(this)}>
