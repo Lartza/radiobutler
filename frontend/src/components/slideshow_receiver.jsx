@@ -24,7 +24,7 @@ function TextSubscribingComponent() {
 
   useSubscription('/topic/fm/6e1/6024/09840/text', (message) => {
     if (message.body.startsWith('TEXT ')) {
-      setLastMessage(message.body.split(' ', 2)[1]);
+      setLastMessage(message.body.replace('TEXT ', ''));
     }
   });
   return (
