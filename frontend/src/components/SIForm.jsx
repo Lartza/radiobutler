@@ -1,5 +1,7 @@
 import React from 'react';
 import Cookies from 'universal-cookie/es6';
+import validator from 'validator'
+
 
 // React form
 class MyForm extends React.Component {
@@ -83,11 +85,10 @@ class MyForm extends React.Component {
       isFormValid = false;
       errors.shortName = 'Required!';
     }
-    if (typeof fields.shortName !== 'undefined') {
-      if (fields.shortName.length > 8) {
-        isFormValid = false;
-        errors.shortName = 'Maximum eight (8) characters.';
-      }
+
+    else if (fields.shortName.length > 8) {
+      isFormValid = false;
+      errors.shortName = 'Maximum eight (8) characters.';
     }
 
     // mediumname - 16 chars max
@@ -95,12 +96,97 @@ class MyForm extends React.Component {
       isFormValid = false;
       errors.mediumName = 'Required!';
     }
-    if (typeof fields.mediumName !== 'undefined') {
-      if (fields.mediumName.length > 16) {
+
+    else if(fields.mediumName.length > 16) {
+      isFormValid = false;
+      errors.mediumName = 'Maximum sixteen (16) characters.';
+    }
+
+    // shortDescription - 180 chars max
+    if (fields.shortDescription && fields.shortDescription.length > 180) {
         isFormValid = false;
-        errors.mediumName = 'Maximum sixteen (16) characters.';
+        errors.shortDescription = 'Maximum 180 characters.';
+    }
+
+   // link - 2000 chars max, must be link
+   if (fields.link) {
+      if ( fields.link.length > 2000) {
+        isFormValid = false;
+        errors.link = 'Maximum 2000 characters.';
+      }
+
+      if (!validator.isURL(fields.link, { protocols: ['http','https'], require_protocol: true })) {
+        isFormValid = false;
+        errors.link = 'Must be a link (must start with http(s)).';
       }
     }
+
+    // ecc - 2 chars
+    if (!fields.ecc) {
+      isFormValid = false;
+      errors.ecc = 'Required!';
+    }
+
+    else if (fields.ecc.length !== 2) {
+      isFormValid = false;
+      errors.ecc = 'Must to be two (2) characters.';
+    }
+
+
+    // pi - 4 chars
+    if (!fields.pi) {
+      isFormValid = false;
+      errors.pi = 'Required!';
+    }
+
+    else if (fields.pi.length !== 4) {
+      isFormValid = false;
+      errors.pi = 'Must to be four (4) characters.';
+    }
+
+    // pi url - 2000 chars max, must be link
+    if (!fields.url) {
+      isFormValid = false;
+      errors.url = 'Required!';
+    }
+
+    else if (fields.url.length > 2000) {
+      isFormValid = false;
+      errors.url = 'Maximum 2000 characters.';
+    }
+
+    else if (!validator.isURL(fields.url, { protocols: ['http','https'], require_protocol: true })) {
+      isFormValid = false;
+      errors.url = 'Must be a link (must start with http(s)).';
+    }
+
+    // fqdn - domain without http
+    if (!fields.fqdn) {
+      isFormValid = false;
+      errors.fqdn = 'Required!';
+    }
+
+    else if (!validator.isFQDN(fields.fqdn)) {
+      isFormValid = false;
+      errors.fqdn = 'Must be domain name without protocol.';
+    }
+
+    // service identifier - 16 chars max, only lower case and numbers
+    if (!fields.serviceIdentifier) {
+      isFormValid = false;
+      errors.serviceIdentifier = 'Required!';
+    }
+
+    else if (fields.serviceIdentifier.length > 16) {
+      isFormValid = false;
+      errors.serviceIdentifier = 'Maximum sixteen (16) characters.';
+    }
+
+    else if (fields.serviceIdentifier.match(/^[a-z0-9]/) == null) {
+      isFormValid = false;
+      errors.serviceIdentifier = 'Must be only lower cases and numbers.';
+    }
+
     this.setState({ errors });
     return isFormValid;
   }
@@ -218,6 +304,7 @@ class MyForm extends React.Component {
           name="shortDescription"
           onChange={this.myChangeHandler.bind(this)}
         />
+        <span style={{ color: 'red' }}>{errors.shortDescription}</span>
         <br />
 
         <h2>Link</h2>
@@ -230,6 +317,7 @@ class MyForm extends React.Component {
           name="link"
           onChange={this.myChangeHandler.bind(this)}
         />
+        <span style={{ color: 'red' }}>{errors.link}</span>
         <br />
 
         <h2>Logo</h2>
@@ -262,6 +350,7 @@ class MyForm extends React.Component {
           name="ecc"
           onChange={this.myChangeHandler.bind(this)}
         />
+        <span style={{ color: 'red' }}>{errors.ecc}</span>
         <br />
 
         <label htmlFor="pi">RDS PI</label>
@@ -273,6 +362,7 @@ class MyForm extends React.Component {
           name="pi"
           onChange={this.myChangeHandler.bind(this)}
         />
+        <span style={{ color: 'red' }}>{errors.pi}</span>
         <br />
 
         <label htmlFor="frequency">Frequency (MHz) </label>
@@ -309,6 +399,7 @@ class MyForm extends React.Component {
           name="url"
           onChange={this.myChangeHandler.bind(this)}
         />
+        <span style={{ color: 'red' }}>{errors.url}</span>
         <br />
 
         <label htmlFor="audio/mpeg">IP MIME</label>
@@ -335,6 +426,7 @@ class MyForm extends React.Component {
         <label htmlFor="fqdn">FQDN</label>
         <br />
         <input defaultValue={fqdn} type="text" name="fqdn" id="fqdn" onChange={this.myChangeHandler.bind(this)} />
+        <span style={{ color: 'red' }}>{errors.fqdn}</span>
         <br />
 
         <label htmlFor="service_identifier">Service Identifier</label>
@@ -346,6 +438,7 @@ class MyForm extends React.Component {
           id="fqdn"
           onChange={this.myChangeHandler.bind(this)}
         />
+        <span style={{ color: 'red' }}>{errors.serviceIdentifier}</span>
         <br />
 
         <input type="submit" value="SAVE" />
