@@ -182,7 +182,7 @@ class MyForm extends React.Component {
       errors.serviceIdentifier = 'Maximum sixteen (16) characters.';
     }
 
-    else if (fields.serviceIdentifier.match(/^[a-z0-9]/) == null) {
+    else if (fields.serviceIdentifier.match(/^[a-z0-9]+$/) == null) {
       isFormValid = false;
       errors.serviceIdentifier = 'Must be only lower cases and numbers.';
     }
