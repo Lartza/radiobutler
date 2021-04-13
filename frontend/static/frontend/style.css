@@ -162,7 +162,7 @@ img {
     height: 240px;
 }
 
-img:hover {
+img.modal-image:hover {
     opacity: 0.9;
 }
 
@@ -171,4 +171,8 @@ footer {
     background-color: #f0f0f0;
     padding: 10px 25px;
     margin-top: 20px;
+}
+
+.selected {
+    background: red;
 }

@@ -123,7 +123,7 @@ class TextSlideViewSet(viewsets.ModelViewSet):
 
 
 class ImageViewSet(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
+    queryset = Image.objects.all().order_by('-id')
     serializer_class = ImageSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = PageNumberPagination

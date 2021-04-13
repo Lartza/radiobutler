@@ -1,11 +1,16 @@
 import React from 'react';
 import Cookies from 'universal-cookie/es6';
+import PropTypes from 'prop-types';
 
 class Gallery extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: {},
+      results: {},
+      current: '/api/images/',
+      next: '',
+      previous: '',
+      count: -1,
     };
   }
 
@@ -13,11 +18,38 @@ class Gallery extends React.Component {
     this.reloadGallery();
   }
 
+  handleBtnPrevious() {
+    const { previous } = this.state;
+    this.setState({ current: previous }, this.reloadGallery);
+  }
+
+  handleBtnNext() {
+    const { next } = this.state;
+    this.setState({ current: next }, this.reloadGallery);
+  }
+
+  getImageClassNames(apiurl, iApiurl, selectImage) {
+    let classes = '';
+    if (selectImage !== null) {
+      classes += ' modal-image';
+    }
+    if (apiurl === iApiurl) {
+      classes += ' selected';
+    }
+    return classes;
+  }
+
   reloadGallery() {
-    fetch('/api/images/')
+    const { current } = this.state;
+    fetch(current)
       .then((response) => response.json())
       .then((json) => {
-        this.setState({ images: json });
+        const {
+          count, next, previous, results,
+        } = json;
+        this.setState({
+          results, next, previous, count,
+        });
       });
   }
 
@@ -46,11 +78,22 @@ class Gallery extends React.Component {
   }
 
   render() {
-    const { images } = this.state;
-    const { selectImage } = this.props;
-    const imgElements = Object.values(images).map(
-      (i) => <img key={i.apiurl} data-apiurl={i.apiurl} src={i.image} onClick={selectImage} />,
+    const {
+      results, previous, next, count,
+    } = this.state;
+    const { selectImage, apiurl } = this.props;
+    const imgElements = Object.values(results).map(
+      (i) => (
+        <img
+          key={i.apiurl}
+          data-apiurl={i.apiurl}
+          src={i.image}
+          onClick={selectImage}
+          className={this.getImageClassNames(apiurl, i.apiurl, selectImage)}
+        />
+      ),
     );
+
     return (
       <div id="gallery">
         <h2>Add a new image to the gallery</h2>
@@ -62,9 +105,28 @@ class Gallery extends React.Component {
         </form>
         <h2>Gallery items</h2>
         <div className="gallery-container" id="list">{imgElements}</div>
+        {previous && <button type="button" onClick={this.handleBtnPrevious.bind(this)}>Previous</button>}
+        {next && <button type="button" onClick={this.handleBtnNext.bind(this)}>Next</button>}
+        {count > 0 && (
+          <span>
+            {count}
+            {' '}
+            images
+          </span>
+        )}
       </div>
     );
   }
 }
+
+Gallery.propTypes = {
+  selectImage: PropTypes.func,
+  apiurl: PropTypes.func,
+};
+
+Gallery.defaultProps = {
+  selectImage: null,
+  apiurl: null,
+};
 
 export default Gallery;

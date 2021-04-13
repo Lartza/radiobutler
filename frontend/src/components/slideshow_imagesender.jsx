@@ -31,6 +31,14 @@ class ImageSlideSender extends React.Component {
     const data = new FormData(form);
     const cookies = new Cookies();
 
+    if (data.get('date') !== '' && data.get('time') !== '') {
+      const date = data.get('date');
+      const time = data.get('time');
+      data.delete('date');
+      data.delete('time');
+      data.append('trigger_time', `${date}T${time}`);
+    }
+
     fetch('/api/imageslides/', {
       method: 'POST',
       headers: {
@@ -54,10 +62,11 @@ class ImageSlideSender extends React.Component {
           <button type="button" onClick={this.handleOpenModal}>Open gallery</button>
           <ReactModal
             isOpen={showModal}
-            contentLabel="Minimal Modal Example"
+            contentLabel="Gallery Modal"
           >
-            <button type="button" onClick={this.handleCloseModal}>Close gallery</button>
-            <Gallery selectImage={this.selectImage} />
+            <button type="button" onClick={this.handleCloseModal}>Save & Close gallery</button>
+            <Gallery selectImage={this.selectImage} apiurl={apiurl} />
+            <button type="button" onClick={this.handleCloseModal}>Save & Close gallery</button>
           </ReactModal>
         </div>
         <form onSubmit={this.mySubmitHandler.bind(this)}>
@@ -76,7 +85,8 @@ class ImageSlideSender extends React.Component {
           <br />
           <label htmlFor="trigger_time">Trigger time</label>
           <br />
-          <input type="datetime-local" id="trigger_time" name="trigger_time" />
+          <input type="date" id="trigger_time" name="date" />
+          <input type="time" id="trigger_time" name="time" step="1" />
           <br />
           <br />
 

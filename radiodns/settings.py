@@ -161,7 +161,8 @@ except KeyError:
     STOMP_PASSWORD = ''
 
 REST_FRAMEWORK = {
-    'URL_FIELD_NAME': 'apiurl'
+    'URL_FIELD_NAME': 'apiurl',
+    'PAGE_SIZE': 25
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
