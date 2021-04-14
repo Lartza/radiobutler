@@ -60,6 +60,12 @@ h2 {
     font-weight: bold;
 }
 
+/* Error messages */
+.error {
+    color: #a32929;
+    margin-left: 10px;
+}
+
 .content {
     padding: 10px 25px;
 }
