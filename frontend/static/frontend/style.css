@@ -122,6 +122,18 @@ textarea {
     display: inline-block;
 }
 
+input[type=date], input[type=time] {
+    border: 1px solid #c5c5c5;
+    border-radius: 5px;
+    width: 50%;
+    max-width: 250px;
+    margin: 0 0 15px 0;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+/* Style for buttons */
 input[type=button], input[type=submit] {
     background-color: #73308a;
     border: none;
@@ -152,6 +164,7 @@ button {
     cursor: pointer;
 }
 
+/* Images */
 img {
     border: 1px solid #c5c5c5;
     border-radius: 5px;
@@ -163,9 +176,14 @@ img {
 }
 
 img.modal-image:hover {
-    opacity: 0.9;
+    opacity: 0.8;
 }
 
+.selected {
+    border: 3px solid #29a329;
+}
+
+/* Footer */
 footer {
     display: block;
     background-color: #f0f0f0;
@@ -173,6 +191,3 @@ footer {
     margin-top: 20px;
 }
 
-.selected {
-    background: red;
-}
