@@ -121,40 +121,55 @@ class MyForm extends React.Component {
       }
     }
 
-    // ecc - 2 chars
-    if (!fields.ecc) {
-      isFormValid = false;
-      errors.ecc = 'Required!';
-    } else if (fields.ecc.length !== 2) {
-      isFormValid = false;
-      errors.ecc = 'Must to be two (2) characters.';
+    if (fields.ecc && fields.pi && fields.frequency){
+      // ecc - 2 chars
+      if (fields.ecc.length !== 2) {
+        isFormValid = false;
+        errors.ecc = 'Must be two (2) characters.';
+      }
+
+      // pi - 4 chars
+      if (fields.pi.length !== 4) {
+        isFormValid = false;
+        errors.pi = 'Must be four (4) characters.';
+      }
     }
 
-    // pi - 4 chars
-    if (!fields.pi) {
-      isFormValid = false;
-      errors.pi = 'Required!';
-    } else if (fields.pi.length !== 4) {
-      isFormValid = false;
-      errors.pi = 'Must to be four (4) characters.';
+    // All the fields are required, if at least one is filled
+    else if (fields.ecc || fields.pi || fields.frequency){
+
+        if (!fields.ecc){
+          isFormValid = false;
+          errors.ecc = 'Required!';
+        }
+
+        if (!fields.pi){
+          isFormValid = false;
+          errors.pi = 'Required!';
+        }
+
+        if (!fields.frequency){
+          isFormValid = false;
+          errors.frequency = 'Required!';
+        }
     }
 
     // ip url - 2000 chars max, must be link
-    if (!fields.url) {
-      isFormValid = false;
-      errors.url = 'Required!';
-    } else if (fields.url.length > 2000) {
-      isFormValid = false;
-      errors.url = 'Maximum 2000 characters.';
-    } else if (!validator.isURL(fields.url, {
-      protocols: ['http', 'https'],
-      /* eslint-disable camelcase */
-      require_protocol: true,
-      /* eslint-enable camelcase */
-    })) {
-      isFormValid = false;
-      errors.url = 'Must be a link (must start with http(s)).';
+    if (fields.url){
+      if (fields.url.length > 2000) {
+        isFormValid = false;
+        errors.url = 'Maximum 2000 characters.';
+      } else if (!validator.isURL(fields.url, {
+        protocols: ['http', 'https'],
+        /* eslint-disable camelcase */
+        require_protocol: true,
+        /* eslint-enable camelcase */
+      })) {
+        isFormValid = false;
+        errors.url = 'Must be a link (must start with http(s)).';
+      }
     }
+
 
     // fqdn - domain without http
     if (!fields.fqdn) {
@@ -365,6 +380,7 @@ class MyForm extends React.Component {
           name="frequency"
           onChange={this.myChangeHandler.bind(this)}
         />
+        <span style={{ color: 'red' }}>{errors.frequency}</span>
         <br />
         <br />
 
