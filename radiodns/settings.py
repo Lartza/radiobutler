@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'radiovis.apps.RadiovisConfig',
     'rest_framework',
     'drf_nested_forms',
+    'smartfields',
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

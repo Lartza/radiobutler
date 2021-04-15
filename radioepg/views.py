@@ -31,12 +31,6 @@ def service_information(request):
     """
     services = Service.objects.all()
     for service in services:
-        if service.logo:
-            service.logo32url = service.logo.url.replace('.png', '_32.png')
-            service.logo112url = service.logo.url.replace('.png', '_112.png')
-            service.logo128url = service.logo.url.replace('.png', '_128.png')
-            service.logo320url = service.logo.url.replace('.png', '_320.png')
-
         bearer_elements = []
         for bearer in service.bearers.all():
             if bearer.platform == 'fm':
