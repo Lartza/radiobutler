@@ -1,6 +1,5 @@
 from django.db import models
-
-from .storage import LogoStorage
+from radiovis.models import Image
 
 
 class Service(models.Model):
@@ -10,7 +9,7 @@ class Service(models.Model):
     link = models.CharField(max_length=2000, blank=True)
     fqdn = models.CharField(max_length=255)
     serviceIdentifier = models.CharField(max_length=16)
-    logo = models.ImageField(upload_to='logos/', storage=LogoStorage(), null=True)
+    logo = models.ForeignKey(Image, on_delete=models.RESTRICT, null=True)
 
     def __str__(self):
         """Returns shortName as a string representation for Service."""
