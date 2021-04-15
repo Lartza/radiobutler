@@ -5,6 +5,7 @@ omit = manage.py
        radiodns/asgi.py
        radiodns/wsgi.py
        venv/*
+       */migrations/*
 
 [report]
 show_missing=True

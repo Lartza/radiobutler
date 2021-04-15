@@ -25,17 +25,14 @@ class ServiceTest(APITestCase):
 
     @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
     def test_post_service(self):
-        tmp = image()
-
         self.client.force_login(self.user)
         response = self.client.post(reverse('service-list'),
                                     {'shortName': 'Testi', 'mediumName': 'Testikanava', 'fqdn': 'radiodns.test',
-                                     'serviceIdentifier': 'testservice', 'logo': tmp})
+                                     'serviceIdentifier': 'testservice'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         self.assertEqual(Service.objects.count(), 1)
         service = Service.objects.get()
-        self.assertTrue(os.path.exists(service.logo.path.replace('.png', '_32.png')))
         self.assertEqual(service.shortName, 'Testi')
         self.assertEqual(service.mediumName, 'Testikanava')
 
@@ -46,20 +43,18 @@ class ServiceTest(APITestCase):
         self.client.force_login(self.user)
         response = self.client.post(reverse('service-list'),
                                     {'shortName': 'Testi', 'mediumName': 'Testikanava', 'fqdn': 'radiodns.test',
-                                     'serviceIdentifier': 'testservice', 'logo': tmp})
-        logo = Service.objects.get().logo
+                                     'serviceIdentifier': 'testservice'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         tmp.seek(0)
         response = self.client.put(reverse('service-detail', args=[1]),
                                    {'shortName': 'Testi2', 'mediumName': 'Testikanava2', 'fqdn': 'radiodns.test',
-                                    'serviceIdentifier': 'testservice', 'logo': tmp})
+                                    'serviceIdentifier': 'testservice'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertEqual(Service.objects.count(), 1)
         service = Service.objects.get()
         self.assertEqual(service.shortName, 'Testi2')
-        self.assertEqual(service.logo, logo)
 
     def test_patch_service(self):
         self.client.force_login(self.user)
@@ -99,8 +94,11 @@ class BearerTest(APITestCase):
 
     def test_bearer_str(self):
         Bearer.objects.create(platform='fm', ecc='00', pi='test', frequency=7.7, service_id=1, cost=50)
-        bearer = Bearer.objects.get()
+        Bearer.objects.create(platform='ip', url='https://example.com/teststream.mp3', mimeValue='audio/mp3', bitrate=128, service_id=1, cost=30)
+        bearer = Bearer.objects.get(pk=1)
         self.assertEqual(str(bearer), f'{bearer.platform} {bearer.ecc} {bearer.pi} {bearer.frequency} {bearer.cost}')
+        bearer = Bearer.objects.get(pk=2)
+        self.assertEqual(str(bearer), f'{bearer.platform} {bearer.url} {bearer.mimeValue} {bearer.bitrate} {bearer.cost}')
 
 
 class ServiceInformationTest(APITestCase):
