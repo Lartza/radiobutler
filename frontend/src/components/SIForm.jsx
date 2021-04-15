@@ -123,7 +123,7 @@ class MyForm extends React.Component {
       errors.shortName = 'Maximum eight (8) characters.';
     }
 
-    // mediumname - 16 chars max
+    // medium name - 16 chars max
     if (!fields.mediumName) {
       isFormValid = false;
       errors.mediumName = 'Required!';
@@ -207,7 +207,7 @@ class MyForm extends React.Component {
       errors.fqdn = 'Required!';
     } else if (!validator.isFQDN(fields.fqdn)) {
       isFormValid = false;
-      errors.fqdn = 'Must be domain name without protocol.';
+      errors.fqdn = 'Must be a domain name without protocol.';
     }
 
     // service identifier - 16 chars max, only lower case and numbers
@@ -219,7 +219,7 @@ class MyForm extends React.Component {
       errors.serviceIdentifier = 'Maximum sixteen (16) characters.';
     } else if (fields.serviceIdentifier.match(/^[a-z0-9]+$/) == null) {
       isFormValid = false;
-      errors.serviceIdentifier = 'Must be only lower cases and numbers.';
+      errors.serviceIdentifier = 'Only lower case letters and numbers allowed.';
     }
 
     this.setState({ errors });
@@ -308,8 +308,9 @@ class MyForm extends React.Component {
     return (
       <div>
         <form onSubmit={this.mySubmitHandler.bind(this)}>
+          <p>Required fields are marked with *.</p>
           <h2>Name</h2>
-          <label htmlFor="shortname">Short name (max 8 chars) </label>
+          <label htmlFor="shortname">Short name (max 8 chars) * </label>
           <br />
           <input
             defaultValue={shortName}
@@ -318,9 +319,9 @@ class MyForm extends React.Component {
             id="shortname"
             onChange={this.myChangeHandler.bind(this)}
           />
-          <span style={{ color: 'red' }}>{errors.shortName}</span>
+          <span className="errors">{errors.shortName}</span>
           <br />
-          <label htmlFor="mediumname">Medium name (max 16 chars) </label>
+          <label htmlFor="mediumname">Medium name (max 16 chars) * </label>
           <br />
           <input
             defaultValue={mediumName}
@@ -329,22 +330,23 @@ class MyForm extends React.Component {
             name="mediumName"
             onChange={this.myChangeHandler.bind(this)}
           />
-          <span style={{ color: 'red' }}>{errors.mediumName}</span>
+          <span className="errors">{errors.mediumName}</span>
           <br />
           <h2>Description</h2>
-          <label htmlFor="desc">Short description (max 180 chars)</label>
+          <label htmlFor="desc">Short description (max 180 chars) </label>
           <br />
           <textarea
             defaultValue={shortDescription}
             id="desc"
             name="shortDescription"
+            rows="6"
             onChange={this.myChangeHandler.bind(this)}
           />
-          <span style={{ color: 'red' }}>{errors.shortDescription}</span>
+          <span className="errors">{errors.shortDescription}</span>
           <br />
 
           <h2>Link</h2>
-          <label htmlFor="link">Website link</label>
+          <label htmlFor="link">Website link </label>
           <br />
           <input
             defaultValue={link}
@@ -353,20 +355,21 @@ class MyForm extends React.Component {
             name="link"
             onChange={this.myChangeHandler.bind(this)}
           />
-          <span style={{ color: 'red' }}>{errors.link}</span>
+          <span className="errors">{errors.link}</span>
           <br />
 
           <h2>Logo</h2>
-          <label htmlFor="logo">Image is scaled to proper sizes</label>
+          <label htmlFor="logo">Choose a logo from the gallery. The image is scaled to proper sizes. </label>
           <br />
           <input type="hidden" id="logo" name="logo" value={logo} onChange={this.myChangeHandler.bind(this)} />
           <button type="button" onClick={this.handleOpenModal}>Open gallery</button>
           <br />
-          <img src={logoimg} alt="Selected logo" width="320" height="240" />
+          <img src={logoimg} alt="Selected logo" width="320" height="auto" />
 
           <h2>Bearers</h2>
 
-          <label htmlFor="bearer1Platform">Bearer 1 platform</label>
+          <h3>Bearer 1</h3>
+          <label htmlFor="bearer1Platform">Bearer 1 platform </label>
           <br />
           <select
             name="platform1"
@@ -387,10 +390,10 @@ class MyForm extends React.Component {
             name="ecc"
             onChange={this.myChangeHandler.bind(this)}
           />
-          <span style={{ color: 'red' }}>{errors.ecc}</span>
+          <span className="errors">{errors.ecc}</span>
           <br />
 
-          <label htmlFor="pi">RDS PI</label>
+          <label htmlFor="pi">RDS PI </label>
           <br />
           <input
             defaultValue={pi}
@@ -399,7 +402,7 @@ class MyForm extends React.Component {
             name="pi"
             onChange={this.myChangeHandler.bind(this)}
           />
-          <span style={{ color: 'red' }}>{errors.pi}</span>
+          <span className="errors">{errors.pi}</span>
           <br />
 
           <label htmlFor="frequency">Frequency (MHz) </label>
@@ -412,11 +415,12 @@ class MyForm extends React.Component {
             name="frequency"
             onChange={this.myChangeHandler.bind(this)}
           />
-          <span style={{ color: 'red' }}>{errors.frequency}</span>
+          <span className="errors">{errors.frequency}</span>
           <br />
           <br />
 
-          <label htmlFor="bearer2Platform">Bearer 2 platform</label>
+          <h3>Bearer 2</h3>
+          <label htmlFor="bearer2Platform">Bearer 2 platform </label>
           <br />
           <select
             name="platform2"
@@ -428,7 +432,7 @@ class MyForm extends React.Component {
           </select>
           <br />
 
-          <label htmlFor="url">IP URL</label>
+          <label htmlFor="url">IP URL </label>
           <br />
           <input
             defaultValue={url}
@@ -437,10 +441,10 @@ class MyForm extends React.Component {
             name="url"
             onChange={this.myChangeHandler.bind(this)}
           />
-          <span style={{ color: 'red' }}>{errors.url}</span>
+          <span className="errors">{errors.url}</span>
           <br />
 
-          <label htmlFor="audio/mpeg">IP MIME</label>
+          <label htmlFor="audio/mpeg">IP MIME </label>
           <br />
           <select name="mimeValue" id="mimeValue" defaultValue={mimeValue}>
             <option value="audio/mpeg">mp3</option>
@@ -461,13 +465,13 @@ class MyForm extends React.Component {
           <br />
 
           <h2>RadioDNS Parameters</h2>
-          <label htmlFor="fqdn">FQDN</label>
+          <label htmlFor="fqdn">FQDN * </label>
           <br />
           <input defaultValue={fqdn} type="text" name="fqdn" id="fqdn" onChange={this.myChangeHandler.bind(this)} />
-          <span style={{ color: 'red' }}>{errors.fqdn}</span>
+          <span className="errors">{errors.fqdn}</span>
           <br />
 
-          <label htmlFor="service_identifier">Service Identifier</label>
+          <label htmlFor="service_identifier">Service identifier * </label>
           <br />
           <input
             defaultValue={serviceIdentifier}
@@ -476,7 +480,7 @@ class MyForm extends React.Component {
             id="fqdn"
             onChange={this.myChangeHandler.bind(this)}
           />
-          <span style={{ color: 'red' }}>{errors.serviceIdentifier}</span>
+          <span className="errors">{errors.serviceIdentifier}</span>
           <br />
 
           <input type="submit" value="SAVE" />

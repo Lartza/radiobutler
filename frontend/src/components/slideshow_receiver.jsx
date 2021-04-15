@@ -9,12 +9,12 @@ const Receiver = () => (
     url="wss://radiodns.ltn.fi/stomp"
   >
     <h2>Now showing</h2>
-    <p><b>Message:</b></p>
+    <p><b>Message: </b></p>
     <p><TextSubscribingComponent /></p>
-    <p><b>Image:</b></p>
+    <p><b>Image: </b></p>
     <ImageSubscribingComponent />
     <h2>Next up - Show all</h2>
-    <img src="https://via.placeholder.com/320x240" alt="Next up" width="320" height="240" />
+    <img src="https://via.placeholder.com/320x240" alt="Next up" width="320" height="auto" />
     <p>Next image at (date and time here)</p>
   </StompSessionProvider>
 );
