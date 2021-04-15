@@ -156,7 +156,7 @@ class MyForm extends React.Component {
       }
     }
 
-    if (fields.ecc && fields.pi && fields.frequency){
+    if (fields.ecc && fields.pi && fields.frequency) {
       // ecc - 2 chars
       if (fields.ecc.length !== 2) {
         isFormValid = false;
@@ -168,29 +168,25 @@ class MyForm extends React.Component {
         isFormValid = false;
         errors.pi = 'Must be four (4) characters.';
       }
-    }
+    } else if (fields.ecc || fields.pi || fields.frequency) { // All the fields are required, if at least one is filled
+      if (!fields.ecc) {
+        isFormValid = false;
+        errors.ecc = 'Required!';
+      }
 
-    // All the fields are required, if at least one is filled
-    else if (fields.ecc || fields.pi || fields.frequency){
+      if (!fields.pi) {
+        isFormValid = false;
+        errors.pi = 'Required!';
+      }
 
-        if (!fields.ecc){
-          isFormValid = false;
-          errors.ecc = 'Required!';
-        }
-
-        if (!fields.pi){
-          isFormValid = false;
-          errors.pi = 'Required!';
-        }
-
-        if (!fields.frequency){
-          isFormValid = false;
-          errors.frequency = 'Required!';
-        }
+      if (!fields.frequency) {
+        isFormValid = false;
+        errors.frequency = 'Required!';
+      }
     }
 
     // ip url - 2000 chars max, must be link
-    if (fields.url){
+    if (fields.url) {
       if (fields.url.length > 2000) {
         isFormValid = false;
         errors.url = 'Maximum 2000 characters.';
