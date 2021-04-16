@@ -98,22 +98,23 @@ class Gallery extends React.Component {
       <div id="gallery">
         <h2>Add a new image to the gallery</h2>
         <form onSubmit={this.mySubmitHandler.bind(this)}>
-          <label htmlFor="image">Image type: jpeg, png</label>
+          <label htmlFor="image">Allowed image types: jpeg, png </label>
           <br />
           <input type="file" name="image" id="image" onChange={this.myChangeHandler.bind(this)} />
           <input type="submit" value="UPLOAD" />
         </form>
         <h2>Gallery items</h2>
         <div className="gallery-container" id="list">{imgElements}</div>
-        {previous && <button type="button" onClick={this.handleBtnPrevious.bind(this)}>Previous</button>}
-        {next && <button type="button" onClick={this.handleBtnNext.bind(this)}>Next</button>}
         {count > 0 && (
-          <span>
+          <div>
             {count}
             {' '}
             images
-          </span>
+          </div>
         )}
+        {previous && <button type="button" onClick={this.handleBtnPrevious.bind(this)}>Previous page</button>}
+        {next && <button type="button" onClick={this.handleBtnNext.bind(this)}>Next page</button>}
+
       </div>
     );
   }

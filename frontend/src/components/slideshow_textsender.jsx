@@ -23,11 +23,10 @@ class TextSlideSender extends React.Component {
   render() {
     return (
       <form onSubmit={this.mySubmitHandler.bind(this)}>
-        <h2>Text message</h2>
-        <label htmlFor="message">Message (max 128 chars)</label>
+        <h2>Text Message</h2>
+        <label htmlFor="message">Message (max 128 chars) </label>
         <br />
         <textarea id="message" name="message" rows="6" />
-        <br />
         <br />
 
         <input type="submit" value="SEND TEXT" />

@@ -59,6 +59,7 @@ class ImageSlideSender extends React.Component {
       <div>
         <h2>Images</h2>
         <div>
+          <p>Choose an image from the gallery.</p>
           <button type="button" onClick={this.handleOpenModal}>Open gallery</button>
           <ReactModal
             isOpen={showModal}
@@ -71,11 +72,10 @@ class ImageSlideSender extends React.Component {
         </div>
         <form onSubmit={this.mySubmitHandler.bind(this)}>
 
-          <label htmlFor="image">Image type: jpeg, png</label>
+          <label htmlFor="image">Selected image </label>
           <br />
           <input type="hidden" id="image" name="image" value={apiurl} />
-          <br />
-          <img src={image} alt="Selected image" width="320" height="240" />
+          <img src={image} alt="Selected image" width="320" height="auto" />
           <br />
           <br />
           <label htmlFor="image_link">Link URL </label>
@@ -83,11 +83,10 @@ class ImageSlideSender extends React.Component {
           <input type="url" id="image_link" name="image_link" />
           <br />
           <br />
-          <label htmlFor="trigger_time">Trigger time</label>
+          <label htmlFor="trigger_time">Trigger time </label>
           <br />
           <input type="date" id="trigger_time" name="date" />
           <input type="time" id="trigger_time" name="time" step="1" />
-          <br />
           <br />
 
           <input type="submit" value="SEND IMAGE" />
