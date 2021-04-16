@@ -3,6 +3,22 @@ from rest_framework import serializers
 from .models import Service, Bearer
 
 
+def match_bearer(bearer_data):
+    # Match existing bearer based on primary key or details
+    try:
+        bearer = Bearer.objects.get(pk=bearer_data['id'])
+    except (Bearer.DoesNotExist, KeyError):
+        try:
+            bearer = Bearer.objects.get(platform=bearer_data['platform'], ecc=bearer_data['ecc'],
+                                        pi=bearer_data['pi'])
+        except (Bearer.DoesNotExist, KeyError):
+            try:
+                bearer = Bearer.objects.get(platform=bearer_data['platform'], url=bearer_data['url'])
+            except (Bearer.DoesNotExist, KeyError):
+                bearer = None
+    return bearer
+
+
 class BearerSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(required=False)
     service = serializers.HyperlinkedRelatedField(required=False, view_name='service-detail',
@@ -67,10 +83,8 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
         Based on the method of the request, deletes old bearers what weren't included in the request.
         """
         bearers_data = []
-        try:
+        if validated_data.get('bearers'):
             bearers_data = validated_data.pop('bearers')
-        except KeyError:
-            pass
         for key, value in validated_data.items():
             setattr(instance, key, value)
         instance.save()
@@ -81,20 +95,10 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
 
         # Update or create bearers from nested data
         for bearer_data in bearers_data:
-            # Match bearer for update based on primary key or details
-            try:
-                bearer = Bearer.objects.get(pk=bearer_data['id'])
-            except (Bearer.DoesNotExist, KeyError):
-                try:
-                    bearer = Bearer.objects.get(platform=bearer_data['platform'], ecc=bearer_data['ecc'],
-                                                pi=bearer_data['pi'])
-                except (Bearer.DoesNotExist, KeyError):
-                    try:
-                        bearer = Bearer.objects.get(platform=bearer_data['platform'], ecc=bearer_data['url'])
-                    except (Bearer.DoesNotExist, KeyError):
-                        bearer = None
+            # Try to find an existing bearer
+            bearer = match_bearer(bearer_data)
 
-            # If matched, update fields for that bearer, otherwise create a new one
+            # If a bearer exists, update fields for that bearer, otherwise create a new one
             if bearer:
                 for key, value in bearer_data.items():
                     setattr(bearer, key, value)
