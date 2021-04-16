@@ -5,6 +5,8 @@ from .models import Service, Bearer
 
 class BearerSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(required=False)
+    service = serializers.HyperlinkedRelatedField(required=False, view_name='service-detail',
+                                                  queryset=Service.objects.all())
 
     class Meta:
         model = Bearer
@@ -12,30 +14,35 @@ class BearerSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         """Normalizes bearer data before creating object."""
-        validated_data['ecc'] = validated_data['ecc'].lower()
-        validated_data['pi'] = validated_data['pi'].lower()
+        if validated_data.get('ecc'):
+            validated_data['ecc'] = validated_data['ecc'].lower()
+        if validated_data.get('pi'):
+            validated_data['pi'] = validated_data['pi'].lower()
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
         """Normalizes bearer data before updating object."""
-        validated_data['ecc'] = validated_data['ecc'].lower()
-        validated_data['pi'] = validated_data['pi'].lower()
+        if validated_data.get('ecc'):
+            validated_data['ecc'] = validated_data['ecc'].lower()
+        if validated_data.get('pi'):
+            validated_data['pi'] = validated_data['pi'].lower()
         return super().update(instance, validated_data)
 
     def validate(self, attrs):
         """Validates bearers based on their platform."""
-        if attrs['platform'] == 'fm':
-            if attrs['ecc'] == '':
-                raise serializers.ValidationError({'ecc': 'ECC is required for FM bearers'})
-            if attrs['pi'] == '':
-                raise serializers.ValidationError({'pi': 'PI is required for FM bearers'})
-            if attrs['frequency'] == '':
-                raise serializers.ValidationError({'frequency': 'Frequency is required for FM bearers'})
-        if attrs['platform'] == 'ip':
-            if attrs['url'] == '':
-                raise serializers.ValidationError({'url': 'URL is required for IP bearers'})
-            if attrs['mimeValue'] == '':
-                raise serializers.ValidationError({'url': 'mimeValue is required for IP bearers'})
+        if attrs.get('platform'):
+            if attrs['platform'] == 'fm':
+                if (not attrs.get('ecc')) or attrs['ecc'] == '':
+                    raise serializers.ValidationError({'ecc': 'ECC is required for FM bearers'})
+                if (not attrs.get('pi')) or attrs['pi'] == '':
+                    raise serializers.ValidationError({'pi': 'PI is required for FM bearers'})
+                if (not attrs.get('frequency')) or attrs['frequency'] == '':
+                    raise serializers.ValidationError({'frequency': 'Frequency is required for FM bearers'})
+            elif attrs['platform'] == 'ip':
+                if (not attrs.get('url')) or attrs['url'] == '':
+                    raise serializers.ValidationError({'url': 'URL is required for IP bearers'})
+                if (not attrs.get('mimeValue')) or attrs['mimeValue'] == '':
+                    raise serializers.ValidationError({'mimeValue': 'mimeValue is required for IP bearers'})
         return attrs
 
 
@@ -93,7 +100,7 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
                     setattr(bearer, key, value)
                 bearer.save()
             else:
-                bearer = Bearer.objects.create(**bearer_data)
+                bearer = Bearer.objects.create(service=instance, **bearer_data)
 
             # Exclude matched or created bearer from removal
             if self.context['request'].method != 'PATCH':
