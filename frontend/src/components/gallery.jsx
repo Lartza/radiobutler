@@ -100,7 +100,13 @@ class Gallery extends React.Component {
         <form onSubmit={this.mySubmitHandler.bind(this)}>
           <label htmlFor="image">Allowed image types: jpeg, png </label>
           <br />
-          <input type="file" name="image" id="image" accept=".png,.jpg,.jpeg" onChange={this.myChangeHandler.bind(this)} />
+          <input
+            type="file"
+            name="image"
+            id="image"
+            accept=".png,.jpg,.jpeg"
+            onChange={this.myChangeHandler.bind(this)}
+          />
           <input type="submit" value="UPLOAD" />
         </form>
         <h2>Gallery items</h2>

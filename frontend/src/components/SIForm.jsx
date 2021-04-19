@@ -250,7 +250,7 @@ class MyForm extends React.Component {
 
   mySubmitHandler(event) {
     event.preventDefault();
-    const success = false;
+    let success = false;
     this.setState({ success });
     if (this.validator()) {
       const form = event.target;
@@ -293,7 +293,7 @@ class MyForm extends React.Component {
           body: data,
         }).then((r) => {
           if (r.ok) {
-            const success = true;
+            success = true;
             const modified = false;
             this.setState({ success, modified });
           } else {
@@ -315,7 +315,7 @@ class MyForm extends React.Component {
           body: data,
         }).then((r) => {
           if (r.ok) {
-            const success = true;
+            success = true;
             const modified = false;
             this.setState({ success, modified });
           } else {
