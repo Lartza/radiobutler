@@ -27,6 +27,8 @@ class MyForm extends React.Component {
       logoimg: '',
       showModal: false,
       errors: {},
+      success: false,
+      modified: false,
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -35,6 +37,7 @@ class MyForm extends React.Component {
   }
 
   componentDidMount() {
+    window.addEventListener('beforeunload', this.beforeunload.bind(this));
     fetch('/api/services/')
       .then((response) => response.json())
       .then((json) => {
@@ -85,12 +88,24 @@ class MyForm extends React.Component {
       });
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.beforeunload.bind(this));
+  }
+
   handleOpenModal() {
     this.setState({ showModal: true });
   }
 
   handleCloseModal() {
     this.setState({ showModal: false });
+  }
+
+  beforeunload(e) {
+    const { modified } = this.state;
+    if (modified) {
+      e.preventDefault();
+      e.returnValue = true;
+    }
   }
 
   fetchLogo() {
@@ -229,11 +244,14 @@ class MyForm extends React.Component {
   myChangeHandler(event) {
     const { name } = event.target;
     const { value } = event.target;
-    this.setState({ [name]: value });
+    const modified = true;
+    this.setState({ [name]: value, modified });
   }
 
   mySubmitHandler(event) {
     event.preventDefault();
+    const success = false;
+    this.setState({ success });
     if (this.validator()) {
       const form = event.target;
       const data = new FormData(form);
@@ -273,10 +291,21 @@ class MyForm extends React.Component {
             'X-CSRFToken': cookies.get('csrftoken'),
           },
           body: data,
-        }).then((r) => r.json())
-          .then((json) => {
-            console.log(json);
+        }).then((r) => {
+          if (r.ok) {
+            const success = true;
+            const modified = false;
+            this.setState({ success, modified });
+          } else {
+            throw r;
+          }
+        }).catch((err) => {
+          err.text().then((errorMessage) => {
+            const errors = {};
+            errors.backend = errorMessage;
+            this.setState({ errors });
           });
+        });
       } else {
         fetch(apiurl, {
           method: 'PUT',
@@ -285,15 +314,18 @@ class MyForm extends React.Component {
           },
           body: data,
         }).then((r) => {
-          if (!r.ok) {
+          if (r.ok) {
+            const success = true;
+            const modified = false;
+            this.setState({ success, modified });
+          } else {
             throw r;
           }
-          return r.json();
-        }).then((json) => {
-          console.log(json);
         }).catch((err) => {
           err.text().then((errorMessage) => {
-            alert(errorMessage);
+            const errors = {};
+            errors.backend = errorMessage;
+            this.setState({ errors });
           });
         });
       }
@@ -303,10 +335,11 @@ class MyForm extends React.Component {
   render() {
     const {
       shortName, mediumName, shortDescription, link, logo, fqdn, platform1, ecc, pi, frequency,
-      platform2, url, mimeValue, bitrate, serviceIdentifier, errors, logoimg, showModal,
+      platform2, url, mimeValue, bitrate, serviceIdentifier, errors, logoimg, showModal, success, modified,
     } = this.state;
     return (
       <div>
+        {modified && <div className="sticky">You have unsubmitted changes, remember to save them</div>}
         <form onSubmit={this.mySubmitHandler.bind(this)}>
           <p>Required fields are marked with *.</p>
           <h2>Name</h2>
@@ -484,6 +517,9 @@ class MyForm extends React.Component {
           <br />
 
           <input type="submit" value="SAVE" />
+          <span className="errors">{errors.backend}</span>
+          {Object.keys(errors).length === 0 && success && <span>Submitted!</span>}
+          {Object.keys(errors).length > 0 && <span>Failed!</span>}
         </form>
         <ReactModal
           isOpen={showModal}
