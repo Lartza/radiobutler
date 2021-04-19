@@ -3,6 +3,8 @@ import Cookies from 'universal-cookie/es6';
 import ReactModal from 'react-modal';
 import Gallery from './gallery';
 
+ReactModal.setAppElement('#app1');
+
 class ImageSlideSender extends React.Component {
   constructor(props) {
     super(props);

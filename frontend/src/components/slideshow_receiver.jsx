@@ -3,6 +3,20 @@ import {
   StompSessionProvider,
   useSubscription,
 } from 'react-stomp-hooks';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#app3');
+
+function compare(a, b) {
+  if (Date.parse(a.headers['trigger-time']) < Date.parse(b.headers['trigger-time'])) {
+    return -1;
+  }
+  if (Date.parse(a.headers['trigger-time']) > Date.parse(b.headers['trigger-time'])) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
+}
 
 const Receiver = () => (
   <StompSessionProvider url="wss://radiodns.ltn.fi/stomp">
@@ -11,9 +25,6 @@ const Receiver = () => (
     <p><TextSubscribingComponent /></p>
     <p><b>Image: </b></p>
     <ImageSubscribingComponent />
-    <h2>Next up - Show all</h2>
-    <img src="https://via.placeholder.com/320x240" alt="Next up" width="320" height="auto" />
-    <p>Next image at (date and time here)</p>
   </StompSessionProvider>
 );
 
@@ -34,6 +45,15 @@ function ImageSubscribingComponent() {
   const [lastImage, setLastImage] = useState('https://via.placeholder.com/320x240');
   const [lastLink, setLastLink] = useState('');
   const [messages, setMessages] = useState([]);
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -48,7 +68,13 @@ function ImageSubscribingComponent() {
           } else {
             setLastLink('');
           }
-          messages.splice(i, 1);
+          const newMessages = [...messages];
+          newMessages.splice(i, 1);
+          setMessages(newMessages);
+        } else if (delta < 0) {
+          const newMessages = [...messages];
+          newMessages.splice(i, 1);
+          setMessages(newMessages);
         }
       }
     }, 1000);
@@ -76,19 +102,58 @@ function ImageSubscribingComponent() {
             setLastLink('');
           }
         } else if (now < triggerTime) {
-          setMessages((prev) => [...prev, message]);
+          const newMessages = [...messages, message];
+          newMessages.sort(compare);
+          setMessages(newMessages);
         }
       }
     }
   });
+
+  const msgElements = Object.values(messages).map(
+    (m) => (
+      <div key={m.headers['message-id']}>
+        <img
+          src={m.body.split(' ', 2)[1]}
+        />
+        <div>{m.headers.link}</div>
+        <div>{m.headers['trigger-time']}</div>
+      </div>
+    ),
+  );
 
   return (
     <div>
       <img src={lastImage} alt="Now showing" width="320" height="240" />
       <div>
         Link:
-        <a href={lastLink}>{lastLink}</a>
+        {lastLink ? <a href={lastLink}>{lastLink}</a> : 'None'}
       </div>
+      <h2>
+        Next up -
+        <button type="button" onClick={openModal}>Show all</button>
+      </h2>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Receiver Modal"
+      >
+        <button type="button" onClick={closeModal}>Close</button>
+        <div>{msgElements}</div>
+      </Modal>
+      <img
+        src={messages[0] ? messages[0].body.split(' ', 2)[1] : 'https://via.placeholder.com/320x240'}
+        alt="Next up"
+        width="320"
+        height="auto"
+      />
+      <div>
+        Link:
+        {messages[0] ? <a href={messages[0].headers.link}>{messages[0].headers.link}</a> : 'None'}
+      </div>
+      <p>
+        {messages[0] ? `Next image at ${messages[0].headers['trigger-time']}` : 'No image scheduled'}
+      </p>
     </div>
   );
 }
