@@ -9,6 +9,9 @@ class ImageSlideSender extends React.Component {
     this.state = {
       apiurl: '',
       image: '',
+      date: '',
+      time: '',
+      link: '',
       showModal: false,
     };
 
@@ -25,6 +28,12 @@ class ImageSlideSender extends React.Component {
     this.setState({ showModal: false });
   }
 
+  myChangeHandler(event) {
+    const { name } = event.target;
+    const { value } = event.target;
+    this.setState({ [name]: value });
+  }
+
   mySubmitHandler(event) {
     event.preventDefault();
     const form = event.target;
@@ -36,7 +45,7 @@ class ImageSlideSender extends React.Component {
       const time = data.get('time');
       data.delete('date');
       data.delete('time');
-      data.append('trigger_time', `${date}T${time}`);
+      data.append('trigger_time', `${date}T${time}+0300`);
     }
 
     fetch('/api/imageslides/', {
@@ -45,16 +54,27 @@ class ImageSlideSender extends React.Component {
         'X-CSRFToken': cookies.get('csrftoken'),
       },
       body: data,
-    }).then((r) => r.json())
-      .then((json) => {
-        console.log(json);
+    }).then((r) => {
+      if (r.ok) {
+        this.setState({
+          apiurl: '', image: '', date: '', time: '', link: '',
+        });
+      } else {
+        throw r;
+      }
+    }).catch((err) => {
+      err.text().then((errorMessage) => {
+        console.log(errorMessage);
       });
+    });
   }
 
   selectImage(event) { this.setState({ apiurl: event.target.getAttribute('data-apiurl'), image: event.target.src }); }
 
   render() {
-    const { apiurl, image, showModal } = this.state;
+    const {
+      apiurl, image, date, time, link, showModal,
+    } = this.state;
     return (
       <div>
         <h2>Images</h2>
@@ -74,19 +94,26 @@ class ImageSlideSender extends React.Component {
 
           <label htmlFor="image">Selected image </label>
           <br />
-          <input type="hidden" id="image" name="image" value={apiurl} />
-          <img src={image} alt="Selected image" width="320" height="auto" />
+          <input type="hidden" id="image" name="image" value={apiurl} onChange={this.myChangeHandler.bind(this)} />
+          <img src={image} alt="Selected" width="320" height="auto" />
           <br />
           <br />
           <label htmlFor="image_link">Link URL </label>
           <br />
-          <input type="url" id="image_link" name="image_link" />
+          <input type="url" id="image_link" name="link" value={link} onChange={this.myChangeHandler.bind(this)} />
           <br />
           <br />
           <label htmlFor="trigger_time">Trigger time </label>
           <br />
-          <input type="date" id="trigger_time" name="date" />
-          <input type="time" id="trigger_time" name="time" step="1" />
+          <input type="date" id="trigger_time" name="date" value={date} onChange={this.myChangeHandler.bind(this)} />
+          <input
+            type="time"
+            id="trigger_time"
+            name="time"
+            step="1"
+            value={time}
+            onChange={this.myChangeHandler.bind(this)}
+          />
           <br />
 
           <input type="submit" value="SEND IMAGE" />
