@@ -2,6 +2,10 @@ import React from 'react';
 import Cookies from 'universal-cookie/es6';
 
 class TextSlideSender extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   mySubmitHandler(event) {
     event.preventDefault();
     const form = event.target;
