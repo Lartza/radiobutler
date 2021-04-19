@@ -20,9 +20,9 @@ def send_stomp_image(instance, url):
     headers = {}
 
     if instance.trigger_time:
-        headers['trigger_time'] = instance.trigger_time.isoformat()
+        headers['trigger-time'] = str(instance.trigger_time.isoformat()).replace('+00:00', 'Z')
     else:
-        headers['trigger_time'] = 'NOW'
+        headers['trigger-time'] = 'NOW'
 
     if instance.link:
         headers['link'] = instance.link
@@ -93,6 +93,16 @@ class ImageSlideViewSet(viewsets.ModelViewSet):
         instance = serializer.save()
         send_stomp_image(instance, self.request.build_absolute_uri(instance.image.image.url))
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except (ConnectFailedException, stomp.exception.StompException) as e:
+            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         try:
@@ -111,6 +121,16 @@ class TextSlideViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         instance = serializer.save()
         send_stomp_text(instance)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except (ConnectFailedException, stomp.exception.StompException) as e:
+            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
