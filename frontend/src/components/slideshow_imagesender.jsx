@@ -56,11 +56,13 @@ class ImageSlideSender extends React.Component {
 
     // triggertime - should be later than current time
     if (fields.date) {
-      let today = new Date();
-      let date = today.getFullYear()+'-'+ ('0' + (today.getMonth()+1)).slice(-2)+'-'+ ('0' + today.getDate()).slice(-2);
-      let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const date = Date.parse(`${fields.date}T${fields.time}`);
+    const now = Date.now();
+      //let today = new Date();
+      //let date = today.getFullYear()+'-'+ ('0' + (today.getMonth()+1)).slice(-2)+'-'+ ('0' + today.getDate()).slice(-2);
+      //let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-      if (fields.date < date || (fields.date === date && fields.time < time)) {
+      if (date < now) {
         isFormValid = false;
         errors.date = 'Date and time can not be in the past';
       }

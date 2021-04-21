@@ -133,24 +133,12 @@ class MyForm extends React.Component {
     if (!fields.shortName) {
       isFormValid = false;
       errors.shortName = 'Required!';
-    } else if (fields.shortName.length > 8) {
-      isFormValid = false;
-      errors.shortName = 'Maximum eight (8) characters.';
     }
 
     // medium name - 16 chars max
     if (!fields.mediumName) {
       isFormValid = false;
       errors.mediumName = 'Required!';
-    } else if (fields.mediumName.length > 16) {
-      isFormValid = false;
-      errors.mediumName = 'Maximum sixteen (16) characters.';
-    }
-
-    // shortDescription - 180 chars max
-    if (fields.shortDescription && fields.shortDescription.length > 180) {
-      isFormValid = false;
-      errors.shortDescription = 'Maximum 180 characters.';
     }
 
     // link - 2000 chars max, must be link
@@ -229,9 +217,6 @@ class MyForm extends React.Component {
     if (!fields.serviceIdentifier) {
       isFormValid = false;
       errors.serviceIdentifier = 'Required!';
-    } else if (fields.serviceIdentifier.length > 16) {
-      isFormValid = false;
-      errors.serviceIdentifier = 'Maximum sixteen (16) characters.';
     } else if (fields.serviceIdentifier.match(/^[a-z0-9]+$/) == null) {
       isFormValid = false;
       errors.serviceIdentifier = 'Only lower case letters and numbers allowed.';
@@ -350,6 +335,7 @@ class MyForm extends React.Component {
             type="text"
             name="shortName"
             id="shortname"
+            maxLength="8"
             onChange={this.myChangeHandler.bind(this)}
           />
           <span className="errors">{errors.shortName}</span>
@@ -361,6 +347,7 @@ class MyForm extends React.Component {
             type="text"
             id="mediumname"
             name="mediumName"
+            maxLength="16"
             onChange={this.myChangeHandler.bind(this)}
           />
           <span className="errors">{errors.mediumName}</span>
@@ -372,7 +359,8 @@ class MyForm extends React.Component {
             defaultValue={shortDescription}
             id="desc"
             name="shortDescription"
-            rows="6"
+            maxLength="180"
+            rows="4"
             onChange={this.myChangeHandler.bind(this)}
           />
           <span className="errors">{errors.shortDescription}</span>
@@ -421,6 +409,7 @@ class MyForm extends React.Component {
             type="text"
             id="ecc"
             name="ecc"
+            maxLength="2"
             onChange={this.myChangeHandler.bind(this)}
           />
           <span className="errors">{errors.ecc}</span>
@@ -433,6 +422,7 @@ class MyForm extends React.Component {
             type="text"
             id="pi"
             name="pi"
+            maxLength="4"
             onChange={this.myChangeHandler.bind(this)}
           />
           <span className="errors">{errors.pi}</span>
@@ -513,6 +503,7 @@ class MyForm extends React.Component {
             type="text"
             name="serviceIdentifier"
             id="fqdn"
+            maxLength="16"
             onChange={this.myChangeHandler.bind(this)}
           />
           <span className="errors">{errors.serviceIdentifier}</span>
