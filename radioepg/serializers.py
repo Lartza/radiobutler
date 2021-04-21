@@ -104,7 +104,10 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
                     setattr(bearer, key, value)
                 bearer.save()
             else:
-                bearer = Bearer.objects.create(service=instance, **bearer_data)
+                if 'service' in bearer_data:
+                    bearer = Bearer.objects.create(**bearer_data)
+                else:
+                    bearer = Bearer.objects.create(service=instance, **bearer_data)
 
             # Exclude matched or created bearer from removal
             if self.context['request'].method != 'PATCH':
