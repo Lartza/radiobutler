@@ -14,6 +14,7 @@ from radiodns.settings import STOMP_HOST, STOMP_PORT, STOMP_USERNAME, STOMP_PASS
 
 from .models import ImageSlide, TextSlide, Image
 from .serializers import ImageSlideSerializer, TextSlideSerializer, ImageSerializer
+from radioepg.models import Bearer
 
 
 def send_stomp_image(instance, url):
@@ -35,9 +36,18 @@ def send_stomp_image(instance, url):
         conn.set_listener('', lst)
 
         conn.connect(STOMP_USERNAME, STOMP_PASSWORD, wait=True)
-        conn.send(body=f'SHOW {url}',
-                  headers=headers,
-                  destination='/topic/fm/6e1/6024/09840/image')
+        for bearer in Bearer.objects.all():
+            if bearer.platform == 'fm':
+                integer, decimal = str(bearer.frequency).split('.')
+                frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
+                destination = f'/topic/fm/{bearer.pi:1}{bearer.ecc}/{bearer.pi}/{frequency}/image'
+            elif bearer.platform == 'ip':
+                destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}/image'
+            else:
+                raise stomp.exception.StompException('No bearers configured')
+            conn.send(body=f'SHOW {url}',
+                      headers=headers,
+                      destination=destination)
         conn.disconnect()
         time.sleep(2)
 
@@ -59,8 +69,17 @@ def send_stomp_text(instance):
         conn.set_listener('', lst)
 
         conn.connect(STOMP_USERNAME, STOMP_PASSWORD, wait=True)
-        conn.send(body=f'TEXT {instance.message}',
-                  destination='/topic/fm/6e1/6024/09840/text')
+        for bearer in Bearer.objects.all():
+            if bearer.platform == 'fm':
+                integer, decimal = str(bearer.frequency).split('.')
+                frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
+                destination = f'/topic/fm/{bearer.pi:1}{bearer.ecc}/{bearer.pi}/{frequency}/text'
+            elif bearer.platform == 'ip':
+                destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}/text'
+            else:
+                raise stomp.exception.StompException('No bearers configured')
+            conn.send(body=f'TEXT {instance.message}',
+                      destination=destination)
         conn.disconnect()
         time.sleep(2)
 
