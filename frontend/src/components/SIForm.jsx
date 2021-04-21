@@ -444,6 +444,8 @@ class MyForm extends React.Component {
             defaultValue={frequency}
             type="number"
             step="0.01"
+            min="87.0"
+            max="108.9"
             id="frequency"
             name="frequency"
             onChange={this.myChangeHandler.bind(this)}

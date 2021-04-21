@@ -1,5 +1,6 @@
 import React from 'react';
 import Cookies from 'universal-cookie/es6';
+import validator from 'validator';
 import ReactModal from 'react-modal';
 import Gallery from './gallery';
 
@@ -15,6 +16,7 @@ class ImageSlideSender extends React.Component {
       time: '',
       link: '',
       showModal: false,
+      errors: {},
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -30,6 +32,44 @@ class ImageSlideSender extends React.Component {
     this.setState({ showModal: false });
   }
 
+  // Returns True if fields are valid and updates states.errors
+  validator() {
+    const fields = this.state;
+    const errors = {};
+    let isFormValid = true;
+
+    // api url - 512 chars max, must be link
+    if (fields.link) {
+      if (fields.link.length > 512) {
+        isFormValid = false;
+        errors.link = 'Maximum 512 characters.';
+      } else if (!validator.isURL(fields.link, {
+        protocols: ['http', 'https'],
+        /* eslint-disable camelcase */
+        require_protocol: true,
+        /* eslint-enable camelcase */
+      })) {
+        isFormValid = false;
+        errors.link = 'Must be a link (must start with http(s)).';
+      }
+    }
+
+    // triggertime - should be later than current time
+    if (fields.date) {
+      let today = new Date();
+      let date = today.getFullYear()+'-'+ ('0' + (today.getMonth()+1)).slice(-2)+'-'+ ('0' + today.getDate()).slice(-2);
+      let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+      if (fields.date < date || (fields.date === date && fields.time < time)) {
+        isFormValid = false;
+        errors.date = 'Date and time can not be in the past';
+      }
+    }
+
+    this.setState({ errors });
+    return isFormValid;
+  }
+
   myChangeHandler(event) {
     const { name } = event.target;
     const { value } = event.target;
@@ -38,6 +78,8 @@ class ImageSlideSender extends React.Component {
 
   mySubmitHandler(event) {
     event.preventDefault();
+
+    if (this.validator()) {
     const form = event.target;
     const data = new FormData(form);
     const cookies = new Cookies();
@@ -69,13 +111,14 @@ class ImageSlideSender extends React.Component {
         console.log(errorMessage);
       });
     });
+    }
   }
 
   selectImage(event) { this.setState({ apiurl: event.target.getAttribute('data-apiurl'), image: event.target.src }); }
 
   render() {
     const {
-      apiurl, image, date, time, link, showModal,
+      apiurl, image, date, time, link, showModal, errors,
     } = this.state;
     return (
       <div>
@@ -103,6 +146,7 @@ class ImageSlideSender extends React.Component {
           <label htmlFor="image_link">Link URL </label>
           <br />
           <input type="url" id="image_link" name="link" value={link} onChange={this.myChangeHandler.bind(this)} />
+          <span className="errors">{errors.link}</span>
           <br />
           <br />
           <label htmlFor="trigger_time">Trigger time </label>
@@ -116,6 +160,7 @@ class ImageSlideSender extends React.Component {
             value={time}
             onChange={this.myChangeHandler.bind(this)}
           />
+          <span className="errors">{errors.date}</span>
           <br />
 
           <input type="submit" value="SEND IMAGE" />
