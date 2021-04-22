@@ -44,7 +44,7 @@ li a:hover {
     background-color: white;
 }
 
-li a:active {
+.active {
     background-color: white;
 }
 
@@ -69,7 +69,13 @@ h3 {
 
 /* Error messages */
 .errors {
-    color: #FF4500;
+    color: #cc2a0e;
+    margin-left: 10px;
+}
+
+/* Success messages */
+.success {
+    color: #29a329;
     margin-left: 10px;
 }
 
@@ -199,6 +205,23 @@ img.modal-image:hover {
     border: 3px solid #29a329;
 }
 
+.imagebox {
+    width: 95%;
+    height: 240px;
+    border: none;
+    background-color: #f0f0f0;
+}
+
+/* Sticky */
+div.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 10px;
+    background-color: #ffe284;
+    padding: 15px;
+    font-size: 1em;
+}
+
 /* Footer */
 footer {
     display: block;
@@ -207,11 +230,3 @@ footer {
     margin-top: 20px;
 }
 
-div.sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 10px;
-    background-color: #FFFACD;
-    padding: 20px;
-    font-size: 1em;
-}

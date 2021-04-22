@@ -124,15 +124,11 @@ function ImageSubscribingComponent() {
 
   return (
     <div>
-      <img src={lastImage} alt="Now showing" width="320" height="240" />
-      <div>
-        Link:
-        {lastLink ? <a href={lastLink}>{lastLink}</a> : 'None'}
+      <div className="imagebox">
+        <img src={lastImage} alt="Now showing" height="240" />
       </div>
-      <h2>
-        Next up -
-        <button type="button" onClick={openModal}>Show all</button>
-      </h2>
+      <p>Link: {lastLink ? <a href={lastLink}>{lastLink}</a> : 'None'} </p>
+      <h2>Next up -  <button type="button" onClick={openModal}>Show all</button> </h2>
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -141,16 +137,17 @@ function ImageSubscribingComponent() {
         <button type="button" onClick={closeModal}>Close</button>
         <div>{msgElements.length > 0 ? msgElements : <span>No images scheduled</span>}</div>
       </Modal>
-      <img
-        src={messages[0] ? messages[0].body.split(' ', 2)[1] : 'https://via.placeholder.com/320x240'}
-        alt="Next up"
-        width="320"
-        height="auto"
-      />
-      <div>
-        Link:
-        {messages[0] ? <a href={messages[0].headers.link}>{messages[0].headers.link}</a> : 'None'}
+      <div className="imagebox">
+        <img
+          src={messages[0] ? messages[0].body.split(' ', 2)[1] : '/static/frontend/noimage.jpg' }
+          alt="Next up"
+          width="auto"
+          height="auto"
+        />
       </div>
+      <p>
+        Link: {messages[0] ? <a href={messages[0].headers.link}>{messages[0].headers.link}</a> : 'None'}
+      </p>
       <p>
         {messages[0] ? `Next image at ${messages[0].headers['trigger-time']}` : 'No image scheduled'}
       </p>
