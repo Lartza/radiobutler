@@ -35,7 +35,7 @@ class ImageSlide(models.Model):
 
 
 class TextSlide(models.Model):
-    message = models.CharField(max_length=128)
+    message = models.CharField(max_length=128, default='')
     sent = models.DateTimeField(null=True, editable=False)
 
     def __str__(self):
