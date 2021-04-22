@@ -56,11 +56,8 @@ class ImageSlideSender extends React.Component {
 
     // triggertime - should be later than current time
     if (fields.date) {
-    const date = Date.parse(`${fields.date}T${fields.time}`);
-    const now = Date.now();
-      //let today = new Date();
-      //let date = today.getFullYear()+'-'+ ('0' + (today.getMonth()+1)).slice(-2)+'-'+ ('0' + today.getDate()).slice(-2);
-      //let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      const date = Date.parse(`${fields.date}T${fields.time}`);
+      const now = Date.now();
 
       if (date < now) {
         isFormValid = false;
@@ -82,37 +79,37 @@ class ImageSlideSender extends React.Component {
     event.preventDefault();
 
     if (this.validator()) {
-    const form = event.target;
-    const data = new FormData(form);
-    const cookies = new Cookies();
+      const form = event.target;
+      const data = new FormData(form);
+      const cookies = new Cookies();
 
-    if (data.get('date') !== '' && data.get('time') !== '') {
-      const date = data.get('date');
-      const time = data.get('time');
-      data.delete('date');
-      data.delete('time');
-      data.append('trigger_time', `${date}T${time}+0300`);
-    }
-
-    fetch('/api/imageslides/', {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': cookies.get('csrftoken'),
-      },
-      body: data,
-    }).then((r) => {
-      if (r.ok) {
-        this.setState({
-          apiurl: '', image: '', date: '', time: '', link: '',
-        });
-      } else {
-        throw r;
+      if (data.get('date') !== '' && data.get('time') !== '') {
+        const date = data.get('date');
+        const time = data.get('time');
+        data.delete('date');
+        data.delete('time');
+        data.append('trigger_time', `${date}T${time}+0300`);
       }
-    }).catch((err) => {
-      err.text().then((errorMessage) => {
-        console.log(errorMessage);
+
+      fetch('/api/imageslides/', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': cookies.get('csrftoken'),
+        },
+        body: data,
+      }).then((r) => {
+        if (r.ok) {
+          this.setState({
+            apiurl: '', image: '', date: '', time: '', link: '',
+          });
+        } else {
+          throw r;
+        }
+      }).catch((err) => {
+        err.text().then((errorMessage) => {
+          console.log(errorMessage);
+        });
       });
-    });
     }
   }
 

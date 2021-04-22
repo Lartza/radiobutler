@@ -139,7 +139,7 @@ function ImageSubscribingComponent() {
         contentLabel="Receiver Modal"
       >
         <button type="button" onClick={closeModal}>Close</button>
-        <div>{msgElements}</div>
+        <div>{msgElements.length > 0 ? msgElements : <span>No images scheduled</span>}</div>
       </Modal>
       <img
         src={messages[0] ? messages[0].body.split(' ', 2)[1] : 'https://via.placeholder.com/320x240'}
