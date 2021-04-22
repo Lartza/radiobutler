@@ -3,6 +3,20 @@
 
 Creating RadioDNS-application for Radio Moreeni
 
+## Deployment
+Deployment of project and Artemis is possible in Docker
+
+### Requirements
+- Python 3.6+
+- Node and NPM (frontend build)
+- Stomp server for Visual Slideshow, Apache ActiveMQ Artemis tested and supported
+
+### Installation
+Installation instructions are still a work in progress.
+Artemis needs some custom configuration to work as expected.
+Docker-compose files WIP.
+
+
 ## Development
 ### Requirements
 - Python 3.6+
