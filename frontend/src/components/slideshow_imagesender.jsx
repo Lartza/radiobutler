@@ -54,14 +54,14 @@ class ImageSlideSender extends React.Component {
       }
     }
 
-    // triggertime - should be later than current time
+    // trigger time - should be later than current time
     if (fields.date) {
       const date = Date.parse(`${fields.date}T${fields.time}`);
       const now = Date.now();
 
       if (date < now) {
         isFormValid = false;
-        errors.date = 'Date and time can not be in the past';
+        errors.date = 'Date and time cannot be in the past.';
       }
     }
 
@@ -138,17 +138,24 @@ class ImageSlideSender extends React.Component {
 
           <label htmlFor="image">Selected image </label>
           <br />
+          <br />
           <input type="hidden" id="image" name="image" value={apiurl} onChange={this.myChangeHandler.bind(this)} />
-          <img src={image} alt="Selected" width="320" height="auto" />
+          <img src={image} alt="Selected" height="240" />
           <br />
           <br />
           <label htmlFor="image_link">Link URL </label>
+          <div className="tooltip">?
+            <span className="tooltiptext">Provide a click-through link for the image</span>
+          </div>
           <br />
           <input type="url" id="image_link" name="link" value={link} onChange={this.myChangeHandler.bind(this)} />
           <span className="errors">{errors.link}</span>
           <br />
           <br />
           <label htmlFor="trigger_time">Trigger time </label>
+          <div className="tooltip">?
+            <span className="tooltiptext">Choose when to show the image</span>
+          </div>
           <br />
           <input type="date" id="trigger_time" name="date" value={date} onChange={this.myChangeHandler.bind(this)} />
           <input

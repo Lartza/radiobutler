@@ -222,6 +222,45 @@ div.sticky {
     font-size: 1em;
 }
 
+/* Tooltip */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    background-color: #6f6f6f;
+    color: white;
+    border-radius: 50%;
+    padding: 0px 6px 0px 6px;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #6f6f6f;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #6f6f6f transparent transparent transparent;
+}
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
 /* Footer */
 footer {
     display: block;
