@@ -324,195 +324,230 @@ class MyForm extends React.Component {
     } = this.state;
     return (
       <div>
-        {modified && <div className="sticky">You have unsubmitted changes, remember to save them</div>}
+        {modified && <div className="sticky">You have unsubmitted changes, remember to save them!</div>}
         <form onSubmit={this.mySubmitHandler.bind(this)}>
+
           <p>Required fields are marked with *.</p>
           <h2>Name</h2>
-          <label htmlFor="shortname">Short name (max 8 chars) * </label>
-          <br />
-          <input
-            defaultValue={shortName}
-            type="text"
-            name="shortName"
-            id="shortname"
-            maxLength="8"
-            onChange={this.myChangeHandler.bind(this)}
-          />
-          <span className="errors">{errors.shortName}</span>
-          <br />
-          <label htmlFor="mediumname">Medium name (max 16 chars) * </label>
-          <br />
-          <input
-            defaultValue={mediumName}
-            type="text"
-            id="mediumname"
-            name="mediumName"
-            maxLength="16"
-            onChange={this.myChangeHandler.bind(this)}
-          />
-          <span className="errors">{errors.mediumName}</span>
-          <br />
+          <div className="grid-container">
+            <div class="grid-item"><label htmlFor="shortname">Short name (max 8 chars) * </label></div>
+
+            <div class="grid-item">
+              <input
+                defaultValue={shortName}
+                type="text"
+                name="shortName"
+                id="shortname"
+                maxLength="8"
+                onChange={this.myChangeHandler.bind(this)}
+              />
+              <span className="errors">{errors.shortName}</span>
+            </div>
+
+            <div class="grid-item"><label htmlFor="mediumname">Medium name (max 16 chars) * </label></div>
+
+            <div class="grid-item">
+              <input
+                defaultValue={mediumName}
+                type="text"
+                id="mediumname"
+                name="mediumName"
+                maxLength="16"
+                onChange={this.myChangeHandler.bind(this)}
+              />
+              <span className="errors">{errors.mediumName}</span>
+            </div>
+          </div>
+
           <h2>Description</h2>
-          <label htmlFor="desc">Short description (max 180 chars) </label>
-          <br />
-          <textarea
-            defaultValue={shortDescription}
-            id="desc"
-            name="shortDescription"
-            maxLength="180"
-            rows="4"
-            onChange={this.myChangeHandler.bind(this)}
-          />
-          <span className="errors">{errors.shortDescription}</span>
-          <br />
+          <div className="grid-container">
+            <div class="grid-item"><label htmlFor="desc">Short description (max 180 chars) </label></div>
+
+            <div class="grid-item">
+              <textarea
+                defaultValue={shortDescription}
+                id="desc"
+                name="shortDescription"
+                maxLength="180"
+                rows="4"
+                onChange={this.myChangeHandler.bind(this)}
+              />
+              <span className="errors">{errors.shortDescription}</span>
+            </div>
+          </div>
 
           <h2>Link</h2>
-          <label htmlFor="link">Website link </label>
-          <br />
-          <input
-            defaultValue={link}
-            type="text"
-            id="link"
-            name="link"
-            onChange={this.myChangeHandler.bind(this)}
-          />
-          <span className="errors">{errors.link}</span>
-          <br />
+          <div className="grid-container">
+            <div class="grid-item"><label htmlFor="link">Website link </label></div>
+
+            <div class="grid-item">
+              <input
+                defaultValue={link}
+                type="text"
+                id="link"
+                name="link"
+                onChange={this.myChangeHandler.bind(this)}
+              />
+              <span className="errors">{errors.link}</span>
+            </div>
+          </div>
 
           <h2>Logo</h2>
-          <label htmlFor="logo">Choose a logo from the gallery. The image is scaled to proper sizes. </label>
-          <br />
-          <input type="hidden" id="logo" name="logo" value={logo} onChange={this.myChangeHandler.bind(this)} />
-          <button type="button" onClick={this.handleOpenModal}>Open gallery</button>
-          <br />
-          <img src={logoimg} alt="Selected logo" width="320" height="auto" />
+          <div className="grid-container">
+            <div class="grid-item">
+              <label htmlFor="logo">Choose a logo from the gallery. The image is scaled to proper sizes. </label>
+              <br />
+              <input type="hidden" id="logo" name="logo" value={logo} onChange={this.myChangeHandler.bind(this)} />
+              <button type="button" onClick={this.handleOpenModal}>Open gallery</button>
+            </div>
+
+            <div class="grid-item">
+              <img src={logoimg} alt="Selected logo" width="320" height="auto" />
+            </div>
+          </div>
 
           <h2>Bearers</h2>
 
           <h3>Bearer 1</h3>
-          <label htmlFor="bearer1Platform">Bearer 1 platform </label>
-          <br />
-          <select
-            name="platform1"
-            id="bearer1Platform"
-            defaultValue={platform1}
-            onChange={this.myChangeHandler.bind(this)}
-          >
-            <option value="fm">FM-RDS</option>
-          </select>
-          <br />
+          <div className="grid-container">
+            <div class="grid-item"><label htmlFor="bearer1Platform">Bearer 1 platform </label></div>
 
-          <label htmlFor="ecc">RDS ECC </label>
-          <br />
-          <input
-            defaultValue={ecc}
-            type="text"
-            id="ecc"
-            name="ecc"
-            maxLength="2"
-            onChange={this.myChangeHandler.bind(this)}
-          />
-          <span className="errors">{errors.ecc}</span>
-          <br />
+            <div class="grid-item">
+              <select
+                name="platform1"
+                id="bearer1Platform"
+                defaultValue={platform1}
+                onChange={this.myChangeHandler.bind(this)}
+              >
+                <option value="fm">FM-RDS</option>
+              </select>
+            </div>
 
-          <label htmlFor="pi">RDS PI </label>
-          <br />
-          <input
-            defaultValue={pi}
-            type="text"
-            id="pi"
-            name="pi"
-            maxLength="4"
-            onChange={this.myChangeHandler.bind(this)}
-          />
-          <span className="errors">{errors.pi}</span>
-          <br />
+            <div class="grid-item"><label htmlFor="ecc">RDS ECC </label></div>
 
-          <label htmlFor="frequency">Frequency (MHz) </label>
-          <br />
-          <input
-            defaultValue={frequency}
-            type="number"
-            step="0.01"
-            min="87.0"
-            max="108.9"
-            id="frequency"
-            name="frequency"
-            onChange={this.myChangeHandler.bind(this)}
-          />
-          <span className="errors">{errors.frequency}</span>
-          <br />
-          <br />
+            <div class="grid-item">
+              <input
+                defaultValue={ecc}
+                type="text"
+                id="ecc"
+                name="ecc"
+                maxLength="2"
+                onChange={this.myChangeHandler.bind(this)}
+              />
+              <span className="errors">{errors.ecc}</span>
+            </div>
+
+            <div class="grid-item"><label htmlFor="pi">RDS PI </label></div>
+
+            <div class="grid-item">
+              <input
+                defaultValue={pi}
+                type="text"
+                id="pi"
+                name="pi"
+                maxLength="4"
+                onChange={this.myChangeHandler.bind(this)}
+              />
+              <span className="errors">{errors.pi}</span>
+            </div>
+
+            <div class="grid-item"><label htmlFor="frequency">Frequency (MHz) </label></div>
+
+            <div class="grid-item">
+              <input
+                defaultValue={frequency}
+                type="number"
+                step="0.01"
+                min="87.0"
+                max="108.9"
+                id="frequency"
+                name="frequency"
+                onChange={this.myChangeHandler.bind(this)}
+              />
+              <span className="errors">{errors.frequency}</span>
+            </div>
+          </div>
 
           <h3>Bearer 2</h3>
-          <label htmlFor="bearer2Platform">Bearer 2 platform </label>
-          <br />
-          <select
-            name="platform2"
-            id="bearer1Platform"
-            defaultValue={platform2}
-            onChange={this.myChangeHandler.bind(this)}
-          >
-            <option value="ip">IP</option>
-          </select>
-          <br />
+          <div className="grid-container">
+            <div class="grid-item"><label htmlFor="bearer2Platform">Bearer 2 platform </label></div>
 
-          <label htmlFor="url">IP URL </label>
-          <br />
-          <input
-            defaultValue={url}
-            type="text"
-            id="url"
-            name="url"
-            onChange={this.myChangeHandler.bind(this)}
-          />
-          <span className="errors">{errors.url}</span>
-          <br />
+            <div class="grid-item">
+              <select
+                name="platform2"
+                id="bearer1Platform"
+                defaultValue={platform2}
+                onChange={this.myChangeHandler.bind(this)}
+              >
+                <option value="ip">IP</option>
+              </select>
+            </div>
 
-          <label htmlFor="audio/mpeg">IP MIME </label>
-          <br />
-          <select name="mimeValue" id="mimeValue" defaultValue={mimeValue}>
-            <option value="audio/mpeg">mp3</option>
-          </select>
-          <br />
+            <div class="grid-item"><label htmlFor="url">IP URL </label></div>
 
-          <label htmlFor="bitrate">IP bitrate (kbps) </label>
-          <br />
-          <input
-            defaultValue={bitrate}
-            type="number"
-            id="bitrate"
-            name="bitrate"
-            min="1"
-            max="10000"
-            onChange={this.myChangeHandler.bind(this)}
-          />
-          <br />
+            <div class="grid-item">
+              <input
+                defaultValue={url}
+                type="text"
+                id="url"
+                name="url"
+                onChange={this.myChangeHandler.bind(this)}
+              />
+              <span className="errors">{errors.url}</span>
+            </div>
+
+            <div class="grid-item"><label htmlFor="audio/mpeg">IP MIME </label></div>
+
+            <div class="grid-item">
+              <select name="mimeValue" id="mimeValue" defaultValue={mimeValue}>
+                <option value="audio/mpeg">mp3</option>
+              </select>
+            </div>
+
+            <div class="grid-item"><label htmlFor="bitrate">IP bitrate (kbps) </label></div>
+
+            <div class="grid-item">
+              <input
+                defaultValue={bitrate}
+                type="number"
+                id="bitrate"
+                name="bitrate"
+                min="1"
+                max="10000"
+                onChange={this.myChangeHandler.bind(this)}
+              />
+            </div>
+          </div>
 
           <h2>RadioDNS Parameters</h2>
-          <label htmlFor="fqdn">FQDN * </label>
-          <br />
-          <input defaultValue={fqdn} type="text" name="fqdn" id="fqdn" onChange={this.myChangeHandler.bind(this)} />
-          <span className="errors">{errors.fqdn}</span>
-          <br />
+          <div className="grid-container">
+            <div class="grid-item"><label htmlFor="fqdn">FQDN * </label></div>
 
-          <label htmlFor="service_identifier">Service identifier * </label>
-          <br />
-          <input
-            defaultValue={serviceIdentifier}
-            type="text"
-            name="serviceIdentifier"
-            id="fqdn"
-            maxLength="16"
-            onChange={this.myChangeHandler.bind(this)}
-          />
-          <span className="errors">{errors.serviceIdentifier}</span>
-          <br />
+            <div class="grid-item">
+              <input defaultValue={fqdn} type="text" name="fqdn" id="fqdn" onChange={this.myChangeHandler.bind(this)} />
+              <span className="errors">{errors.fqdn}</span>
+            </div>
+
+            <div class="grid-item"><label htmlFor="service_identifier">Service identifier * </label></div>
+
+            <div class="grid-item">
+              <input
+                defaultValue={serviceIdentifier}
+                type="text"
+                name="serviceIdentifier"
+                id="fqdn"
+                maxLength="16"
+                onChange={this.myChangeHandler.bind(this)}
+              />
+              <span className="errors">{errors.serviceIdentifier}</span>
+            </div>
+          </div>
 
           <input type="submit" value="SAVE" />
           <span className="errors">{errors.backend}</span>
-          {Object.keys(errors).length === 0 && success && <span>Submitted!</span>}
-          {Object.keys(errors).length > 0 && <span>Failed!</span>}
+          {Object.keys(errors).length === 0 && success && <span className="success">Submitted!</span>}
+          {Object.keys(errors).length > 0 && <span className="errors">Failed!</span>}
+
         </form>
         <ReactModal
           isOpen={showModal}
