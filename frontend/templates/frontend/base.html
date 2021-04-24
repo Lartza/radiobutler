@@ -14,14 +14,19 @@
 </header>
 <nav>
     <ul>
-        <li><a href="{% url 'index' %}">Start Page</a></li>
+        {% url 'index' as index %}
+        <li {% if request.path == index %}class="active"{% endif %}><a href="{{index}}">Start Page</a></li>
         {% if request.user.is_authenticated %}
-            <li><a href="{% url 'service' %}">Station Information</a></li>
-            <li><a href="{% url 'slideshow' %}">Visual Content</a></li>
-            <li><a href="{% url 'gallery' %}">Gallery</a></li>
+            {% url 'service' as service %}
+            {% url 'slideshow' as slideshow %}
+            {% url 'gallery' as gallery %}
+            <li {% if request.path == service %}class="active"{% endif %}><a href="{{service}}">Station Information</a></li>
+            <li {% if request.path == slideshow %}class="active"{% endif %}><a href="{{slideshow}}">Visual Content</a></li>
+            <li {% if request.path == gallery %}class="active"{% endif %}><a href="{{gallery}}">Gallery</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
         {% else %}
-            <li><a href="{% url 'login' %}">Login</a></li>
+            {% url 'login' as login %}
+            <li {% if request.path == login %}class="active"{% endif %}><a href="{{login}}">Login</a></li>
         {% endif %}
     </ul>
 </nav>
