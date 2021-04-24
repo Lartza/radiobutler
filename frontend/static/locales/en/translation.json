@@ -1,0 +1,8 @@
+{
+  "unsubmitted": "You have unsubmitted changes, remember to save them!",
+  "required": "Required fields are marked with *.",
+  "shortName": "Short name (max 8 chars) *",
+  "mediumName": "Medium name (max 16 chars) *",
+  "shortDescription": "Short description (max 180 chars)",
+  "link": "Website link"
+}

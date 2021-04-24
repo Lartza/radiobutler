@@ -144,7 +144,8 @@ class ImageSlideSender extends React.Component {
           <br />
           <br />
           <label htmlFor="image_link">Link URL </label>
-          <div className="tooltip">?
+          <div className="tooltip">
+            ?
             <span className="tooltiptext">Provide a click-through link for the image</span>
           </div>
           <br />
@@ -153,7 +154,8 @@ class ImageSlideSender extends React.Component {
           <br />
           <br />
           <label htmlFor="trigger_time">Trigger time </label>
-          <div className="tooltip">?
+          <div className="tooltip">
+            ?
             <span className="tooltiptext">Choose when to show the image</span>
           </div>
           <br />

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Cookies from 'universal-cookie/es6';
 import validator from 'validator';
 import ReactModal from 'react-modal';
+import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 import Gallery from './gallery';
+import './i18n';
 
 // React form
 class MyForm extends React.Component {
@@ -322,17 +325,18 @@ class MyForm extends React.Component {
       shortName, mediumName, shortDescription, link, logo, fqdn, platform1, ecc, pi, frequency,
       platform2, url, mimeValue, bitrate, serviceIdentifier, errors, logoimg, showModal, success, modified,
     } = this.state;
+    const { t } = this.props;
     return (
       <div>
-        {modified && <div className="sticky">You have unsubmitted changes, remember to save them!</div>}
+        {modified && <div className="sticky">{t('unsubmitted')}</div>}
         <form onSubmit={this.mySubmitHandler.bind(this)}>
 
-          <p>Required fields are marked with *.</p>
+          <p>{t('required')}</p>
           <h2>Name</h2>
           <div className="grid-container">
-            <div class="grid-item"><label htmlFor="shortname">Short name (max 8 chars) * </label></div>
+            <div className="grid-item"><label htmlFor="shortname">{t('shortName')}</label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <input
                 defaultValue={shortName}
                 type="text"
@@ -344,9 +348,9 @@ class MyForm extends React.Component {
               <span className="errors">{errors.shortName}</span>
             </div>
 
-            <div class="grid-item"><label htmlFor="mediumname">Medium name (max 16 chars) * </label></div>
+            <div className="grid-item"><label htmlFor="mediumname">{t('mediumName')}</label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <input
                 defaultValue={mediumName}
                 type="text"
@@ -361,9 +365,9 @@ class MyForm extends React.Component {
 
           <h2>Description</h2>
           <div className="grid-container">
-            <div class="grid-item"><label htmlFor="desc">Short description (max 180 chars) </label></div>
+            <div className="grid-item"><label htmlFor="desc">{t('shortDescription')}</label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <textarea
                 defaultValue={shortDescription}
                 id="desc"
@@ -378,9 +382,9 @@ class MyForm extends React.Component {
 
           <h2>Link</h2>
           <div className="grid-container">
-            <div class="grid-item"><label htmlFor="link">Website link </label></div>
+            <div className="grid-item"><label htmlFor="link">{t('link')}</label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <input
                 defaultValue={link}
                 type="text"
@@ -394,14 +398,14 @@ class MyForm extends React.Component {
 
           <h2>Logo</h2>
           <div className="grid-container">
-            <div class="grid-item">
+            <div className="grid-item">
               <label htmlFor="logo">Choose a logo from the gallery. The image is scaled to proper sizes. </label>
               <br />
               <input type="hidden" id="logo" name="logo" value={logo} onChange={this.myChangeHandler.bind(this)} />
               <button type="button" onClick={this.handleOpenModal}>Open gallery</button>
             </div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <img src={logoimg} alt="Selected logo" width="320" height="auto" />
             </div>
           </div>
@@ -410,9 +414,9 @@ class MyForm extends React.Component {
 
           <h3>Bearer 1</h3>
           <div className="grid-container">
-            <div class="grid-item"><label htmlFor="bearer1Platform">Bearer 1 platform </label></div>
+            <div className="grid-item"><label htmlFor="bearer1Platform">Bearer 1 platform </label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <select
                 name="platform1"
                 id="bearer1Platform"
@@ -423,9 +427,9 @@ class MyForm extends React.Component {
               </select>
             </div>
 
-            <div class="grid-item"><label htmlFor="ecc">RDS ECC </label></div>
+            <div className="grid-item"><label htmlFor="ecc">RDS ECC </label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <input
                 defaultValue={ecc}
                 type="text"
@@ -437,9 +441,9 @@ class MyForm extends React.Component {
               <span className="errors">{errors.ecc}</span>
             </div>
 
-            <div class="grid-item"><label htmlFor="pi">RDS PI </label></div>
+            <div className="grid-item"><label htmlFor="pi">RDS PI </label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <input
                 defaultValue={pi}
                 type="text"
@@ -451,9 +455,9 @@ class MyForm extends React.Component {
               <span className="errors">{errors.pi}</span>
             </div>
 
-            <div class="grid-item"><label htmlFor="frequency">Frequency (MHz) </label></div>
+            <div className="grid-item"><label htmlFor="frequency">Frequency (MHz) </label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <input
                 defaultValue={frequency}
                 type="number"
@@ -470,9 +474,9 @@ class MyForm extends React.Component {
 
           <h3>Bearer 2</h3>
           <div className="grid-container">
-            <div class="grid-item"><label htmlFor="bearer2Platform">Bearer 2 platform </label></div>
+            <div className="grid-item"><label htmlFor="bearer2Platform">Bearer 2 platform </label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <select
                 name="platform2"
                 id="bearer1Platform"
@@ -483,9 +487,9 @@ class MyForm extends React.Component {
               </select>
             </div>
 
-            <div class="grid-item"><label htmlFor="url">IP URL </label></div>
+            <div className="grid-item"><label htmlFor="url">IP URL </label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <input
                 defaultValue={url}
                 type="text"
@@ -496,17 +500,17 @@ class MyForm extends React.Component {
               <span className="errors">{errors.url}</span>
             </div>
 
-            <div class="grid-item"><label htmlFor="audio/mpeg">IP MIME </label></div>
+            <div className="grid-item"><label htmlFor="audio/mpeg">IP MIME </label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <select name="mimeValue" id="mimeValue" defaultValue={mimeValue}>
                 <option value="audio/mpeg">mp3</option>
               </select>
             </div>
 
-            <div class="grid-item"><label htmlFor="bitrate">IP bitrate (kbps) </label></div>
+            <div className="grid-item"><label htmlFor="bitrate">IP bitrate (kbps) </label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <input
                 defaultValue={bitrate}
                 type="number"
@@ -521,16 +525,16 @@ class MyForm extends React.Component {
 
           <h2>RadioDNS Parameters</h2>
           <div className="grid-container">
-            <div class="grid-item"><label htmlFor="fqdn">FQDN * </label></div>
+            <div className="grid-item"><label htmlFor="fqdn">FQDN * </label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <input defaultValue={fqdn} type="text" name="fqdn" id="fqdn" onChange={this.myChangeHandler.bind(this)} />
               <span className="errors">{errors.fqdn}</span>
             </div>
 
-            <div class="grid-item"><label htmlFor="service_identifier">Service identifier * </label></div>
+            <div className="grid-item"><label htmlFor="service_identifier">Service identifier * </label></div>
 
-            <div class="grid-item">
+            <div className="grid-item">
               <input
                 defaultValue={serviceIdentifier}
                 type="text"
@@ -562,4 +566,16 @@ class MyForm extends React.Component {
   }
 }
 
-export default MyForm;
+MyForm.propTypes = {
+  t: PropTypes.func.isRequired,
+};
+
+const MyComponent = withTranslation()(MyForm);
+
+export default function App() {
+  return (
+    <Suspense fallback="loading">
+      <MyComponent />
+    </Suspense>
+  );
+}
