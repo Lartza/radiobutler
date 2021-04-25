@@ -27,10 +27,13 @@ def service(request):
 def slideshow(request):
     """Renders the Visual Slideshow page when authenticated."""
     destination = None
+    bearer = None
     try:
         bearer = Bearer.objects.filter(service=Service.objects.first(), platform='ip').first()
         destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}'
     except Bearer.DoesNotExist:
+        pass
+    if bearer is None:
         try:
             bearer = Bearer.objects.filter(service=Service.objects.first(), platform='fm').first()
             integer, decimal = str(bearer.frequency).split('.')
