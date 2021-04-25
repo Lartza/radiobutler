@@ -17,6 +17,8 @@ class ImageSlideSender extends React.Component {
       link: '',
       showModal: false,
       errors: {},
+      success: false,
+      modified: false,
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -38,6 +40,12 @@ class ImageSlideSender extends React.Component {
     const errors = {};
     let isFormValid = true;
 
+    // image has to be selected before sending
+    if (!fields.image){
+        isFormValid = false;
+        errors.image = 'Image has to be selected before sending.';
+      }
+
     // api url - 512 chars max, must be link
     if (fields.link) {
       if (fields.link.length > 512) {
@@ -54,8 +62,9 @@ class ImageSlideSender extends React.Component {
       }
     }
 
-    // trigger time - should be later than current time
-    if (fields.date) {
+    // trigger time - should be later than current time. Both
+    // date and time has to be selected, if either one is selected.
+    if (fields.date && fields.time) {
       const date = Date.parse(`${fields.date}T${fields.time}`);
       const now = Date.now();
 
@@ -63,6 +72,11 @@ class ImageSlideSender extends React.Component {
         isFormValid = false;
         errors.date = 'Date and time cannot be in the past.';
       }
+    }
+
+    else if ((fields.date && !fields.time) || (!fields.date && fields.time)){
+        isFormValid = false;
+        errors.date = 'Both date and time has to be selected.';
     }
 
     this.setState({ errors });
@@ -77,6 +91,8 @@ class ImageSlideSender extends React.Component {
 
   mySubmitHandler(event) {
     event.preventDefault();
+     let success = false;
+    this.setState({ success });
 
     if (this.validator()) {
       const form = event.target;
@@ -99,15 +115,17 @@ class ImageSlideSender extends React.Component {
         body: data,
       }).then((r) => {
         if (r.ok) {
-          this.setState({
-            apiurl: '', image: '', date: '', time: '', link: '',
-          });
+          success = true;
+          const modified = false;
+          this.setState({ success, modified });
         } else {
           throw r;
         }
       }).catch((err) => {
         err.text().then((errorMessage) => {
-          console.log(errorMessage);
+          const errors = {};
+          errors.backend = errorMessage;
+          this.setState({ errors });
         });
       });
     }
@@ -117,7 +135,7 @@ class ImageSlideSender extends React.Component {
 
   render() {
     const {
-      apiurl, image, date, time, link, showModal, errors,
+      apiurl, image, date, time, link, showModal, errors, success, modified,
     } = this.state;
     return (
       <div>
@@ -141,6 +159,7 @@ class ImageSlideSender extends React.Component {
           <br />
           <input type="hidden" id="image" name="image" value={apiurl} onChange={this.myChangeHandler.bind(this)} />
           <img src={image} alt="Selected" height="240" />
+          <span className="errors">{errors.image}</span>
           <br />
           <br />
           <label htmlFor="image_link">Link URL </label>
@@ -149,7 +168,7 @@ class ImageSlideSender extends React.Component {
             <span className="tooltiptext">Provide a click-through link for the image</span>
           </div>
           <br />
-          <input type="url" id="image_link" name="link" value={link} onChange={this.myChangeHandler.bind(this)} />
+          <input type="text" id="image_link" name="link" value={link} onChange={this.myChangeHandler.bind(this)} />
           <span className="errors">{errors.link}</span>
           <br />
           <br />
@@ -172,6 +191,9 @@ class ImageSlideSender extends React.Component {
           <br />
 
           <input type="submit" value="SEND IMAGE" />
+          <span className="errors">{errors.backend}</span>
+          {Object.keys(errors).length === 0 && success && <span className="success">Submitted!</span>}
+          {Object.keys(errors).length > 0 && <span className="errors">Failed!</span>}
           <br />
           <br />
         </form>
