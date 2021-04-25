@@ -9,5 +9,6 @@
     </div>
     <div class="right" id="app3"></div>
     {% load static %}
+    <script>window.bearer = {% if bearer is not None %} "{{ bearer }}" {% else %} null {% endif %}</script>
     {% include 'frontend/slideshow-scripts.html' %}
 {% endblock %}

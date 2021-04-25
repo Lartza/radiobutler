@@ -12,9 +12,9 @@ from stomp.exception import ConnectFailedException
 
 from radiodns.settings import STOMP_HOST, STOMP_PORT, STOMP_USERNAME, STOMP_PASSWORD
 
+from radioepg.models import Bearer
 from .models import ImageSlide, TextSlide, Image
 from .serializers import ImageSlideSerializer, TextSlideSerializer, ImageSerializer
-from radioepg.models import Bearer
 
 
 def send_stomp_image(instance, url):

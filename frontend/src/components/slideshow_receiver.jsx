@@ -22,16 +22,16 @@ const Receiver = () => (
   <StompSessionProvider url="wss://radiodns.ltn.fi/stomp">
     <h2>Now showing</h2>
     <p><b>Message: </b></p>
-    <p><TextSubscribingComponent /></p>
+    <p>{window.bearer ? <TextSubscribingComponent /> : 'Bearer not available'}</p>
     <p><b>Image: </b></p>
-    <ImageSubscribingComponent />
+    {window.bearer ? <ImageSubscribingComponent /> : 'Bearer not available'}
   </StompSessionProvider>
 );
 
 function TextSubscribingComponent() {
   const [lastMessage, setLastMessage] = useState('No message received yet');
 
-  useSubscription('/topic/fm/6e1/6024/09840/text', (message) => {
+  useSubscription(`${window.bearer}/text`, (message) => {
     if (message.body.startsWith('TEXT ')) {
       setLastMessage(message.body.replace('TEXT ', ''));
     }
@@ -81,7 +81,7 @@ function ImageSubscribingComponent() {
     return () => clearInterval(interval);
   });
 
-  useSubscription('/topic/fm/6e1/6024/09840/image', (message) => {
+  useSubscription(`${window.bearer}/image`, (message) => {
     if (message.body.startsWith('SHOW ')) {
       if (message.headers['trigger-time'] === 'NOW') {
         setLastImage(message.body.split(' ', 2)[1]);

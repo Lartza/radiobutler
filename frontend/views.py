@@ -2,6 +2,8 @@ import subprocess
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
+from radioepg.models import Service, Bearer
+
 
 def get_commit():
     """Returns short commit hash of HEAD."""
@@ -24,7 +26,20 @@ def service(request):
 @login_required
 def slideshow(request):
     """Renders the Visual Slideshow page when authenticated."""
-    context = {'commit': get_commit()}
+    destination = None
+    try:
+        bearer = Bearer.objects.filter(service=Service.objects.first(), platform='ip').first()
+        destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}'
+    except Bearer.DoesNotExist:
+        try:
+            bearer = Bearer.objects.filter(service=Service.objects.first(), platform='fm').first()
+            integer, decimal = str(bearer.frequency).split('.')
+            frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
+            destination = f'/topic/fm/{bearer.pi:1}{bearer.ecc}/{bearer.pi}/{frequency}'
+        except Bearer.DoesNotExist:
+            pass
+    context = {'commit': get_commit(),
+               'bearer': destination}
     return render(request, 'frontend/slideshow.html', context)
 
 
