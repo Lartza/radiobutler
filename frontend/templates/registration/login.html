@@ -1,17 +1,17 @@
 {% extends "frontend/base.html" %}
+{% load i18n %}
 
 {% block content %}
 
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+<p>{% translate "Your username and password didn't match. Please try again." %}</p>
 {% endif %}
 
 {% if next %}
     {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+    <p>{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access." %}</p>
     {% else %}
-    <p>Please login to see this page.</p>
+    <p>{% translate "Please login to see this page." %}</p>
     {% endif %}
 {% endif %}
 
@@ -25,7 +25,7 @@
     <div class="grid-item">{{ form.password }}</div>
 </div>
 
-<input type="submit" value="Login">
+<input type="submit" value="{% translate "Login" %}">
 <input type="hidden" name="next" value="{{ next }}">
 </form>
 

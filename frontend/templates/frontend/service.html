@@ -1,7 +1,8 @@
 {% extends "frontend/base.html" %}
+{% load i18n %}
 
 {% block content %}
-    <h1>Edit Station Information</h1>
+    <h1>{% translate "Edit Station Information" %}</h1>
     <div id="app"></div>
     {% load static %}
     {% include 'frontend/si-scripts.html' %}
