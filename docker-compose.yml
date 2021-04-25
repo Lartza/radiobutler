@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  radiodns:
+    build: .
+    env_file:
+    - .env
+    volumes:
+      - ${STATIC_ROOT}:${STATIC_ROOT}
+      - ${MEDIA_ROOT}:${MEDIA_ROOT}
+    image: radiodns
+    ports:
+      - "5003:5003"
