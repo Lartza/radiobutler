@@ -26,21 +26,17 @@ def service(request):
 @login_required
 def slideshow(request):
     """Renders the Visual Slideshow page when authenticated."""
-    destination = None
-    bearer = None
+    bearer = Bearer.objects.filter(service=Service.objects.first(), platform='ip').first()
     try:
-        bearer = Bearer.objects.filter(service=Service.objects.first(), platform='ip').first()
         destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}'
-    except Bearer.DoesNotExist:
-        pass
-    if bearer is None:
+    except AttributeError:
         try:
             bearer = Bearer.objects.filter(service=Service.objects.first(), platform='fm').first()
             integer, decimal = str(bearer.frequency).split('.')
             frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
             destination = f'/topic/fm/{bearer.pi:1}{bearer.ecc}/{bearer.pi}/{frequency}'
-        except Bearer.DoesNotExist:
-            pass
+        except AttributeError:
+            destination = None
     context = {'commit': get_commit(),
                'bearer': destination}
     return render(request, 'frontend/slideshow.html', context)
