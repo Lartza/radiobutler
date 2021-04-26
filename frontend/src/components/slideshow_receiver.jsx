@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import {
   StompSessionProvider,
   useSubscription,
@@ -20,23 +20,25 @@ function compare(a, b) {
 }
 
 const Receiver = () => (
-  <StompSessionProvider url="wss://radiodns.ltn.fi/stomp">
-    <Translation useSuspense={false}>
-      {(t) => (
-        <div>
-          <h2>{t('receiver.nowShowing')}</h2>
-          <p><b>{t('receiver.message')}</b></p>
-          <p>{window.bearer ? <TextSubscribingComponent /> : t('receiver.notAvailable')}</p>
-          <p><b>{t('receiver.image')}</b></p>
-          {window.bearer ? <ImageSubscribingComponent /> : t('receiver.notAvailable')}
-        </div>
-      )}
-    </Translation>
-  </StompSessionProvider>
+  <Suspense fallback="loading">
+    <StompSessionProvider url="wss://radiodns.ltn.fi/stomp">
+      <Translation>
+        {(t) => (
+          <div>
+            <h2>{t('receiver.nowShowing')}</h2>
+            <p><b>{t('receiver.message')}</b></p>
+            <p>{window.bearer ? <TextSubscribingComponent /> : t('receiver.notAvailable')}</p>
+            <p><b>{t('receiver.image')}</b></p>
+            {window.bearer ? <ImageSubscribingComponent /> : t('receiver.notAvailable')}
+          </div>
+        )}
+      </Translation>
+    </StompSessionProvider>
+  </Suspense>
 );
 
 function TextSubscribingComponent() {
-  const { t, ready } = useTranslation('', { useSuspense: false });
+  const { t } = useTranslation();
   const [lastMessage, setLastMessage] = useState(t('receiver.noMessage'));
 
   useSubscription(`${window.bearer}/text`, (message) => {
@@ -50,7 +52,7 @@ function TextSubscribingComponent() {
 }
 
 function ImageSubscribingComponent() {
-  const { t, ready } = useTranslation('', { useSuspense: false });
+  const { t } = useTranslation();
   const [lastImage, setLastImage] = useState('/static/frontend/noimage.jpg');
   const [lastLink, setLastLink] = useState('');
   const [messages, setMessages] = useState([]);

@@ -325,7 +325,10 @@ class MyForm extends React.Component {
       shortName, mediumName, shortDescription, link, logo, fqdn, platform1, ecc, pi, frequency,
       platform2, url, mimeValue, bitrate, serviceIdentifier, errors, logoimg, showModal, success, modified,
     } = this.state;
-    const { t } = this.props;
+    const { t, tReady } = this.props;
+
+    if (!tReady) return null;
+
     return (
       <div>
         {modified && <div className="sticky">{t('form.unsubmitted')}</div>}
@@ -568,6 +571,11 @@ class MyForm extends React.Component {
 
 MyForm.propTypes = {
   t: PropTypes.func.isRequired,
+  tReady: PropTypes.bool,
+};
+
+MyForm.defaultProps = {
+  tReady: false,
 };
 
 const FormApp = withTranslation()(MyForm);

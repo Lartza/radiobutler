@@ -2,6 +2,7 @@ import React from 'react';
 import Cookies from 'universal-cookie/es6';
 import { withTranslation } from 'react-i18next';
 import './i18n';
+import PropTypes from 'prop-types';
 
 class TextSlideSender extends React.Component {
   constructor(props) {
@@ -27,6 +28,8 @@ class TextSlideSender extends React.Component {
   }
 
   render() {
+    const { t, tReady } = this.props;
+    if (!tReady) return null;
     return (
       <form onSubmit={this.mySubmitHandler.bind(this)}>
         <h2>Text Message</h2>
@@ -42,6 +45,15 @@ class TextSlideSender extends React.Component {
     );
   }
 }
+
+TextSlideSender.propTypes = {
+  t: PropTypes.func.isRequired,
+  tReady: PropTypes.bool,
+};
+
+TextSlideSender.defaultProps = {
+  tReady: false,
+};
 
 const TextSlideSenderApp = withTranslation()(TextSlideSender);
 

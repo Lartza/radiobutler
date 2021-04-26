@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie/es6';
 import validator from 'validator';
 import ReactModal from 'react-modal';
 import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 import GalleryApp from './gallery';
 import './i18n';
 
@@ -139,6 +140,10 @@ class ImageSlideSender extends React.Component {
     const {
       apiurl, image, date, time, link, showModal, errors, success,
     } = this.state;
+    const { t, tReady } = this.props;
+
+    if (!tReady) return null;
+
     return (
       <div>
         <h2>Images</h2>
@@ -203,6 +208,15 @@ class ImageSlideSender extends React.Component {
     );
   }
 }
+
+ImageSlideSender.propTypes = {
+  t: PropTypes.func.isRequired,
+  tReady: PropTypes.bool,
+};
+
+ImageSlideSender.defaultProps = {
+  tReady: false,
+};
 
 const ImageSlideSenderApp = withTranslation()(ImageSlideSender);
 

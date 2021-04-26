@@ -118,7 +118,10 @@ class Gallery extends React.Component {
     const {
       results, previous, next, count, selected, error, sendError,
     } = this.state;
-    const { selectImage, apiurl } = this.props;
+    const { selectImage, apiurl, tReady } = this.props;
+
+    if (!tReady) return null;
+
     const imgElements = Object.values(results).map(
       (i) => (
         <img
@@ -182,11 +185,13 @@ class Gallery extends React.Component {
 Gallery.propTypes = {
   selectImage: PropTypes.func,
   apiurl: PropTypes.string,
+  tReady: PropTypes.bool,
 };
 
 Gallery.defaultProps = {
   selectImage: null,
   apiurl: null,
+  tReady: false,
 };
 
 const GalleryApp = withTranslation()(Gallery);
