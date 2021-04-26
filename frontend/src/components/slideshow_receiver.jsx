@@ -4,6 +4,7 @@ import {
   useSubscription,
 } from 'react-stomp-hooks';
 import Modal from 'react-modal';
+import { useTranslation, Translation } from 'react-i18next';
 
 Modal.setAppElement('#app3');
 
@@ -20,16 +21,23 @@ function compare(a, b) {
 
 const Receiver = () => (
   <StompSessionProvider url="wss://radiodns.ltn.fi/stomp">
-    <h2>Now showing</h2>
-    <p><b>Message: </b></p>
-    <p>{window.bearer ? <TextSubscribingComponent /> : 'Bearer not available'}</p>
-    <p><b>Image: </b></p>
-    {window.bearer ? <ImageSubscribingComponent /> : 'Bearer not available'}
+    <Translation useSuspense={false}>
+      {(t) => (
+        <div>
+          <h2>{t('receiver.nowShowing')}</h2>
+          <p><b>{t('receiver.message')}</b></p>
+          <p>{window.bearer ? <TextSubscribingComponent /> : t('receiver.notAvailable')}</p>
+          <p><b>{t('receiver.image')}</b></p>
+          {window.bearer ? <ImageSubscribingComponent /> : t('receiver.notAvailable')}
+        </div>
+      )}
+    </Translation>
   </StompSessionProvider>
 );
 
 function TextSubscribingComponent() {
-  const [lastMessage, setLastMessage] = useState('No message received yet');
+  const { t, ready } = useTranslation('', { useSuspense: false });
+  const [lastMessage, setLastMessage] = useState(t('receiver.noMessage'));
 
   useSubscription(`${window.bearer}/text`, (message) => {
     if (message.body.startsWith('TEXT ')) {
@@ -42,7 +50,8 @@ function TextSubscribingComponent() {
 }
 
 function ImageSubscribingComponent() {
-  const [lastImage, setLastImage] = useState('https://via.placeholder.com/320x240');
+  const { t, ready } = useTranslation('', { useSuspense: false });
+  const [lastImage, setLastImage] = useState('/static/frontend/noimage.jpg');
   const [lastLink, setLastLink] = useState('');
   const [messages, setMessages] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -125,39 +134,40 @@ function ImageSubscribingComponent() {
   return (
     <div>
       <div className="imagebox">
-        <img src={lastImage} alt="Now showing" height="240" />
+        <img src={lastImage} alt={t('receiver.nowShowing')} height="240" />
       </div>
       <p>
         Link:
-        {lastLink ? <a href={lastLink}>{lastLink}</a> : 'None'}
+        {' '}
+        {lastLink ? <a href={lastLink}>{lastLink}</a> : t('none')}
       </p>
       <h2>
         Next up -
-        <button type="button" onClick={openModal}>Show all</button>
+        {' '}
+        <button type="button" onClick={openModal}>{t('receiver.show')}</button>
       </h2>
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Receiver Modal"
       >
-        <button type="button" onClick={closeModal}>Close</button>
-        <div>{msgElements.length > 0 ? msgElements : <span>No images scheduled</span>}</div>
+        <button type="button" onClick={closeModal}>{t('close')}</button>
+        <div>{msgElements.length > 0 ? msgElements : <span>{t('receiver.imagesScheduled')}</span>}</div>
       </Modal>
       <div className="imagebox">
         <img
           src={messages[0] ? messages[0].body.split(' ', 2)[1] : '/static/frontend/noimage.jpg'}
-          alt="Next up"
-          width="auto"
-          height="auto"
+          alt={t('receiver.next')}
         />
       </div>
       <p>
         Link:
         {' '}
-        {messages[0] ? <a href={messages[0].headers.link}>{messages[0].headers.link}</a> : 'None'}
+        {messages[0] ? <a href={messages[0].headers.link}>{messages[0].headers.link}</a> : t('none')}
       </p>
       <p>
-        {messages[0] ? `Next image at ${messages[0].headers['trigger-time']}` : 'No image scheduled'}
+        {messages[0] ? `${t('receiver.nextImage')} ${messages[0].headers['trigger-time']}`
+          : t('receiver.imageScheduled')}
       </p>
     </div>
   );

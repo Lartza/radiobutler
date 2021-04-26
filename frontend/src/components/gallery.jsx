@@ -1,6 +1,8 @@
 import React from 'react';
 import Cookies from 'universal-cookie/es6';
 import PropTypes from 'prop-types';
+import { withTranslation } from 'react-i18next';
+import './i18n';
 
 class Gallery extends React.Component {
   constructor(props) {
@@ -11,6 +13,9 @@ class Gallery extends React.Component {
       next: '',
       previous: '',
       count: -1,
+      selected: {},
+      error: '',
+      sendError: '',
     };
   }
 
@@ -28,11 +33,8 @@ class Gallery extends React.Component {
     this.setState({ current: next }, this.reloadGallery);
   }
 
-  getImageClassNames(apiurl, iApiurl, selectImage) {
-    let classes = '';
-    if (selectImage !== null) {
-      classes += ' modal-image';
-    }
+  getImageClassNames(apiurl, iApiurl) {
+    let classes = 'modal-image';
     if (apiurl === iApiurl) {
       classes += ' selected';
     }
@@ -70,16 +72,51 @@ class Gallery extends React.Component {
         'X-CSRFToken': cookies.get('csrftoken'),
       },
       body: data,
-    }).then((r) => r.json())
-      .then((json) => {
-        console.log(json);
+    }).then((r) => {
+      if (r.ok) {
         this.reloadGallery();
+      } else {
+        throw r;
+      }
+    }).catch((err) => {
+      err.text().then((errorMessage) => {
+        this.setState({ sendError: errorMessage });
       });
+    });
+  }
+
+  selectImage(event) {
+    const image = {};
+    image.apiurl = event.target.getAttribute('data-apiurl');
+    image.src = event.target.getAttribute('src');
+    this.setState({ selected: image });
+  }
+
+  deleteImage() {
+    const { selected } = this.state;
+    const cookies = new Cookies();
+    fetch(selected.apiurl, {
+      method: 'DELETE',
+      headers: {
+        'X-CSRFToken': cookies.get('csrftoken'),
+      },
+    }).then((r) => {
+      if (r.ok) {
+        this.setState({ selected: {} });
+        this.reloadGallery();
+      } else {
+        throw r;
+      }
+    }).catch((err) => {
+      err.text().then((errorMessage) => {
+        this.setState({ error: errorMessage });
+      });
+    });
   }
 
   render() {
     const {
-      results, previous, next, count,
+      results, previous, next, count, selected, error, sendError,
     } = this.state;
     const { selectImage, apiurl } = this.props;
     const imgElements = Object.values(results).map(
@@ -88,16 +125,17 @@ class Gallery extends React.Component {
           key={i.apiurl}
           data-apiurl={i.apiurl}
           src={i.image}
-          onClick={selectImage}
-          className={this.getImageClassNames(apiurl, i.apiurl, selectImage)}
+          onClick={selectImage || this.selectImage.bind(this)}
+          className={selectImage ? this.getImageClassNames(apiurl, i.apiurl)
+            : this.getImageClassNames(selected.apiurl, i.apiurl)}
         />
       ),
     );
 
     return (
-      <div id="gallery">
-        <h2>Add a new image to the gallery</h2>
+      <div>
         <form onSubmit={this.mySubmitHandler.bind(this)}>
+          <h2>Add a new image to the gallery</h2>
           <label htmlFor="image">Allowed image types: jpeg, png </label>
           <br />
           <input
@@ -108,19 +146,34 @@ class Gallery extends React.Component {
             onChange={this.myChangeHandler.bind(this)}
           />
           <input type="submit" value="UPLOAD" />
+          <span className="errors">{sendError}</span>
         </form>
-        <h2>Gallery items</h2>
-        <div className="gallery-container" id="list">{imgElements}</div>
-        {count > 0 && (
+        <div className={selectImage ? '' : 'main'}>
+          <h2>Gallery items</h2>
+          <div className="gallery-container" id="list">{imgElements}</div>
+          {count > 0 && (
+            <div>
+              {count}
+              {' '}
+              images
+            </div>
+          )}
+          {previous && <button type="button" onClick={this.handleBtnPrevious.bind(this)}>Previous page</button>}
+          {next && <button type="button" onClick={this.handleBtnNext.bind(this)}>Next page</button>}
+        </div>
+        {selectImage === null && (
+        <div className="right">
+          {Object.keys(selected).length > 0
+          && (
           <div>
-            {count}
-            {' '}
-            images
+            <a target="_blank" href={selected.src} rel="noreferrer">{selected.src.split('/').pop()}</a>
+            <br />
+            <button type="button" onClick={this.deleteImage.bind(this)}>Delete</button>
+            <span className="errors">{error}</span>
           </div>
+          )}
+        </div>
         )}
-        {previous && <button type="button" onClick={this.handleBtnPrevious.bind(this)}>Previous page</button>}
-        {next && <button type="button" onClick={this.handleBtnNext.bind(this)}>Next page</button>}
-
       </div>
     );
   }
@@ -136,4 +189,6 @@ Gallery.defaultProps = {
   apiurl: null,
 };
 
-export default Gallery;
+const GalleryApp = withTranslation()(Gallery);
+
+export default GalleryApp;

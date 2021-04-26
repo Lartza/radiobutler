@@ -1,10 +1,10 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import Cookies from 'universal-cookie/es6';
 import validator from 'validator';
 import ReactModal from 'react-modal';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import Gallery from './gallery';
+import GalleryApp from './gallery';
 import './i18n';
 
 // React form
@@ -123,7 +123,7 @@ class MyForm extends React.Component {
   }
 
   selectImage(event) {
-    this.setState({ logo: event.target.getAttribute('data-apiurl'), logoimg: event.target.src });
+    this.setState({ logo: event.target.getAttribute('data-apiurl'), logoimg: event.target.src, modified: true });
   }
 
   // Returns True if fields are valid and updates states.errors
@@ -328,13 +328,13 @@ class MyForm extends React.Component {
     const { t } = this.props;
     return (
       <div>
-        {modified && <div className="sticky">{t('unsubmitted')}</div>}
+        {modified && <div className="sticky">{t('form.unsubmitted')}</div>}
         <form onSubmit={this.mySubmitHandler.bind(this)}>
 
-          <p>{t('required')}</p>
-          <h2>Name</h2>
+          <p>{t('form.required')}</p>
+          <h2>{t('form.name')}</h2>
           <div className="grid-container">
-            <div className="grid-item"><label htmlFor="shortname">{t('shortName')}</label></div>
+            <div className="grid-item"><label htmlFor="shortname">{t('form.shortName')}</label></div>
 
             <div className="grid-item">
               <input
@@ -348,7 +348,7 @@ class MyForm extends React.Component {
               <span className="errors">{errors.shortName}</span>
             </div>
 
-            <div className="grid-item"><label htmlFor="mediumname">{t('mediumName')}</label></div>
+            <div className="grid-item"><label htmlFor="mediumname">{t('form.mediumName')}</label></div>
 
             <div className="grid-item">
               <input
@@ -363,9 +363,9 @@ class MyForm extends React.Component {
             </div>
           </div>
 
-          <h2>Description</h2>
+          <h2>{t('form.description')}</h2>
           <div className="grid-container">
-            <div className="grid-item"><label htmlFor="desc">{t('shortDescription')}</label></div>
+            <div className="grid-item"><label htmlFor="desc">{t('form.shortDescription')}</label></div>
 
             <div className="grid-item">
               <textarea
@@ -380,9 +380,9 @@ class MyForm extends React.Component {
             </div>
           </div>
 
-          <h2>Link</h2>
+          <h2>{t('form.websiteLink')}</h2>
           <div className="grid-container">
-            <div className="grid-item"><label htmlFor="link">{t('link')}</label></div>
+            <div className="grid-item"><label htmlFor="link">{t('form.websiteLink')}</label></div>
 
             <div className="grid-item">
               <input
@@ -396,13 +396,13 @@ class MyForm extends React.Component {
             </div>
           </div>
 
-          <h2>Logo</h2>
+          <h2>{t('form.logo')}</h2>
           <div className="grid-container">
             <div className="grid-item">
-              <label htmlFor="logo">Choose a logo from the gallery. The image is scaled to proper sizes. </label>
+              <label htmlFor="logo">{t('form.logoDescription')}</label>
               <br />
               <input type="hidden" id="logo" name="logo" value={logo} onChange={this.myChangeHandler.bind(this)} />
-              <button type="button" onClick={this.handleOpenModal}>Open gallery</button>
+              <button type="button" onClick={this.handleOpenModal}>{t('form.openGallery')}</button>
             </div>
 
             <div className="grid-item">
@@ -410,11 +410,11 @@ class MyForm extends React.Component {
             </div>
           </div>
 
-          <h2>Bearers</h2>
+          <h2>{t('form.bearers')}</h2>
 
-          <h3>Bearer 1</h3>
+          <h3>{t('form.bearer1')}</h3>
           <div className="grid-container">
-            <div className="grid-item"><label htmlFor="bearer1Platform">Bearer 1 platform </label></div>
+            <div className="grid-item"><label htmlFor="bearer1Platform">{t('form.bearer1platform')}</label></div>
 
             <div className="grid-item">
               <select
@@ -423,11 +423,11 @@ class MyForm extends React.Component {
                 defaultValue={platform1}
                 onChange={this.myChangeHandler.bind(this)}
               >
-                <option value="fm">FM-RDS</option>
+                <option value="fm">{t('form.fm')}</option>
               </select>
             </div>
 
-            <div className="grid-item"><label htmlFor="ecc">RDS ECC </label></div>
+            <div className="grid-item"><label htmlFor="ecc">{t('form.ecc')}</label></div>
 
             <div className="grid-item">
               <input
@@ -441,7 +441,7 @@ class MyForm extends React.Component {
               <span className="errors">{errors.ecc}</span>
             </div>
 
-            <div className="grid-item"><label htmlFor="pi">RDS PI </label></div>
+            <div className="grid-item"><label htmlFor="pi">{t('form.pi')}</label></div>
 
             <div className="grid-item">
               <input
@@ -455,7 +455,7 @@ class MyForm extends React.Component {
               <span className="errors">{errors.pi}</span>
             </div>
 
-            <div className="grid-item"><label htmlFor="frequency">Frequency (MHz) </label></div>
+            <div className="grid-item"><label htmlFor="frequency">{t('form.frequency')}</label></div>
 
             <div className="grid-item">
               <input
@@ -472,9 +472,9 @@ class MyForm extends React.Component {
             </div>
           </div>
 
-          <h3>Bearer 2</h3>
+          <h3>{t('form.bearer2')}</h3>
           <div className="grid-container">
-            <div className="grid-item"><label htmlFor="bearer2Platform">Bearer 2 platform </label></div>
+            <div className="grid-item"><label htmlFor="bearer2Platform">{t('form.bearer2platform')}</label></div>
 
             <div className="grid-item">
               <select
@@ -487,7 +487,7 @@ class MyForm extends React.Component {
               </select>
             </div>
 
-            <div className="grid-item"><label htmlFor="url">IP URL </label></div>
+            <div className="grid-item"><label htmlFor="url">{t('form.url')}</label></div>
 
             <div className="grid-item">
               <input
@@ -500,7 +500,7 @@ class MyForm extends React.Component {
               <span className="errors">{errors.url}</span>
             </div>
 
-            <div className="grid-item"><label htmlFor="audio/mpeg">IP MIME </label></div>
+            <div className="grid-item"><label htmlFor="audio/mpeg">{t('form.mime')}</label></div>
 
             <div className="grid-item">
               <select name="mimeValue" id="mimeValue" defaultValue={mimeValue}>
@@ -508,7 +508,7 @@ class MyForm extends React.Component {
               </select>
             </div>
 
-            <div className="grid-item"><label htmlFor="bitrate">IP bitrate (kbps) </label></div>
+            <div className="grid-item"><label htmlFor="bitrate">{t('form.bitrate')}</label></div>
 
             <div className="grid-item">
               <input
@@ -523,16 +523,16 @@ class MyForm extends React.Component {
             </div>
           </div>
 
-          <h2>RadioDNS Parameters</h2>
+          <h2>{t('form.parameters')}</h2>
           <div className="grid-container">
-            <div className="grid-item"><label htmlFor="fqdn">FQDN * </label></div>
+            <div className="grid-item"><label htmlFor="fqdn">{t('form.fqdn')}</label></div>
 
             <div className="grid-item">
               <input defaultValue={fqdn} type="text" name="fqdn" id="fqdn" onChange={this.myChangeHandler.bind(this)} />
               <span className="errors">{errors.fqdn}</span>
             </div>
 
-            <div className="grid-item"><label htmlFor="service_identifier">Service identifier * </label></div>
+            <div className="grid-item"><label htmlFor="service_identifier">{t('form.serviceIdentifier')}</label></div>
 
             <div className="grid-item">
               <input
@@ -547,19 +547,19 @@ class MyForm extends React.Component {
             </div>
           </div>
 
-          <input type="submit" value="SAVE" />
+          <input type="submit" value={t('save')} />
           <span className="errors">{errors.backend}</span>
-          {Object.keys(errors).length === 0 && success && <span className="success">Submitted!</span>}
-          {Object.keys(errors).length > 0 && <span className="errors">Failed!</span>}
+          {Object.keys(errors).length === 0 && success && <span className="success">{t('form.submitted')}</span>}
+          {Object.keys(errors).length > 0 && <span className="errors">{t('form.failed')}</span>}
 
         </form>
         <ReactModal
           isOpen={showModal}
           contentLabel="Gallery Modal"
         >
-          <button type="button" onClick={this.handleCloseModal}>Save & Close gallery</button>
-          <Gallery selectImage={this.selectImage} apiurl={logo} />
-          <button type="button" onClick={this.handleCloseModal}>Save & Close gallery</button>
+          <button type="button" onClick={this.handleCloseModal}>{t('saveClose')}</button>
+          <GalleryApp selectImage={this.selectImage} apiurl={logo} useSuspense={false} />
+          <button type="button" onClick={this.handleCloseModal}>{t('saveClose')}</button>
         </ReactModal>
       </div>
     );
@@ -570,12 +570,6 @@ MyForm.propTypes = {
   t: PropTypes.func.isRequired,
 };
 
-const MyComponent = withTranslation()(MyForm);
+const FormApp = withTranslation()(MyForm);
 
-export default function App() {
-  return (
-    <Suspense fallback="loading">
-      <MyComponent />
-    </Suspense>
-  );
-}
+export default FormApp;

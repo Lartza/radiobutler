@@ -2,7 +2,9 @@ import React from 'react';
 import Cookies from 'universal-cookie/es6';
 import validator from 'validator';
 import ReactModal from 'react-modal';
-import Gallery from './gallery';
+import { withTranslation } from 'react-i18next';
+import GalleryApp from './gallery';
+import './i18n';
 
 ReactModal.setAppElement('#app1');
 
@@ -18,7 +20,6 @@ class ImageSlideSender extends React.Component {
       showModal: false,
       errors: {},
       success: false,
-      modified: false,
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -41,10 +42,10 @@ class ImageSlideSender extends React.Component {
     let isFormValid = true;
 
     // image has to be selected before sending
-    if (!fields.image){
-        isFormValid = false;
-        errors.image = 'Image has to be selected before sending.';
-      }
+    if (!fields.image) {
+      isFormValid = false;
+      errors.image = 'Image has to be selected before sending.';
+    }
 
     // api url - 512 chars max, must be link
     if (fields.link) {
@@ -72,11 +73,9 @@ class ImageSlideSender extends React.Component {
         isFormValid = false;
         errors.date = 'Date and time cannot be in the past.';
       }
-    }
-
-    else if ((fields.date && !fields.time) || (!fields.date && fields.time)){
-        isFormValid = false;
-        errors.date = 'Both date and time has to be selected.';
+    } else if ((fields.date && !fields.time) || (!fields.date && fields.time)) {
+      isFormValid = false;
+      errors.date = 'Both date and time has to be selected.';
     }
 
     this.setState({ errors });
@@ -91,7 +90,7 @@ class ImageSlideSender extends React.Component {
 
   mySubmitHandler(event) {
     event.preventDefault();
-     let success = false;
+    let success = false;
     this.setState({ success });
 
     if (this.validator()) {
@@ -104,7 +103,11 @@ class ImageSlideSender extends React.Component {
         const time = data.get('time');
         data.delete('date');
         data.delete('time');
-        data.append('trigger_time', `${date}T${time}+0300`);
+        const timezoneOffset = (new Date()).getTimezoneOffset() * -1;
+        const hours = Math.floor(timezoneOffset / 60);
+        const minutes = timezoneOffset % 60;
+        data.append('trigger_time',
+          `${date}T${time}+${hours < 10 ? '0' : ''}${hours}${minutes < 10 ? '0' : ''}${minutes}`);
       }
 
       fetch('/api/imageslides/', {
@@ -116,8 +119,7 @@ class ImageSlideSender extends React.Component {
       }).then((r) => {
         if (r.ok) {
           success = true;
-          const modified = false;
-          this.setState({ success, modified });
+          this.setState({ success });
         } else {
           throw r;
         }
@@ -135,7 +137,7 @@ class ImageSlideSender extends React.Component {
 
   render() {
     const {
-      apiurl, image, date, time, link, showModal, errors, success, modified,
+      apiurl, image, date, time, link, showModal, errors, success,
     } = this.state;
     return (
       <div>
@@ -148,7 +150,7 @@ class ImageSlideSender extends React.Component {
             contentLabel="Gallery Modal"
           >
             <button type="button" onClick={this.handleCloseModal}>Save & Close gallery</button>
-            <Gallery selectImage={this.selectImage} apiurl={apiurl} />
+            <GalleryApp selectImage={this.selectImage} apiurl={apiurl} useSuspense={false} />
             <button type="button" onClick={this.handleCloseModal}>Save & Close gallery</button>
           </ReactModal>
         </div>
@@ -202,4 +204,6 @@ class ImageSlideSender extends React.Component {
   }
 }
 
-export default ImageSlideSender;
+const ImageSlideSenderApp = withTranslation()(ImageSlideSender);
+
+export default ImageSlideSenderApp;

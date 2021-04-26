@@ -1,5 +1,7 @@
 import React from 'react';
 import Cookies from 'universal-cookie/es6';
+import { withTranslation } from 'react-i18next';
+import './i18n';
 
 class TextSlideSender extends React.Component {
   constructor(props) {
@@ -41,4 +43,6 @@ class TextSlideSender extends React.Component {
   }
 }
 
-export default TextSlideSender;
+const TextSlideSenderApp = withTranslation()(TextSlideSender);
+
+export default TextSlideSenderApp;

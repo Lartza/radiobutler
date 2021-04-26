@@ -1,3 +1,35 @@
 {
-    "shortName": "Lyhyt nimi (max 8 merkkiä) *"
+  "form": {
+    "unsubmitted": "Sinulla on tallentamattomia muutoksia, muista lähettää ne!",
+    "name": "Nimi",
+    "required": "Vaaditut kentät on merkitty *-merkillä.",
+    "shortName": "Lyhyt nimi (maks. 8 merkkiä) *",
+    "mediumName": "Keskipitkä nimi (maks. 16 merkkiä) *",
+    "description": "Kuvaus",
+    "shortDescription": "Lyhyt kuvaus (maks. 180 merkkiä)",
+    "link": "Linkki",
+    "websiteLink": "Verkkosivun osoite",
+    "logo": "Logo",
+    "logoDescription": "Valitse logo galleriasta. Kuva skaalataan oikeisiin kokoihin.",
+    "openGallery": "Avaa galleria",
+    "bearers": "Kantajat",
+    "bearer1": "Kantaja 1",
+    "bearer1platform": "Kantajan 1 alusta",
+    "fm": "FM-RDS",
+    "ecc": "RDS ECC",
+    "pi": "RDS PI",
+    "frequency": "Taajuus (MHz)",
+    "bearer2": "Kantaja 2",
+    "bearer2platlform": "Kantajan 2 alusta",
+    "url": "IP URL",
+    "mime": "IP MIME",
+    "bitrate": "IP bittinopeus (kbps)",
+    "parameters": "RadioDNS Parametrit",
+    "fqdn": "FQDN *",
+    "serviceIdentifier": "Palvelun tunniste *",
+    "submitted": "Lähetetty!",
+    "failed": "Epäonnistui!"
+  },
+  "saveClose": "Tallenna & Sulje Galleria",
+  "save": "TALLENNA"
 }

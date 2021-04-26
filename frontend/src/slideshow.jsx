@@ -1,14 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
-import ImageSlideSender from './components/slideshow_imagesender';
-import TextSlideSender from './components/slideshow_textsender';
-import Receiver from './components/slideshow_receiver';
+import ImageSlideSenderApp from './components/slideshow_imagesender';
+import TextSlideSenderApp from './components/slideshow_textsender';
+import ReceiverApp from './components/slideshow_receiver';
 
 const imagesenderContainer = document.getElementById('app1');
-render(<ImageSlideSender />, imagesenderContainer);
+render(<ImageSlideSenderApp useSuspense={false} />, imagesenderContainer);
 
 const textsenderContainer = document.getElementById('app2');
-render(<TextSlideSender />, textsenderContainer);
+render(<TextSlideSenderApp useSuspense={false} />, textsenderContainer);
 
 const receiverContainer = document.getElementById('app3');
-render(<Receiver />, receiverContainer);
+render(<ReceiverApp useSuspense={false} />, receiverContainer);
