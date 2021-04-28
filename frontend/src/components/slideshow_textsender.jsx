@@ -7,10 +7,17 @@ import PropTypes from 'prop-types';
 class TextSlideSender extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      errors: {},
+      success: false,
+    };
   }
 
   mySubmitHandler(event) {
     event.preventDefault();
+    let success = false;
+    this.setState({ success });
+
     const form = event.target;
     const data = new FormData(form);
     const cookies = new Cookies();
@@ -21,13 +28,26 @@ class TextSlideSender extends React.Component {
         'X-CSRFToken': cookies.get('csrftoken'),
       },
       body: data,
-    }).then((r) => r.json())
-      .then((json) => {
-        console.log(json);
+    }).then((r) => {
+        if (r.ok) {
+          success = true;
+          this.setState({ success });
+        } else {
+          throw r;
+        }
+      }).catch((err) => {
+        err.text().then((errorMessage) => {
+          const errors = {};
+          errors.backend = errorMessage;
+          this.setState({ errors });
+        });
       });
   }
 
   render() {
+    const {
+      errors, success,
+    } = this.state;
     const { t, tReady } = this.props;
     if (!tReady) return null;
     return (
@@ -39,6 +59,9 @@ class TextSlideSender extends React.Component {
         <br />
 
         <input type="submit" value="SEND TEXT" />
+        <span className="errors">{errors.backend}</span>
+        {Object.keys(errors).length === 0 && success && <span className="success">Submitted!</span>}
+        {Object.keys(errors).length > 0 && <span className="errors">Failed!</span>}
         <br />
         <br />
       </form>
