@@ -29,19 +29,19 @@ class TextSlideSender extends React.Component {
       },
       body: data,
     }).then((r) => {
-        if (r.ok) {
-          success = true;
-          this.setState({ success });
-        } else {
-          throw r;
-        }
-      }).catch((err) => {
-        err.text().then((errorMessage) => {
-          const errors = {};
-          errors.backend = errorMessage;
-          this.setState({ errors });
-        });
+      if (r.ok) {
+        success = true;
+        this.setState({ success });
+      } else {
+        throw r;
+      }
+    }).catch((err) => {
+      err.text().then((errorMessage) => {
+        const errors = {};
+        errors.backend = errorMessage;
+        this.setState({ errors });
       });
+    });
   }
 
   render() {
