@@ -139,12 +139,12 @@ function ImageSubscribingComponent() {
         <img src={lastImage} alt={t('receiver.nowShowing')} height="240" />
       </div>
       <p>
-        Link:
+        {t('receiver.link')}
         {' '}
         {lastLink ? <a href={lastLink}>{lastLink}</a> : t('none')}
       </p>
       <h2>
-        Next up -
+        {t('receiver.next')}
         {' '}
         <button type="button" onClick={openModal}>{t('receiver.show')}</button>
       </h2>
@@ -163,7 +163,7 @@ function ImageSubscribingComponent() {
         />
       </div>
       <p>
-        Link:
+        {t('receiver.link')}
         {' '}
         {messages[0] ? <a href={messages[0].headers.link}>{messages[0].headers.link}</a> : t('none')}
       </p>

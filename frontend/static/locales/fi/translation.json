@@ -34,11 +34,12 @@
     "nowShowing": "Näytetään nyt",
     "message": "Viesti:",
     "image": "Kuva:",
+    "link": "Linkki:",
     "notAvailable": "Kantaja ei ole saatavilla",
     "noMessage": "Ei vastaanotettua viestiä",
     "show": "Näytä kaikki",
     "imagesScheduled": "Ei ajastettuja kuvia",
-    "next": "Seuraavaksi tulossa",
+    "next": "Seuraavaksi tulossa -",
     "nextImage": "Seuraava kuva näytetään",
     "imageScheduled": "Ei ajastettua kuvaa"
   },

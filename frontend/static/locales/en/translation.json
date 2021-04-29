@@ -34,11 +34,12 @@
     "nowShowing": "Now showing",
     "message": "Message:",
     "image": "Image:",
+    "link": "Link:",
     "notAvailable": "Bearer not available",
     "noMessage": "No message received yet",
     "show": "Show all",
     "imagesScheduled": "No images scheduled",
-    "next": "Next up",
+    "next": "Next up -",
     "nextImage": "Next image at",
     "imageScheduled": "No image scheduled"
   },
