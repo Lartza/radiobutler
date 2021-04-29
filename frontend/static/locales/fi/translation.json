@@ -20,7 +20,7 @@
     "pi": "RDS PI",
     "frequency": "Taajuus (MHz)",
     "bearer2": "Kantaja 2",
-    "bearer2platlform": "Kantajan 2 alusta",
+    "bearer2platform": "Kantajan 2 alusta",
     "url": "IP URL",
     "mime": "IP MIME",
     "bitrate": "IP bittinopeus (kbps)",
@@ -41,6 +41,15 @@
     "next": "Seuraavaksi tulossa",
     "nextImage": "Seuraava kuva näytetään",
     "imageScheduled": "Ei ajastettua kuvaa"
+  },
+  "errors": {
+    "required": "Vaadittu tieto",
+    "max2000": "Enintään 2000 merkkiä",
+    "link": "Täytyy olla linkki (alkaa http(s))",
+    "chars2": "Täytyy olla kaksi (2) merkkiä",
+    "chars4": "Täytyy olla neljä (4) merkkiä",
+    "domainName": "Täytyy olla verkkotunnus ilman protokollaa",
+    "allowedCharacters": "Vain pienet kirjaimet ja numerot sallittu"
   },
   "saveClose": "Tallenna & sulje galleria",
   "save": "TALLENNA",
