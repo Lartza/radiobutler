@@ -42,6 +42,15 @@
     "nextImage": "Next image at",
     "imageScheduled": "No image scheduled"
   },
+  "gallery": {
+    "addNewImage": "Add a new image to the gallery",
+    "allowedTypes": "Allowed image types: jpeg, png",
+    "images": "images",
+    "galleryItems": "Gallery items",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "image": "Image"
+  },
   "errors": {
     "required": "Required!",
     "max2000": "Maximum 2000 characters.",
@@ -51,8 +60,10 @@
     "domainName": "Must be a domain name without protocol.",
     "allowedCharacters": "Only lower case letters and numbers allowed."
   },
-  "saveClose": "Save & Close gallery",
+  "saveClose": "Save & Close Gallery",
   "save": "SAVE",
   "close": "Close",
+  "upload": "UPLOAD",
+  "delete": "Delete",
   "none": "None"
 }

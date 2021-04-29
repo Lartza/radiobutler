@@ -118,7 +118,7 @@ class Gallery extends React.Component {
     const {
       results, previous, next, count, selected, error, sendError,
     } = this.state;
-    const { selectImage, apiurl, tReady } = this.props;
+    const { selectImage, apiurl, t, tReady } = this.props;
 
     if (!tReady) return null;
 
@@ -138,8 +138,8 @@ class Gallery extends React.Component {
     return (
       <div>
         <form onSubmit={this.mySubmitHandler.bind(this)}>
-          <h2>Add a new image to the gallery</h2>
-          <label htmlFor="image">Allowed image types: jpeg, png </label>
+          <h2>{t('gallery.addNewImage')}</h2>
+          <label htmlFor="image">{t('gallery.allowedTypes')}</label>
           <br />
           <input
             type="file"
@@ -148,30 +148,31 @@ class Gallery extends React.Component {
             accept=".png,.jpg,.jpeg"
             onChange={this.myChangeHandler.bind(this)}
           />
-          <input type="submit" value="UPLOAD" />
+          <input type="submit" value={t('upload')} />
           <span className="errors">{sendError}</span>
         </form>
         <div className={selectImage ? '' : 'main'}>
-          <h2>Gallery items</h2>
+          <h2>{t('gallery.galleryItems')}</h2>
           <div className="gallery-container" id="list">{imgElements}</div>
           {count > 0 && (
             <div>
               {count}
               {' '}
-              images
+              {t('gallery.images')}
             </div>
           )}
-          {previous && <button type="button" onClick={this.handleBtnPrevious.bind(this)}>Previous page</button>}
-          {next && <button type="button" onClick={this.handleBtnNext.bind(this)}>Next page</button>}
+          {previous && <button type="button" onClick={this.handleBtnPrevious.bind(this)}>{t('gallery.previousPage')}</button>}
+          {next && <button type="button" onClick={this.handleBtnNext.bind(this)}>{t('gallery.nextPage')}</button>}
         </div>
         {selectImage === null && (
         <div className="right">
           {Object.keys(selected).length > 0
           && (
           <div>
+            <h3>{t('gallery.image')}</h3>
             <a target="_blank" href={selected.src} rel="noreferrer">{selected.src.split('/').pop()}</a>
             <br />
-            <button type="button" onClick={this.deleteImage.bind(this)}>Delete</button>
+            <button type="button" onClick={this.deleteImage.bind(this)}>{t('delete')}</button>
             <span className="errors">{error}</span>
           </div>
           )}

@@ -42,6 +42,15 @@
     "nextImage": "Seuraava kuva näytetään",
     "imageScheduled": "Ei ajastettua kuvaa"
   },
+  "gallery": {
+    "addNewImage": "Lisää uusi kuva galleriaan",
+    "allowedTypes": "Sallitut kuvatyypit: jpeg, png",
+    "images": "kuvaa",
+    "galleryItems": "Gallerian kuvat",
+    "previousPage": "Edellinen sivu",
+    "nextPage": "Seuraava sivu",
+    "image": "Kuva"
+  },
   "errors": {
     "required": "Vaadittu tieto",
     "max2000": "Enintään 2000 merkkiä",
@@ -54,5 +63,7 @@
   "saveClose": "Tallenna & sulje galleria",
   "save": "TALLENNA",
   "close": "Sulje",
+  "upload": "LATAA",
+  "delete": "Poista",
   "none": "Ei mitään"
 }
