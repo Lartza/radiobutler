@@ -1,23 +1,27 @@
 from datetime import datetime, timezone, timedelta
+from unittest.mock import patch
 import tempfile
+from io import BytesIO
 
 from django.urls import reverse
 from django.test import override_settings
 from django.contrib.auth.models import User
 from django.db.models import ProtectedError
+from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 from PIL import Image as PILImage
 
+from radioepg.models import Service, Bearer
 from .models import TextSlide, ImageSlide, Image
 
 
 def image():
-    img = PILImage.new('RGB', (600, 600), '#ff0000')
-    tmp = tempfile.NamedTemporaryFile(prefix='testimage', suffix='.png')
-    img.save(tmp, format='PNG')
-    tmp.seek(0)
-    return tmp
+    img = BytesIO()
+    PILImage.new('RGB', (100, 100)).save(img, 'PNG')
+    img.seek(0)
+    data = SimpleUploadedFile('testimage.png', img.getvalue())
+    return data
 
 
 class TextSlideTest(APITestCase):
@@ -28,19 +32,28 @@ class TextSlideTest(APITestCase):
 
     def test_textslide_protected_21days(self):
         instance = TextSlide.objects.create(message='Test', sent=datetime.now(timezone.utc) - timedelta(days=1))
-        response = self.client.delete(reverse('textslide-detail', args=[1]))
+        response = self.client.delete(reverse('textslide-detail', args=[instance.id]))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         with self.assertRaises(ProtectedError):
             instance.delete()
 
     def test_textslide_removal(self):
-        TextSlide.objects.create(message='Test', sent=datetime.now(timezone.utc) - timedelta(days=22))
-        response = self.client.delete(reverse('textslide-detail', args=[1]))
+        instance = TextSlide.objects.create(message='Test', sent=datetime.now(timezone.utc) - timedelta(days=22))
+        response = self.client.delete(reverse('textslide-detail', args=[instance.id]))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(TextSlide.objects.count(), 0)
         instance = TextSlide.objects.create(message='Test', sent=datetime.now(timezone.utc) - timedelta(days=22))
         instance.delete()
         self.assertEqual(TextSlide.objects.count(), 0)
+
+    @patch('radiovis.views.stomp')
+    def test_post_textslide(self, mock_stomp):
+        service = Service.objects.create(shortName='Testi')
+        Bearer.objects.create(platform='fm', ecc='00', pi='TEST', frequency=7.7, service=service, cost=50)
+        response = self.client.post(reverse('textslide-list'), {'message': 'Testmessage'})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        mock_stomp.Connection().send.assert_called_with(body='TEXT Testmessage',
+                                                        destination='/topic/fm/TEST00/TEST/00770/text')
 
 
 class ImageTest(APITestCase):
@@ -51,58 +64,68 @@ class ImageTest(APITestCase):
 
     @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
     def test_image_protected_21days(self):
-        tmp = image()
-        response = self.client.post(reverse('image-list'), {'image': tmp})
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        instance = Image.objects.get(pk=1)
+        instance = Image.objects.create(image=image())
         ImageSlide.objects.create(image=instance, sent=datetime.now(timezone.utc) - timedelta(days=1))
-        response = self.client.delete(reverse('image-detail', args=[1]))
+        response = self.client.delete(reverse('image-detail', args=[instance.id]))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        # with self.assertRaises(ProtectedError):
+        #     instance.delete()
 
     @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
     def test_post_image(self):
-        tmp = image()
-        response = self.client.post(reverse('image-list'), {'image': tmp})
+        response = self.client.post(reverse('image-list'), {'image': image()})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    # @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
-    # def test_delete_image(self):
-    #     tmp = image()
-    #     response = self.client.post(reverse('image-list'), {'image': tmp})
-    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    #     response = self.client.delete(reverse('image-detail', args=[1]))
-    #     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+    @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
+    def test_delete_image(self):
+        i_instance = Image.objects.create(image=image())
+        # Workaround to make sure the test works, Windows only?
+        i_instance.image.close()
+        response = self.client.delete(reverse('image-detail', args=[i_instance.id]))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
     def test_str_image(self):
-        tmp = image()
-        self.client.post(reverse('image-list'), {'image': tmp})
+        self.client.post(reverse('image-list'), {'image': image()})
         instance = Image.objects.get(pk=1)
-        self.assertRegex(str(instance), r'^images\/testimage\S+\.png')
+        self.assertIn('testimage.png', str(instance))
 
 
 class ImageSlideTest(APITestCase):
-    @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
     def setUp(self):
         self.client = APIClient()
         self.user = User.objects.create_user(username='testuser', email='asdf@asdf.com')
         self.client.force_login(self.user)
-        tmp = image()
-        self.client.post(reverse('image-list'), {'image': tmp})
-        self.image = Image.objects.get(pk=1)
 
+    @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
     def test_imageslide_protected_21days(self):
-        instance = ImageSlide.objects.create(image=self.image, sent=datetime.now(timezone.utc) - timedelta(days=1))
-        response = self.client.delete(reverse('imageslide-detail', args=[1]))
+        instance = ImageSlide.objects.create(image=Image.objects.create(image=image()),
+                                             sent=datetime.now(timezone.utc) - timedelta(days=1))
+        response = self.client.delete(reverse('imageslide-detail', args=[instance.id]))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         with self.assertRaises(ProtectedError):
             instance.delete()
 
-    def text_imageslide_removal(self):
-        ImageSlide.objects.create(image=self.image, sent=datetime.now(timezone.utc) - timedelta(days=22))
-        response = self.client.delete(reverse('imageslide-detail', args=[1]))
+    @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
+    def test_imageslide_removal(self):
+        instance = ImageSlide.objects.create(image=Image.objects.create(image=image()),
+                                             sent=datetime.now(timezone.utc) - timedelta(days=22))
+        response = self.client.delete(reverse('imageslide-detail', args=[instance.id]))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(ImageSlide.objects.count(), 0)
-        instance = ImageSlide.objects.create(image=self.image, sent=datetime.now(timezone.utc) - timedelta(days=22))
+        instance = ImageSlide.objects.create(image=Image.objects.create(image=image()),
+                                             sent=datetime.now(timezone.utc) - timedelta(days=22))
         instance.delete()
         self.assertEqual(ImageSlide.objects.count(), 0)
+
+    @patch('radiovis.views.stomp')
+    @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
+    def test_post_imageslide(self, mock_stomp):
+        service = Service.objects.create(shortName='Testi')
+        Bearer.objects.create(platform='fm', ecc='00', pi='TEST', frequency=7.7, service=service, cost=50)
+        instance = Image.objects.create(image=image())
+        response = self.client.post(reverse('imageslide-list'), {'image': reverse('image-detail', args=[instance.id])})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        mock_stomp.Connection().send.assert_called_with(body='SHOW http://testserver/media/images/testimage.png',
+                                                        headers={'trigger-time': 'NOW'},
+                                                        destination='/topic/fm/TEST00/TEST/00770/image')
