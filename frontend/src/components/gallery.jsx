@@ -1,3 +1,19 @@
+/**
+ * Copyright 2021 Radio Moreeni
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from 'react';
 import Cookies from 'universal-cookie/es6';
 import PropTypes from 'prop-types';
@@ -118,7 +134,9 @@ class Gallery extends React.Component {
     const {
       results, previous, next, count, selected, error, sendError,
     } = this.state;
-    const { selectImage, apiurl, t, tReady } = this.props;
+    const {
+      selectImage, apiurl, t, tReady,
+    } = this.props;
 
     if (!tReady) return null;
 
@@ -161,7 +179,11 @@ class Gallery extends React.Component {
               {t('gallery.images')}
             </div>
           )}
-          {previous && <button type="button" onClick={this.handleBtnPrevious.bind(this)}>{t('gallery.previousPage')}</button>}
+          {previous && (
+          <button type="button" onClick={this.handleBtnPrevious.bind(this)}>
+            {t('gallery.previousPage')}
+          </button>
+          )}
           {next && <button type="button" onClick={this.handleBtnNext.bind(this)}>{t('gallery.nextPage')}</button>}
         </div>
         {selectImage === null && (

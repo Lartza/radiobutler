@@ -25,14 +25,15 @@
             <li {% if request.path == service %}class="active"{% endif %}><a href="{{service}}">{% translate "Station Information" %}</a></li>
             <li {% if request.path == slideshow %}class="active"{% endif %}><a href="{{slideshow}}">{% translate  "Visual Content" %}</a></li>
             <li {% if request.path == gallery %}class="active"{% endif %}><a href="{{gallery}}">{% translate "Gallery" %}</a></li>
-            <li><a href="{% url 'logout' %}">{% translate "Logout" %}</a></li>
+            <li style="float:right;"><a href="{% url 'logout' %}">{% translate "Logout" %}</a></li>
         {% else %}
             {% url 'login' as login %}
-            <li {% if request.path == login %}class="active"{% endif %}><a href="{{login}}">{% translate "Login" %}</a></li>
+            <li style="float:right;" {% if request.path == login %}class="active"{% endif %}><a href="{{login}}">{% translate "Login" %}</a></li>
         {% endif %}
     </ul>
 </nav>
 <div class="content">{% block content %}{% endblock %}</div>
-<footer><a href="{% url 'api-root' %}">API</a> git: <a href="https://github.com/mervij/radiodns/commit/{{ commit }}">{{ commit }}</a></footer>
+<footer>Copyright &copy; 2021 <a href="https://www.tuni.fi/radiomoreeni/">Radio Moreeni</a>
+    <a style="float:right;" href="https://github.com/mervij/radiodns">GitHub</a></footer>
 </body>
 </html>
