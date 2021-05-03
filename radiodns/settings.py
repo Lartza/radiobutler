@@ -105,7 +105,7 @@ WSGI_APPLICATION = 'radiodns.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db' / 'db.sqlite3',
     }
 }
 
@@ -196,3 +196,9 @@ LANGUAGES = [
 ]
 
 LOCALE_PATHS = ['locale']
+
+try:
+    if os.environ['PROXY'] == 'True':
+        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+except KeyError:
+    pass
