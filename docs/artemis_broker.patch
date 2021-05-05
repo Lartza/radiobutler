@@ -1,0 +1,87 @@
+--- broker.xml	2021-05-05 21:49:41.932279648 +0300
++++ artemis-instance/etc/broker.xml	2021-05-05 21:51:09.805991470 +0300
+@@ -149,17 +149,10 @@
+          <!-- Acceptor for every supported protocol -->
+          <acceptor name="artemis">tcp://0.0.0.0:61616?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;amqpMinLargeMessageSize=102400;protocols=CORE,AMQP,STOMP,HORNETQ,MQTT,OPENWIRE;useEpoll=true;amqpCredits=1000;amqpLowCredits=300;amqpDuplicateDetection=true</acceptor>
+
+-         <!-- AMQP Acceptor.  Listens on default AMQP port for AMQP traffic.-->
+-         <acceptor name="amqp">tcp://0.0.0.0:5672?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=AMQP;useEpoll=true;amqpCredits=1000;amqpLowCredits=300;amqpMinLargeMessageSize=102400;amqpDuplicateDetection=true</acceptor>
+-
+          <!-- STOMP Acceptor. -->
+          <acceptor name="stomp">tcp://0.0.0.0:61613?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=STOMP;useEpoll=true</acceptor>
+
+-         <!-- HornetQ Compatibility Acceptor.  Enables HornetQ Core and STOMP for legacy HornetQ clients. -->
+-         <acceptor name="hornetq">tcp://0.0.0.0:5445?anycastPrefix=jms.queue.;multicastPrefix=jms.topic.;protocols=HORNETQ,STOMP;useEpoll=true</acceptor>
+-
+-         <!-- MQTT Acceptor -->
+-         <acceptor name="mqtt">tcp://0.0.0.0:1883?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=true</acceptor>
++         <acceptor name="stomp-ws-acceptor">tcp://0.0.0.0:61614?protocols=STOMP</acceptor>
+
+       </acceptors>
+
+@@ -178,6 +171,19 @@
+             <!-- we need this otherwise ./artemis data imp wouldn't work -->
+             <permission type="manage" roles="amq"/>
+          </security-setting>
++         <security-setting match="/topic/#">
++            <permission type="createNonDurableQueue" roles="amq,guests"/>
++            <permission type="deleteNonDurableQueue" roles="amq,guests"/>
++            <permission type="createDurableQueue" roles="amq"/>
++            <permission type="deleteDurableQueue" roles="amq"/>
++            <permission type="createAddress" roles="amq,guests"/>
++            <permission type="deleteAddress" roles="amq"/>
++            <permission type="consume" roles="amq,guests"/>
++            <permission type="browse" roles="amq"/>
++            <permission type="send" roles="amq"/>
++            <!-- we need this otherwise ./artemis data imp wouldn't work -->
++            <permission type="manage" roles="amq"/>
++         </security-setting>
+       </security-settings>
+
+       <address-settings>
+@@ -209,8 +215,36 @@
+             <auto-create-jms-queues>true</auto-create-jms-queues>
+             <auto-create-jms-topics>true</auto-create-jms-topics>
+          </address-setting>
++         <address-setting match="/queue/#">
++            <default-address-routing-type>ANYCAST</default-address-routing-type>
++            <default-queue-routing-type>ANYCAST</default-queue-routing-type>
++         </address-setting>
++         <address-setting match="/topic/*/*/*/*/image">
++            <default-address-routing-type>MULTICAST</default-address-routing-type>
++            <default-queue-routing-type>MULTICAST</default-queue-routing-type>
++            <retroactive-message-count>5</retroactive-message-count>
++         </address-setting>
++         <address-setting match="/topic/*/*/*/*/text">
++            <default-address-routing-type>MULTICAST</default-address-routing-type>
++            <default-queue-routing-type>MULTICAST</default-queue-routing-type>
++            <retroactive-message-count>1</retroactive-message-count>
++         </address-setting>
++         <address-setting match="/topic/*/*/*/image">
++            <default-address-routing-type>MULTICAST</default-address-routing-type>
++            <default-queue-routing-type>MULTICAST</default-queue-routing-type>
++            <retroactive-message-count>5</retroactive-message-count>
++         </address-setting>
++         <address-setting match="/topic/*/*/*/text">
++            <default-address-routing-type>MULTICAST</default-address-routing-type>
++            <default-queue-routing-type>MULTICAST</default-queue-routing-type>
++            <retroactive-message-count>1</retroactive-message-count>
++         </address-setting>
+       </address-settings>
+
++      <wildcard-addresses>
++         <delimiter>/</delimiter>
++      </wildcard-addresses>
++
+       <addresses>
+          <address name="DLQ">
+             <anycast>
+@@ -240,5 +274,8 @@
+       </broker-plugins>
+       -->
+
++      <connection-ttl-override>43200000</connection-ttl-override>
++      <connection-ttl-check-interval>60000</connection-ttl-check-interval>
++
+    </core>
+ </configuration>

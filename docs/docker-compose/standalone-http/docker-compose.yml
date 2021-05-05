@@ -16,12 +16,14 @@ services:
   radiodns:
     build: .
     hostname: radiodns
-    env_file:
-      - radiodns.env
     environment:
       - STATIC_ROOT=/var/www/html/static
       - MEDIA_ROOT=/var/www/html/media
-      - PROXY=True
+      - PROXY=${PROXY}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - STOMP_USERNAME=${ARTEMIS_USERNAME}
+      - STOMP_PASSWORD=${ARTEMIS_PASSWORD}
     volumes:
       - ./db:/usr/src/app/db
       - static-root:/var/www/html/static
@@ -39,11 +41,14 @@ services:
     volumes:
       - ./artemis-instance:/var/lib/artemis-instance
     environment:
-      - ARTEMIS_USER=admin
-      - ARTEMIS_PASSWORD=OrG6CxMOOG8wlfrppl4o
+      - ARTEMIS_USER=${ARTEMIS_USERNAME}
+      - ARTEMIS_PASSWORD=${ARTEMIS_PASSWORD}
       - ANONYMOUS_LOGIN=true
     networks:
       - radiodns
     restart: always
+networks:
+  radiodns:
 volumes:
   static-root:
+  media-root:

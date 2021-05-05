@@ -2,8 +2,6 @@ version: "3.9"
 services:
   radiodns:
     build: .
-    env_file:
-    - radiodns.env
     volumes:
       - ${STATIC_ROOT}:${STATIC_ROOT}
       - ${MEDIA_ROOT}:${MEDIA_ROOT}
