@@ -7,14 +7,18 @@ Creating RadioDNS-application for Radio Moreeni
 Deployment of project and Artemis is possible in Docker.
 
 ### Requirements
+- 1.5GB of RAM, mostly for Apache Artemis and could possibly be reduced.
 - (For deployment without Docker) Python 3.6+
 - (For deployment without Docker) Node and NPM (frontend build, Node 16 tested)
 - Stomp server for Visual Slideshow
-    - Apache ActiveMQ Artemis tested, instructions at the end. Uses 1GB of Java heap by default (possibly excluding plenty of overhead, more testing on hardware requirements required for Artemis and base project).
+    - Apache ActiveMQ Artemis tested, instructions at the end. Uses a 1GB Java heap by default
     - RabbitMQ NOT supported
-- (Optional) PostgreSQL, MariaDB etc. Edit `radiodns\settings.py`. SQLite3 is used by default, example of PostgreSQL (and possibly MariaDB) deployments in the future.
+- (Optional) PostgreSQL, MariaDB etc. Edit `radiodns\settings.py`. SQLite3 is used by default and works well, example of PostgreSQL (and possibly MariaDB) deployments in the future.
 
 ### Project Installation
+SLIGHTLY OUTDATED, THERE IS A SLIGHTLY EASIER INSTALLATION METHOD IN PROGRESS IN [docs/docker-compose/standalone-http](docs/docker-compose/standalone-http)
+THAT REQUIRES JUST ARTEMIS CONFIGURATION AND A HTTPS PROXY.
+
 To install this project, you can use the provided docker-compose.yml and Dockerfile files after cloning.  
 You should create a file called `.env` to set some Django environment variables, usually at a minimum.
 
@@ -82,7 +86,7 @@ cd activemq-artemis/artemis-docker
 docker build -f ./docker/Dockerfile-adoptopenjdk-11 -t artemis-adoptopenjdk-11 .
 ```
 
-After that docker-compose can be used. Below is an example `docker-compose.yml` for Artemis. (TODO: Determine what ports are actually needed for what.)
+After that docker-compose can be used. Below is an example `docker-compose.yml` for Artemis. 8161 is only required for the management interface.
 ```
 version: "3.9"
 services:
@@ -91,7 +95,6 @@ services:
     ports:
       - "61613:61613"
       - "61614:61614"
-      - "61616:61616"
       - "8161:8161"
     volumes:
       - /path/to/host/artemis-instance:/var/lib/artemis-instance

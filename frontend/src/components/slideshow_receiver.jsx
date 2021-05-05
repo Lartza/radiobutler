@@ -1,3 +1,19 @@
+/**
+ * Copyright 2021 Radio Moreeni
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React, { useState, useEffect, Suspense } from 'react';
 import {
   StompSessionProvider,
@@ -139,12 +155,12 @@ function ImageSubscribingComponent() {
         <img src={lastImage} alt={t('receiver.nowShowing')} height="240" />
       </div>
       <p>
-        Link:
+        {t('receiver.link')}
         {' '}
         {lastLink ? <a href={lastLink}>{lastLink}</a> : t('none')}
       </p>
       <h2>
-        Next up -
+        {t('receiver.next')}
         {' '}
         <button type="button" onClick={openModal}>{t('receiver.show')}</button>
       </h2>
@@ -163,7 +179,7 @@ function ImageSubscribingComponent() {
         />
       </div>
       <p>
-        Link:
+        {t('receiver.link')}
         {' '}
         {messages[0] ? <a href={messages[0].headers.link}>{messages[0].headers.link}</a> : t('none')}
       </p>

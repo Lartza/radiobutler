@@ -34,16 +34,37 @@
     "nowShowing": "Now showing",
     "message": "Message:",
     "image": "Image:",
+    "link": "Link:",
     "notAvailable": "Bearer not available",
     "noMessage": "No message received yet",
     "show": "Show all",
     "imagesScheduled": "No images scheduled",
-    "next": "Next up",
+    "next": "Next up -",
     "nextImage": "Next image at",
     "imageScheduled": "No image scheduled"
   },
-  "saveClose": "Save & Close gallery",
+  "gallery": {
+    "addNewImage": "Add a new image to the gallery",
+    "allowedTypes": "Allowed image types: jpeg, png",
+    "images": "images",
+    "galleryItems": "Gallery items",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "image": "Image"
+  },
+  "errors": {
+    "required": "Required!",
+    "max2000": "Maximum 2000 characters.",
+    "link": "Must be a link (must start with http(s)).",
+    "chars2": "Must be two (2) characters.",
+    "chars4": "Must be four (4) characters.",
+    "domainName": "Must be a domain name without protocol.",
+    "allowedCharacters": "Only lower case letters and numbers allowed."
+  },
+  "saveClose": "Save & Close Gallery",
   "save": "SAVE",
   "close": "Close",
+  "upload": "UPLOAD",
+  "delete": "Delete",
   "none": "None"
 }

@@ -1,3 +1,19 @@
+/**
+ * Copyright 2021 Radio Moreeni
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from 'react';
 import Cookies from 'universal-cookie/es6';
 import validator from 'validator';
@@ -131,24 +147,25 @@ class MyForm extends React.Component {
     const fields = this.state;
     const errors = {};
     let isFormValid = true;
+    const { t } = this.props;
 
     // short name - 8 chars max
     if (!fields.shortName) {
       isFormValid = false;
-      errors.shortName = 'Required!';
+      errors.shortName = t('errors.required');
     }
 
     // medium name - 16 chars max
     if (!fields.mediumName) {
       isFormValid = false;
-      errors.mediumName = 'Required!';
+      errors.mediumName = t('errors.required');
     }
 
     // link - 2000 chars max, must be link
     if (fields.link) {
       if (fields.link.length > 2000) {
         isFormValid = false;
-        errors.link = 'Maximum 2000 characters.';
+        errors.link = t('errors.max2000');
       }
 
       else if (!validator.isURL(fields.link, {
@@ -158,7 +175,7 @@ class MyForm extends React.Component {
         /* eslint-enable camelcase */
       })) {
         isFormValid = false;
-        errors.link = 'Must be a link (must start with http(s)).';
+        errors.link = t('errors.link');
       }
     }
 
@@ -166,28 +183,28 @@ class MyForm extends React.Component {
       // ecc - 2 chars
       if (fields.ecc.length !== 2) {
         isFormValid = false;
-        errors.ecc = 'Must be two (2) characters.';
+        errors.ecc = t('errors.chars2');
       }
 
       // pi - 4 chars
       if (fields.pi.length !== 4) {
         isFormValid = false;
-        errors.pi = 'Must be four (4) characters.';
+        errors.pi = t('errors.chars4');
       }
     } else if (fields.ecc || fields.pi || fields.frequency) { // All the fields are required, if at least one is filled
       if (!fields.ecc) {
         isFormValid = false;
-        errors.ecc = 'Required!';
+        errors.ecc = t('errors.required');
       }
 
       if (!fields.pi) {
         isFormValid = false;
-        errors.pi = 'Required!';
+        errors.pi = t('errors.required');
       }
 
       if (!fields.frequency) {
         isFormValid = false;
-        errors.frequency = 'Required!';
+        errors.frequency = t('errors.required');
       }
     }
 
@@ -195,7 +212,7 @@ class MyForm extends React.Component {
     if (fields.url) {
       if (fields.url.length > 2000) {
         isFormValid = false;
-        errors.url = 'Maximum 2000 characters.';
+        errors.url = t('errors.max2000');
       } else if (!validator.isURL(fields.url, {
         protocols: ['http', 'https'],
         /* eslint-disable camelcase */
@@ -203,26 +220,26 @@ class MyForm extends React.Component {
         /* eslint-enable camelcase */
       })) {
         isFormValid = false;
-        errors.url = 'Must be a link (must start with http(s)).';
+        errors.url = t('errors.link');
       }
     }
 
     // fqdn - domain without http
     if (!fields.fqdn) {
       isFormValid = false;
-      errors.fqdn = 'Required!';
+      errors.fqdn = t('errors.required');
     } else if (!validator.isFQDN(fields.fqdn)) {
       isFormValid = false;
-      errors.fqdn = 'Must be a domain name without protocol.';
+      errors.fqdn = t('errors.domainName');
     }
 
     // service identifier - 16 chars max, only lower case and numbers
     if (!fields.serviceIdentifier) {
       isFormValid = false;
-      errors.serviceIdentifier = 'Required!';
+      errors.serviceIdentifier = t('errors.required');
     } else if (fields.serviceIdentifier.match(/^[a-z0-9]+$/) == null) {
       isFormValid = false;
-      errors.serviceIdentifier = 'Only lower case letters and numbers allowed.';
+      errors.serviceIdentifier = t('errors.allowedCharacters');
     }
 
     this.setState({ errors });
@@ -383,7 +400,7 @@ class MyForm extends React.Component {
             </div>
           </div>
 
-          <h2>{t('form.websiteLink')}</h2>
+          <h2>{t('form.link')}</h2>
           <div className="grid-container">
             <div className="grid-item"><label htmlFor="link">{t('form.websiteLink')}</label></div>
 

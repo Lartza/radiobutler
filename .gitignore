@@ -465,3 +465,5 @@ dist
 .pnp.*
 
 media/
+artemis-instance/
+db/

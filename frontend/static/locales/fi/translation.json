@@ -10,7 +10,7 @@
     "link": "Linkki",
     "websiteLink": "Verkkosivun osoite",
     "logo": "Logo",
-    "logoDescription": "Valitse logo galleriasta. Kuva skaalataan oikeisiin kokoihin.",
+    "logoDescription": "Valitse logo galleriasta. Kuva skaalataan tarvittaviin kokoihin.",
     "openGallery": "Avaa galleria",
     "bearers": "Kantajat",
     "bearer1": "Kantaja 1",
@@ -20,16 +20,51 @@
     "pi": "RDS PI",
     "frequency": "Taajuus (MHz)",
     "bearer2": "Kantaja 2",
-    "bearer2platlform": "Kantajan 2 alusta",
+    "bearer2platform": "Kantajan 2 alusta",
     "url": "IP URL",
     "mime": "IP MIME",
     "bitrate": "IP bittinopeus (kbps)",
-    "parameters": "RadioDNS Parametrit",
+    "parameters": "RadioDNS-parametrit",
     "fqdn": "FQDN *",
     "serviceIdentifier": "Palvelun tunniste *",
-    "submitted": "Lähetetty!",
-    "failed": "Epäonnistui!"
+    "submitted": "Tiedot lähetetty!",
+    "failed": "Lähetys epäonnistui!"
   },
-  "saveClose": "Tallenna & Sulje Galleria",
-  "save": "TALLENNA"
+  "receiver": {
+    "nowShowing": "Näytetään nyt",
+    "message": "Viesti:",
+    "image": "Kuva:",
+    "link": "Linkki:",
+    "notAvailable": "Kantaja ei ole saatavilla",
+    "noMessage": "Ei vastaanotettua viestiä",
+    "show": "Näytä kaikki",
+    "imagesScheduled": "Ei ajastettuja kuvia",
+    "next": "Seuraavaksi tulossa -",
+    "nextImage": "Seuraava kuva näytetään",
+    "imageScheduled": "Ei ajastettua kuvaa"
+  },
+  "gallery": {
+    "addNewImage": "Lisää uusi kuva galleriaan",
+    "allowedTypes": "Sallitut kuvatyypit: jpeg, png",
+    "images": "kuvaa",
+    "galleryItems": "Gallerian kuvat",
+    "previousPage": "Edellinen sivu",
+    "nextPage": "Seuraava sivu",
+    "image": "Kuva"
+  },
+  "errors": {
+    "required": "Vaadittu tieto",
+    "max2000": "Enintään 2000 merkkiä",
+    "link": "Täytyy olla linkki (alkaa http(s))",
+    "chars2": "Täytyy olla kaksi (2) merkkiä",
+    "chars4": "Täytyy olla neljä (4) merkkiä",
+    "domainName": "Täytyy olla verkkotunnus ilman protokollaa",
+    "allowedCharacters": "Vain pienet kirjaimet ja numerot sallittu"
+  },
+  "saveClose": "Tallenna & sulje galleria",
+  "save": "TALLENNA",
+  "close": "Sulje",
+  "upload": "LATAA",
+  "delete": "Poista",
+  "none": "Ei mitään"
 }

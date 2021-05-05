@@ -1,0 +1,49 @@
+version: "3.9"
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - static-root:/var/www/html/static:ro
+      - media-root:/var/www/html/media:ro
+    ports:
+      - 8080:80
+    restart: always
+    networks:
+      - radiodns
+    depends_on:
+      - artemis
+  radiodns:
+    build: .
+    hostname: radiodns
+    env_file:
+      - radiodns.env
+    environment:
+      - STATIC_ROOT=/var/www/html/static
+      - MEDIA_ROOT=/var/www/html/media
+      - PROXY=True
+    volumes:
+      - ./db:/usr/src/app/db
+      - static-root:/var/www/html/static
+      - media-root:/var/www/html/media
+    image: radiodns
+    restart: always
+    networks:
+      - radiodns
+  artemis:
+    image: "artemis-adoptopenjdk-11:latest"
+    hostname: artemis
+    ports:
+      - "61613:61613"
+      - "8161:8161"
+    volumes:
+      - ./artemis-instance:/var/lib/artemis-instance
+    environment:
+      - ARTEMIS_USER=admin
+      - ARTEMIS_PASSWORD=OrG6CxMOOG8wlfrppl4o
+      - ANONYMOUS_LOGIN=true
+    networks:
+      - radiodns
+    restart: always
+volumes:
+  static-root:

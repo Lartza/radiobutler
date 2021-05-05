@@ -28,7 +28,7 @@ msgstr "Asematiedot"
 
 #: .\frontend\templates\frontend\base.html:25
 msgid "Visual Content"
-msgstr "Visuaalinen Sisältö"
+msgstr "Visuaalinen sisältö"
 
 #: .\frontend\templates\frontend\base.html:26
 #: .\frontend\templates\frontend\gallery.html:5
@@ -53,16 +53,16 @@ msgid ""
 "This project is a work in progress. Features are missing, and features that "
 "are there may be broken."
 msgstr ""
-"Tämä projekti on vielä kesken. Se sisältää puuttuvia ominaisuuksia, sekä "
-"ominaisuuksia jotka ovat vielä rikki."
+"Tämä projekti on vielä kesken. Se sisältää puuttuvia ominaisuuksia sekä "
+"ominaisuuksia, jotka ovat vielä rikki."
 
 #: .\frontend\templates\frontend\service.html:5
 msgid "Edit Station Information"
-msgstr "Muokkaa Asematietoja"
+msgstr "Muokkaa asematietoja"
 
 #: .\frontend\templates\frontend\slideshow.html:5
 msgid "Send Visual Content"
-msgstr "Lähetä Visuaalista Sisältöä"
+msgstr "Lähetä visuaalista sisältöä"
 
 #: .\frontend\templates\registration\logged_out.html:5
 msgid "Logged out!"
@@ -74,19 +74,19 @@ msgstr "Klikkaa tästä kirjautuaksesi uudelleen."
 
 #: .\frontend\templates\registration\login.html:7
 msgid "Your username and password didn't match. Please try again."
-msgstr "Käjttäjätunnus ja selasana eivät täsmää. Yritä uudelleen."
+msgstr "Käyttäjätunnus ja salasana eivät täsmää. Yritä uudelleen."
 
 #: .\frontend\templates\registration\login.html:12
 msgid ""
 "Your account doesn't have access to this page. To proceed, please login with "
 "an account that has access."
 msgstr ""
-"Tunnuksellasi ei ole käyttöoikeuksia tälle sivulle. Jatkaaksesi kirjaudu "
-"sisään uudestaan toisella tunnuksella."
+"Tunnuksellasi ei ole käyttöoikeutta tälle sivulle. Jatkaaksesi kirjaudu "
+"sisään uudelleen toisella tunnuksella."
 
 #: .\frontend\templates\registration\login.html:14
 msgid "Please login to see this page."
-msgstr "Ole hyvä ja kirjaudu nähdäksesi tämän sivun."
+msgstr "Ole hyvä ja kirjaudu sisään nähdäksesi tämän sivun."
 
 #: .\venv\Lib\site-packages\django\contrib\messages\apps.py:7
 msgid "Messages"

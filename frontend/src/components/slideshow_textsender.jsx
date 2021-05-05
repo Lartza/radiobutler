@@ -1,3 +1,19 @@
+/**
+ * Copyright 2021 Radio Moreeni
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from 'react';
 import Cookies from 'universal-cookie/es6';
 import { withTranslation } from 'react-i18next';
@@ -29,19 +45,19 @@ class TextSlideSender extends React.Component {
       },
       body: data,
     }).then((r) => {
-        if (r.ok) {
-          success = true;
-          this.setState({ success });
-        } else {
-          throw r;
-        }
-      }).catch((err) => {
-        err.text().then((errorMessage) => {
-          const errors = {};
-          errors.backend = errorMessage;
-          this.setState({ errors });
-        });
+      if (r.ok) {
+        success = true;
+        this.setState({ success });
+      } else {
+        throw r;
+      }
+    }).catch((err) => {
+      err.text().then((errorMessage) => {
+        const errors = {};
+        errors.backend = errorMessage;
+        this.setState({ errors });
       });
+    });
   }
 
   render() {

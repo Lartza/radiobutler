@@ -3,7 +3,7 @@ services:
   radiodns:
     build: .
     env_file:
-    - .env
+    - radiodns.env
     volumes:
       - ${STATIC_ROOT}:${STATIC_ROOT}
       - ${MEDIA_ROOT}:${MEDIA_ROOT}
