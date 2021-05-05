@@ -27,7 +27,7 @@ pylint:
     - useless-suppression
   options:
     max-line-length: 119
-    good-names: pk,e
+    good-names: pk,e,f
     max-parents: 12
 
 pep8:

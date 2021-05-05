@@ -20,23 +20,23 @@
             {% endif %}
             {% if service.logo %}
             <mediaDescription>
-                <multimedia url="{{request.scheme}}://{{request.META.HTTP_HOST}}{{ service.logo.image32.url }}"
+                <multimedia url="{{request.scheme}}://{{request.META.HTTP_HOST}}{{ service.logo32.url }}"
                             type="logo_colour_square" />
             </mediaDescription>
             <mediaDescription>
-                <multimedia url="{{request.scheme}}://{{request.META.HTTP_HOST}}{{ service.logo.image112.url }}"
+                <multimedia url="{{request.scheme}}://{{request.META.HTTP_HOST}}{{ service.logo112.url }}"
                             type="logo_colour_rectangle" />
             </mediaDescription>
             <mediaDescription>
-                <multimedia url="{{request.scheme}}://{{request.META.HTTP_HOST}}{{ service.logo.image128.url }}"
+                <multimedia url="{{request.scheme}}://{{request.META.HTTP_HOST}}{{ service.logo128.url }}"
                             type="logo_unrestricted" mimeValue="image/png" width="128" height="128" />
             </mediaDescription>
             <mediaDescription>
-                <multimedia url="{{request.scheme}}://{{request.META.HTTP_HOST}}{{ service.logo.image320.url }}"
+                <multimedia url="{{request.scheme}}://{{request.META.HTTP_HOST}}{{ service.logo320.url }}"
                             type="logo_unrestricted" mimeValue="image/png" width="320" height="240" />
             </mediaDescription>
             <mediaDescription>
-                <multimedia url="{{request.scheme}}://{{request.META.HTTP_HOST}}{{ service.logo.image600.url }}"
+                <multimedia url="{{request.scheme}}://{{request.META.HTTP_HOST}}{{ service.logo600.url }}"
                             type="logo_unrestricted" mimeValue="image/png" width="600" height="600" />
             </mediaDescription>
             {% endif %}

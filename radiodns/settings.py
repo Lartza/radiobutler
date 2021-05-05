@@ -57,8 +57,7 @@ INSTALLED_APPS = [
     'radiovis.apps.RadiovisConfig',
     'rest_framework',
     'drf_nested_forms',
-    'smartfields',
-    'django.contrib.sites',
+    'django_cleanup.apps.CleanupConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -183,8 +182,6 @@ REST_FRAMEWORK = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-SITE_ID = 1
 
 SILENCED_SYSTEM_CHECKS = ["rest_framework.W001"]
 
