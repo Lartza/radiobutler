@@ -151,7 +151,7 @@ class MyForm extends React.Component {
         errors.link = 'Maximum 2000 characters.';
       }
 
-      if (!validator.isURL(fields.link, {
+      else if (!validator.isURL(fields.link, {
         protocols: ['http', 'https'],
         /* eslint-disable camelcase */
         require_protocol: true,
