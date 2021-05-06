@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  radiodns:
+    build: .
+    volumes:
+      - ${STATIC_ROOT}:${STATIC_ROOT}
+      - ${MEDIA_ROOT}:${MEDIA_ROOT}
+    environment:
+      - PROXY=${PROXY}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - STOMP_USERNAME=${STOMP_USERNAME}
+      - STOMP_PASSWORD=${STOMP_PASSWORD}
+      - STATIC_ROOT=${STATIC_ROOT}
+      - MEDIA_ROOT=${MEDIA_ROOT}
+    image: radiodns
+    ports:
+      - "5003:5003"

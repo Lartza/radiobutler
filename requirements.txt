@@ -1,6 +1,7 @@
-Django~=3.2.1
+Django~=3.2.2
 djangorestframework~=3.12.4
 Pillow~=8.2.0
 stomp.py~=7.0.0
 drf-nested-forms~=0.2.1
 django-cleanup~=5.2.0
+django-docs~=0.3.1

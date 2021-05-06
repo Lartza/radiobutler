@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_nested_forms',
     'django_cleanup.apps.CleanupConfig',
+    'docs',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -199,3 +200,6 @@ try:
         SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 except KeyError:
     pass
+
+DOCS_ROOT = os.path.join(BASE_DIR, 'docs/build/html')
+DOCS_ACCESS = 'public'

@@ -29,7 +29,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -48,5 +48,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('', include('radioepg.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    re_path(r'^docs/', include('docs.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
