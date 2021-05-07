@@ -182,13 +182,20 @@ class MyForm extends React.Component {
       if (fields.ecc.length !== 2) {
         isFormValid = false;
         errors.ecc = t('errors.chars2');
+      } else if (fields.ecc.match(/^[a-z0-9]+$/) == null) {
+          isFormValid = false;
+          errors.ecc = t('errors.allowedCharacters');
       }
 
       // pi - 4 chars
       if (fields.pi.length !== 4) {
         isFormValid = false;
         errors.pi = t('errors.chars4');
+      } else if (fields.pi.match(/^[a-z0-9]+$/) == null) {
+          isFormValid = false;
+          errors.pi = t('errors.allowedCharacters');
       }
+
     } else if (fields.ecc || fields.pi || fields.frequency) { // All the fields are required, if at least one is filled
       if (!fields.ecc) {
         isFormValid = false;
