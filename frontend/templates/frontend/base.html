@@ -27,7 +27,7 @@
             <li {% if request.path == gallery %}class="active"{% endif %}><a href="{{gallery}}">{% translate "Gallery" %}</a></li>
             <li style="float:right;"><a href="{% url 'logout' %}">{% translate "Logout" %}</a></li>
             <li style="float:right;"><a href="{% url 'account' %}#">{% translate "Account" %}</a></li>
-            {% if request.user.is_superuser %}
+            {% if request.user.is_staff %}
                 <li style="float:right;"><a href="{% url 'admin:index' %}">{% translate "Admin" %}</a></li>
             {% endif %}
         {% else %}
@@ -37,7 +37,12 @@
     </ul>
 </nav>
 <div class="content">{% block content %}{% endblock %}</div>
-<footer>Copyright &copy; 2021 <a href="https://www.tuni.fi/radiomoreeni/">Radio Moreeni</a>
-    <a style="float:right;" href="https://github.com/mervij/radiodns">GitHub</a></footer>
+<footer>
+    Copyright &copy; 2021 <a href="https://www.tuni.fi/radiomoreeni/">Radio Moreeni</a>
+    <div style="float:right;">
+        <a target="_blank" href="/docs">{% translate "Help" %}</a>
+        <a href="https://github.com/mervij/radiodns">GitHub</a>
+    </div>
+</footer>
 </body>
 </html>
