@@ -5,14 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block title %}<title>RadioDNS</title>{% endblock %}
+    {% block title %}<title>Radio Butler</title>{% endblock %}
     {% load static %}
     <link rel="icon" href="{% static 'frontend/favicon.ico' %}" type="image/x-icon" />
     <link rel="stylesheet" href="{% static 'frontend/style.css' %}" />
 </head>
 <body>
 <header>
-    <p>Logo here.</p>
+    <img src="/static/frontend/radio-butler-gray-164.png" alt="Radio Butler" class="logo"/>
     <form style="float: right;" action="{% url 'set_language' %}" method="post">{% csrf_token %}
         <input name="next" type="hidden" value="{{ redirect_to }}">
         <select name="language" onchange="this.form.submit()">

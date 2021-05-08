@@ -13,7 +13,7 @@ body {
 header {
     display: block;
     background-color: #f0f0f0;
-    height: 100px;
+    height: 140px;
 }
 
 /* Navigation */
@@ -80,7 +80,10 @@ h3 {
 }
 
 .content {
-    padding: 10px 25px;
+    padding-top: 25px;
+    padding-right: 25px;
+    padding-bottom: 25px;
+    padding-left: 25px;
 }
 
 .main {
@@ -210,6 +213,11 @@ img.modal-image:hover {
     height: 240px;
     border: none;
     background-color: #f0f0f0;
+}
+
+img.logo {
+    height: 136px;
+    border: none;
 }
 
 /* Sticky */
