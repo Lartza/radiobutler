@@ -208,6 +208,7 @@ class Gallery extends React.Component {
 Gallery.propTypes = {
   selectImage: PropTypes.func,
   apiurl: PropTypes.string,
+  t: PropTypes.func.isRequired,
   tReady: PropTypes.bool,
 };
 

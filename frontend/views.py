@@ -51,3 +51,9 @@ def slideshow(request):
 def gallery(request):
     """Renders the Visual Slideshow page when authenticated."""
     return render(request, 'frontend/gallery.html')
+
+
+@login_required
+def account(request):
+    """Renders the account detail page."""
+    return render(request, 'frontend/account.html')

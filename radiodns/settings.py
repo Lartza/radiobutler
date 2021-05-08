@@ -41,7 +41,10 @@ except KeyError:
     SECRET_KEY = 'p%-psnjt8w5w%scfqn-%!1%79^ovc)g*r*$p=)a656lcj8qu95'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+try:
+    DEBUG = os.environ['DEBUG']
+except KeyError:
+    DEBUG = True
 
 try:
     ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(',')

@@ -17,7 +17,7 @@ header {
 }
 
 /* Navigation */
-ul {
+nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -25,11 +25,11 @@ ul {
     background-color: #eaeaea;
 }
 
-li {
+nav li {
     float: left;
 }
 
-li a {
+nav li a {
     display: block;
     color: #73308a;
     font-family: 'Lato', Helvetica, sans-serif;
@@ -40,7 +40,7 @@ li a {
     text-decoration: none;
 }
 
-li a:hover {
+nav li a:hover {
     background-color: white;
 }
 

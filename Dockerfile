@@ -25,11 +25,11 @@ COPY --from=webpack /usr/src/app/frontend/static frontend/static
 COPY --from=webpack /usr/src/app/frontend/templates/frontend/* frontend/templates/frontend/
 COPY . .
 
-RUN apt update
-RUN apt -y install gettext
+RUN apt-get update
+RUN apt-get -y install gettext
 RUN django-admin compilemessages
-RUN apt -y purge gettext
-RUN apt -y autoremove
+RUN apt-get -y remove --purge gettext
+RUN apt-get -y autoremove --purge
 
 RUN pip install --no-cache-dir -r requirements-doc.txt
 WORKDIR /usr/src/app/docs

@@ -43,7 +43,7 @@ router.registry.extend(radioepg_router.registry)
 router.registry.extend(radiovis_router.registry)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('', include('frontend.urls')),
     path('api/', include(router.urls)),
     path('', include('radioepg.urls')),
