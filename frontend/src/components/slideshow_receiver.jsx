@@ -144,7 +144,7 @@ function ImageSubscribingComponent() {
           src={m.body.split(' ', 2)[1]}
         />
         <div>{m.headers.link}</div>
-        <div>{m.headers['trigger-time']}</div>
+        <div>{new Date(m.headers['trigger-time']).toLocaleString()}</div>
       </div>
     ),
   );
@@ -184,7 +184,7 @@ function ImageSubscribingComponent() {
         {messages[0] ? <a href={messages[0].headers.link}>{messages[0].headers.link}</a> : t('none')}
       </p>
       <p>
-        {messages[0] ? `${t('receiver.nextImage')} ${messages[0].headers['trigger-time']}`
+        {messages[0] ? `${t('receiver.nextImage')} ${new Date(messages[0].headers['trigger-time']).toLocaleString()}`
           : t('receiver.imageScheduled')}
       </p>
     </div>
