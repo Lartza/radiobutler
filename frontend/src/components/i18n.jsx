@@ -35,6 +35,10 @@ i18n
     backend: {
       loadPath: '/static/locales/{{lng}}/{{ns}}.json',
     },
+
+    detection: {
+      lookupCookie: 'django_language',
+    }
   });
 
 export default i18n;
