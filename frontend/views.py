@@ -40,7 +40,7 @@ def slideshow(request):
             bearer = Bearer.objects.filter(service=Service.objects.first(), platform='fm').first()
             integer, decimal = str(bearer.frequency).split('.')
             frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
-            destination = f'/topic/fm/{bearer.pi:1}{bearer.ecc}/{bearer.pi}/{frequency}'
+            destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}'
         except AttributeError:
             destination = None
     context = {'bearer': destination}

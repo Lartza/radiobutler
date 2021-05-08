@@ -51,7 +51,7 @@ def service_information(request):
                 # Frequency needs to be formatted with five integers, zero padded on both sides
                 integer, decimal = str(bearer.frequency).split('.')
                 frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
-                bearer_element = f'<bearer id="fm:{bearer.pi:1}{bearer.ecc}.{bearer.pi}.{frequency}" ' \
+                bearer_element = f'<bearer id="fm:{bearer.pi[0]}{bearer.ecc}.{bearer.pi}.{frequency}" ' \
                                  f'cost="{bearer.cost}"/>'
             elif bearer.platform == 'ip':
                 bearer_element = f'<bearer id="{bearer.url}" mimeValue="{bearer.mimeValue}" cost="{bearer.cost}"'

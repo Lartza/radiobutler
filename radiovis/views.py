@@ -54,7 +54,7 @@ def send_stomp_image(instance, url):
             if bearer.platform == 'fm':
                 integer, decimal = str(bearer.frequency).split('.')
                 frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
-                destination = f'/topic/fm/{bearer.pi:1}{bearer.ecc}/{bearer.pi}/{frequency}/image'
+                destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/image'
             elif bearer.platform == 'ip':
                 destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}/image'
             else:
@@ -87,7 +87,7 @@ def send_stomp_text(instance):
             if bearer.platform == 'fm':
                 integer, decimal = str(bearer.frequency).split('.')
                 frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
-                destination = f'/topic/fm/{bearer.pi:1}{bearer.ecc}/{bearer.pi}/{frequency}/text'
+                destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/text'
             elif bearer.platform == 'ip':
                 destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}/text'
             else:
