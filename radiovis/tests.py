@@ -67,7 +67,7 @@ class TextSlideTest(APITestCase):
         response = self.client.post(reverse('textslide-list'), {'message': 'Testmessage'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         mock_stomp.Connection().send.assert_called_with(body='TEXT Testmessage',
-                                                        destination='/topic/fm/TEST00/TEST/00770/text')
+                                                        destination='/topic/fm/T00/TEST/00770/text')
 
 
 class ImageTest(APITestCase):
@@ -142,4 +142,4 @@ class ImageSlideTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         mock_stomp.Connection().send.assert_called_with(body='SHOW http://testserver/media/images/testimage.png',
                                                         headers={'trigger-time': 'NOW'},
-                                                        destination='/topic/fm/TEST00/TEST/00770/image')
+                                                        destination='/topic/fm/T00/TEST/00770/image')
