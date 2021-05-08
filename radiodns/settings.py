@@ -42,7 +42,7 @@ except KeyError:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 try:
-    DEBUG = os.environ['DEBUG']
+    DEBUG = bool(os.environ['DEBUG'])
 except KeyError:
     DEBUG = True
 

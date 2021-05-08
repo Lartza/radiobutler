@@ -1,5 +1,6 @@
 strictness: veryhigh
 test-warnings: true
+output-format: pylint
 
 uses:
   - django
@@ -12,6 +13,7 @@ ignore-paths:
   - venv
   - __pycache__
   - manage.py
+  - docs
 
 mypy:
   run: true

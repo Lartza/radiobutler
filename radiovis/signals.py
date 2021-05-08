@@ -23,7 +23,8 @@ from .models import ImageSlide, TextSlide
 
 @receiver(pre_delete, sender=TextSlide)
 @receiver(pre_delete, sender=ImageSlide)
-def prevent_slide_deletion(sender, instance, using, **kwargs):
+def prevent_slide_deletion(sender, instance, using, **_):
+    del sender, using
     date_send = instance.sent
     if date_send:
         date_now = datetime.now(timezone.utc)

@@ -42,68 +42,62 @@ def send_stomp_image(instance, url):
     if instance.link:
         headers['link'] = instance.link
 
-    try:
-        # Reduce blocking by reconnecting only once
-        conn = stomp.Connection([(STOMP_HOST, STOMP_PORT)], reconnect_attempts_max=1)
-        # Create listener to catch error messages from Stomp
-        lst = ErrorListener()
-        conn.set_listener('', lst)
+    # Reduce blocking by reconnecting only once
+    conn = stomp.Connection([(STOMP_HOST, STOMP_PORT)], reconnect_attempts_max=1)
+    # Create listener to catch error messages from Stomp
+    lst = ErrorListener()
+    conn.set_listener('', lst)
 
-        conn.connect(STOMP_USERNAME, STOMP_PASSWORD, wait=True)
-        for bearer in Bearer.objects.all():
-            if bearer.platform == 'fm':
-                integer, decimal = str(bearer.frequency).split('.')
-                frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
-                destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/image'
-            elif bearer.platform == 'ip':
-                destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}/image'
-            else:
-                raise stomp.exception.StompException('No bearers configured')
-            conn.send(body=f'SHOW {url}',
-                      headers=headers,
-                      destination=destination)
-        conn.disconnect()
-        time.sleep(2)
+    conn.connect(STOMP_USERNAME, STOMP_PASSWORD, wait=True)
+    for bearer in Bearer.objects.all():
+        if bearer.platform == 'fm':
+            integer, decimal = str(bearer.frequency).split('.')
+            frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
+            destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/image'
+        elif bearer.platform == 'ip':
+            destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}/image'
+        else:
+            raise stomp.exception.StompException('No bearers configured')
+        conn.send(body=f'SHOW {url}',
+                  headers=headers,
+                  destination=destination)
+    conn.disconnect()
+    time.sleep(2)
 
-        # Check for received error messages
-        if lst.error:
-            raise stomp.exception.StompException(f'{lst.error}')
-        instance.sent = datetime.now(timezone.utc)
-        instance.save()
-    except (ConnectFailedException, stomp.exception.StompException):
-        raise
+    # Check for received error messages
+    if lst.error:
+        raise stomp.exception.StompException(f'{lst.error}')
+    instance.sent = datetime.now(timezone.utc)
+    instance.save()
 
 
 def send_stomp_text(instance):
-    try:
-        # Reduce blocking by reconnecting only once
-        conn = stomp.Connection([(STOMP_HOST, STOMP_PORT)], reconnect_attempts_max=1)
-        # Create listener to catch error messages from Stomp
-        lst = ErrorListener()
-        conn.set_listener('', lst)
+    # Reduce blocking by reconnecting only once
+    conn = stomp.Connection([(STOMP_HOST, STOMP_PORT)], reconnect_attempts_max=1)
+    # Create listener to catch error messages from Stomp
+    lst = ErrorListener()
+    conn.set_listener('', lst)
 
-        conn.connect(STOMP_USERNAME, STOMP_PASSWORD, wait=True)
-        for bearer in Bearer.objects.all():
-            if bearer.platform == 'fm':
-                integer, decimal = str(bearer.frequency).split('.')
-                frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
-                destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/text'
-            elif bearer.platform == 'ip':
-                destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}/text'
-            else:
-                raise stomp.exception.StompException('No bearers configured')
-            conn.send(body=f'TEXT {instance.message}',
-                      destination=destination)
-        conn.disconnect()
-        time.sleep(2)
+    conn.connect(STOMP_USERNAME, STOMP_PASSWORD, wait=True)
+    for bearer in Bearer.objects.all():
+        if bearer.platform == 'fm':
+            integer, decimal = str(bearer.frequency).split('.')
+            frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
+            destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/text'
+        elif bearer.platform == 'ip':
+            destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}/text'
+        else:
+            raise stomp.exception.StompException('No bearers configured')
+        conn.send(body=f'TEXT {instance.message}',
+                  destination=destination)
+    conn.disconnect()
+    time.sleep(2)
 
-        # Check for received error messages
-        if lst.error:
-            raise stomp.exception.StompException(f'{lst.error}')
-        instance.sent = datetime.now(timezone.utc)
-        instance.save()
-    except ConnectFailedException:
-        raise
+    # Check for received error messages
+    if lst.error:
+        raise stomp.exception.StompException(f'{lst.error}')
+    instance.sent = datetime.now(timezone.utc)
+    instance.save()
 
 
 class ErrorListener(stomp.ConnectionListener):
@@ -136,7 +130,7 @@ class ImageSlideViewSet(viewsets.ModelViewSet):
         except (ConnectFailedException, stomp.exception.StompException) as e:
             return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def destroy(self, request, *args, **kwargs):
+    def destroy(self, request, *_, **__):
         instance = self.get_object()
         try:
             self.perform_destroy(instance)
@@ -165,7 +159,7 @@ class TextSlideViewSet(viewsets.ModelViewSet):
         except (ConnectFailedException, stomp.exception.StompException) as e:
             return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def destroy(self, request, *args, **kwargs):
+    def destroy(self, request, *_, **__):
         instance = self.get_object()
         try:
             self.perform_destroy(instance)
@@ -181,7 +175,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = PageNumberPagination
 
-    def destroy(self, request, *args, **kwargs):
+    def destroy(self, request, *_, **__):
         instance = self.get_object()
         try:
             self.perform_destroy(instance)

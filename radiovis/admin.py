@@ -25,7 +25,7 @@ from .models import ImageSlide, TextSlide
 class ImageSlideAdmin(admin.ModelAdmin):
     readonly_fields = ['trigger_time', 'image', 'link', 'sent']
 
-    def has_add_permission(self, request, obj=None):
+    def has_add_permission(self, request):
         return False
 
     def delete_view(self, request, object_id, extra_context=None):
@@ -46,7 +46,7 @@ class ImageSlideAdmin(admin.ModelAdmin):
 class TextSlideAdmin(admin.ModelAdmin):
     readonly_fields = ['message', 'sent']
 
-    def has_add_permission(self, request, obj=None):
+    def has_add_permission(self, request):
         return False
 
     def delete_view(self, request, object_id, extra_context=None):
