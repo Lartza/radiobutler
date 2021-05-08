@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StompSessionProvider,
   useSubscription,
 } from 'react-stomp-hooks';
-import Modal from 'react-modal';
-import { useTranslation, Translation } from 'react-i18next';
 
-Modal.setAppElement('#app3');
+// !!!!!!!!!!!!!!!!!!!!!!!!!!
+// DO NOT TRANSLATE THIS FILE
+// !!!!!!!!!!!!!!!!!!!!!!!!!!
 
 function compare(a, b) {
   if (Date.parse(a.headers['trigger-time']) < Date.parse(b.headers['trigger-time'])) {
@@ -35,27 +35,19 @@ function compare(a, b) {
   return 0;
 }
 
-const Receiver = () => (
-  <Suspense fallback="loading">
-    <StompSessionProvider url={`wss://${window.location.hostname}/stomp`}>
-      <Translation>
-        {(t) => (
-          <div>
-            <h2>{t('receiver.nowShowing')}</h2>
-            <p><b>{t('receiver.message')}</b></p>
-            <p>{window.bearer ? <TextSubscribingComponent /> : t('receiver.notAvailable')}</p>
-            <p><b>{t('receiver.image')}</b></p>
-            {window.bearer ? <ImageSubscribingComponent /> : t('receiver.notAvailable')}
-          </div>
-        )}
-      </Translation>
-    </StompSessionProvider>
-  </Suspense>
+const ReceiverLite = () => (
+  <div>
+    {window.service ? (
+      <StompSessionProvider url={`wss://${window.service}/stomp`}>
+        {window.bearer ? <ImageSubscribingComponent /> : 'Bearer not available'}
+        {window.bearer ? <TextSubscribingComponent /> : 'Bearer not available'}
+      </StompSessionProvider>
+    ) : 'Service not available'}
+  </div>
 );
 
 function TextSubscribingComponent() {
-  const { t } = useTranslation();
-  const [lastMessage, setLastMessage] = useState(t('receiver.noMessage'));
+  const [lastMessage, setLastMessage] = useState('');
 
   useSubscription(`${window.bearer}/text`, (message) => {
     if (message.body.startsWith('TEXT ')) {
@@ -68,19 +60,9 @@ function TextSubscribingComponent() {
 }
 
 function ImageSubscribingComponent() {
-  const { t } = useTranslation();
-  const [lastImage, setLastImage] = useState('/static/frontend/noimage.jpg');
+  const [lastImage, setLastImage] = useState(`https://${window.service}/static/frontend/noimage.jpg`);
   const [lastLink, setLastLink] = useState('');
   const [messages, setMessages] = useState([]);
-  const [modalIsOpen, setIsOpen] = useState(false);
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -137,58 +119,14 @@ function ImageSubscribingComponent() {
     }
   });
 
-  const msgElements = Object.values(messages).map(
-    (m) => (
-      <div key={m.headers['message-id']}>
-        <img
-          src={m.body.split(' ', 2)[1]}
-        />
-        <div>{m.headers.link}</div>
-        <div>{m.headers['trigger-time']}</div>
-      </div>
-    ),
-  );
-
   return (
     <div>
-      <div className="imagebox">
-        <img src={lastImage} alt={t('receiver.nowShowing')} height="240" />
-      </div>
+      <img src={lastImage} alt="Now showing" height="240" />
       <p>
-        {t('receiver.link')}
-        {' '}
-        {lastLink ? <a href={lastLink}>{lastLink}</a> : t('none')}
-      </p>
-      <h2>
-        {t('receiver.next')}
-        {' '}
-        <button type="button" onClick={openModal}>{t('receiver.show')}</button>
-      </h2>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Receiver Modal"
-      >
-        <button type="button" onClick={closeModal}>{t('close')}</button>
-        <div>{msgElements.length > 0 ? msgElements : <span>{t('receiver.imagesScheduled')}</span>}</div>
-      </Modal>
-      <div className="imagebox">
-        <img
-          src={messages[0] ? messages[0].body.split(' ', 2)[1] : '/static/frontend/noimage.jpg'}
-          alt={t('receiver.next')}
-        />
-      </div>
-      <p>
-        {t('receiver.link')}
-        {' '}
-        {messages[0] ? <a href={messages[0].headers.link}>{messages[0].headers.link}</a> : t('none')}
-      </p>
-      <p>
-        {messages[0] ? `${t('receiver.nextImage')} ${messages[0].headers['trigger-time']}`
-          : t('receiver.imageScheduled')}
+        {lastLink ? <a href={lastLink}>{lastLink}</a> : ''}
       </p>
     </div>
   );
 }
 
-export default Receiver;
+export default ReceiverLite;

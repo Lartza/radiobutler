@@ -1,6 +1,8 @@
 # Webpack output
-main.js
-si.js
-slideshow.js
-gallery.js
-vendors-*
+/main.js
+/si.js
+/slideshow.js
+/gallery.js
+/vendors-*
+/receiver.js
+/src_components_gallery_jsx.js
