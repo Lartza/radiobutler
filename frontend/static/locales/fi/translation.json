@@ -30,6 +30,21 @@
     "submitted": "Tiedot lähetetty!",
     "failed": "Lähetys epäonnistui!"
   },
+  "sender": {
+    "images": "Kuvat",
+    "chooseImage": "Valitse kuva galleriasta.",
+    "openGallery": "Avaa galleria",
+    "selectedImage": "Valittu kuva",
+    "alt": "Valittu",
+    "linkUrl": "Linkin osoite ",
+    "linkTooltip": "Lisää klikattava linkki kuvalle",
+    "triggerTime": "Julkaisuaika ",
+    "triggerTooltip": "Valitse koska kuva näytetään",
+    "sendImage": "Lähetä kuva",
+    "textMessage": "Tekstiviesti",
+    "message": "Viesti (maks. 128 merkkiä)",
+    "sendText": "Lähetä teksti"
+  },
   "receiver": {
     "nowShowing": "Näytetään nyt",
     "message": "Viesti:",
@@ -54,17 +69,23 @@
   },
   "errors": {
     "required": "Vaadittu tieto",
+    "max512": "Enintään 512 merkkiä",
     "max2000": "Enintään 2000 merkkiä",
     "link": "Täytyy olla linkki (alkaa http(s))",
     "chars2": "Täytyy olla kaksi (2) merkkiä",
     "chars4": "Täytyy olla neljä (4) merkkiä",
     "domainName": "Täytyy olla verkkotunnus ilman protokollaa",
-    "allowedCharacters": "Vain pienet kirjaimet ja numerot sallittu"
+    "allowedCharacters": "Vain pienet kirjaimet ja numerot sallittu",
+    "imageSelected": "Kuva täytyy valita ennen lähetystä",
+    "date": "Päivämäärä ja aika eivät voi olla menneisyydessä",
+    "dateTime": "Sekä päivämäärä että aika pitää valita"
   },
   "saveClose": "Tallenna & sulje galleria",
   "save": "TALLENNA",
   "close": "Sulje",
   "upload": "LATAA",
   "delete": "Poista",
-  "none": "Ei mitään"
+  "none": "Ei mitään",
+  "submitted": "Tiedot lähetetty!",
+  "failed": "Lähetys epäonnistui!"
 }

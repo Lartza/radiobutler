@@ -57,18 +57,19 @@ class ImageSlideSender extends React.Component {
     const fields = this.state;
     const errors = {};
     let isFormValid = true;
+    const { t } = this.props;
 
-    // image has to be selected before sending
+    // Image has to be selected before sending
     if (!fields.image) {
       isFormValid = false;
-      errors.image = 'Image has to be selected before sending.';
+      errors.image = t('errors.imageSelected');
     }
 
-    // api url - 512 chars max, must be link
+    // Api url - 512 chars max, must be a link
     if (fields.link) {
       if (fields.link.length > 512) {
         isFormValid = false;
-        errors.link = 'Maximum 512 characters.';
+        errors.link = t('errors.max512');
       } else if (!validator.isURL(fields.link, {
         protocols: ['http', 'https'],
         /* eslint-disable camelcase */
@@ -76,23 +77,23 @@ class ImageSlideSender extends React.Component {
         /* eslint-enable camelcase */
       })) {
         isFormValid = false;
-        errors.link = 'Must be a link (must start with http(s)).';
+        errors.link = t('errors.link');
       }
     }
 
-    // trigger time - should be later than current time. Both
-    // date and time has to be selected, if either one is selected.
+    // Trigger time - should be later than current time. Both
+    // date and time have to be selected, if either one is selected.
     if (fields.date && fields.time) {
       const date = Date.parse(`${fields.date}T${fields.time}`);
       const now = Date.now();
 
       if (date < now) {
         isFormValid = false;
-        errors.date = 'Date and time cannot be in the past.';
+        errors.date = t('errors.date');
       }
     } else if ((fields.date && !fields.time) || (!fields.date && fields.time)) {
       isFormValid = false;
-      errors.date = 'Both date and time has to be selected.';
+      errors.date = t('errors.dateTime');
     }
 
     this.setState({ errors });
@@ -162,43 +163,45 @@ class ImageSlideSender extends React.Component {
 
     return (
       <div>
-        <h2>Images</h2>
+        <h2>{t('sender.images')}</h2>
         <div>
-          <p>Choose an image from the gallery.</p>
-          <button type="button" onClick={this.handleOpenModal}>Open gallery</button>
+          <p>{t('sender.chooseImage')}</p>
+          <button type="button" onClick={this.handleOpenModal}>{t('sender.openGallery')}</button>
           <ReactModal
             isOpen={showModal}
             contentLabel="Gallery Modal"
           >
-            <button type="button" onClick={this.handleCloseModal}>Save & Close gallery</button>
+            <button type="button" onClick={this.handleCloseModal}>{t('saveClose')}</button>
             <GalleryApp selectImage={this.selectImage} apiurl={apiurl} useSuspense={false} />
-            <button type="button" onClick={this.handleCloseModal}>Save & Close gallery</button>
+            <button type="button" onClick={this.handleCloseModal}>{t('saveClose')}</button>
           </ReactModal>
         </div>
         <form onSubmit={this.mySubmitHandler.bind(this)}>
 
-          <label htmlFor="image">Selected image </label>
+          <label htmlFor="image">{t('sender.selectedImage')}</label>
           <br />
           <br />
           <input type="hidden" id="image" name="image" value={apiurl} onChange={this.myChangeHandler.bind(this)} />
-          <img src={image} alt="Selected" height="240" />
+          <img src={image} alt={t('sender.alt')} height="240" />
           <span className="errors">{errors.image}</span>
           <br />
           <br />
-          <label htmlFor="image_link">Link URL </label>
+          <label htmlFor="image_link">{t('sender.linkUrl')}</label>
           <div className="tooltip">
+            {' '}
             ?
-            <span className="tooltiptext">Provide a click-through link for the image</span>
+            <span className="tooltiptext">{t('sender.linkTooltip')}</span>
           </div>
           <br />
           <input type="text" id="image_link" name="link" value={link} onChange={this.myChangeHandler.bind(this)} />
           <span className="errors">{errors.link}</span>
           <br />
           <br />
-          <label htmlFor="trigger_time">Trigger time </label>
+          <label htmlFor="trigger_time">{t('sender.triggerTime')}</label>
           <div className="tooltip">
+            {' '}
             ?
-            <span className="tooltiptext">Choose when to show the image</span>
+            <span className="tooltiptext">{t('sender.triggerTooltip')}</span>
           </div>
           <br />
           <input type="date" id="trigger_time" name="date" value={date} onChange={this.myChangeHandler.bind(this)} />
@@ -213,10 +216,10 @@ class ImageSlideSender extends React.Component {
           <span className="errors">{errors.date}</span>
           <br />
 
-          <input type="submit" value="SEND IMAGE" />
+          <input type="submit" value={t('sender.sendImage')} />
           <span className="errors">{errors.backend}</span>
-          {Object.keys(errors).length === 0 && success && <span className="success">Submitted!</span>}
-          {Object.keys(errors).length > 0 && <span className="errors">Failed!</span>}
+          {Object.keys(errors).length === 0 && success && <span className="success">{t('submitted')}</span>}
+          {Object.keys(errors).length > 0 && <span className="errors">{t('failed')}</span>}
           <br />
           <br />
         </form>

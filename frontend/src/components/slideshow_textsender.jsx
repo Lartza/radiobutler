@@ -68,16 +68,16 @@ class TextSlideSender extends React.Component {
     if (!tReady) return null;
     return (
       <form onSubmit={this.mySubmitHandler.bind(this)}>
-        <h2>Text Message</h2>
-        <label htmlFor="message">Message (max 128 chars) </label>
+        <h2>{t('sender.textMessage')}</h2>
+        <label htmlFor="message">{t('sender.message')}</label>
         <br />
         <textarea id="message" name="message" rows="3" maxLength="128" />
         <br />
 
-        <input type="submit" value="SEND TEXT" />
+        <input type="submit" value={t('sender.sendText')} />
         <span className="errors">{errors.backend}</span>
-        {Object.keys(errors).length === 0 && success && <span className="success">Submitted!</span>}
-        {Object.keys(errors).length > 0 && <span className="errors">Failed!</span>}
+        {Object.keys(errors).length === 0 && success && <span className="success">{t('submitted')}</span>}
+        {Object.keys(errors).length > 0 && <span className="errors">{t('failed')}</span>}
         <br />
         <br />
       </form>

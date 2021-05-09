@@ -30,6 +30,21 @@
     "submitted": "Submitted!",
     "failed": "Failed!"
   },
+  "sender": {
+    "images": "Images",
+    "chooseImage": "Choose an image from the gallery.",
+    "openGallery": "Open gallery",
+    "selectedImage": "Selected image",
+    "alt": "Selected",
+    "linkUrl": "Link URL ",
+    "linkTooltip": "Provide a click-through link for the image",
+    "triggerTime": "Trigger time ",
+    "triggerTooltip": "Choose when to show the image",
+    "sendImage": "SEND IMAGE",
+    "textMessage": "Text Message",
+    "message": "Message (max 128 chars)",
+    "sendText": "SEND TEXT"
+  },
   "receiver": {
     "nowShowing": "Now showing",
     "message": "Message:",
@@ -54,17 +69,23 @@
   },
   "errors": {
     "required": "Required!",
+    "max512": "Maximum 512 characters.",
     "max2000": "Maximum 2000 characters.",
     "link": "Must be a link (must start with http(s)).",
     "chars2": "Must be two (2) characters.",
     "chars4": "Must be four (4) characters.",
     "domainName": "Must be a domain name without protocol.",
-    "allowedCharacters": "Only lower case letters and numbers allowed."
+    "allowedCharacters": "Only lower case letters and numbers allowed.",
+    "imageSelected": "Image has to be selected before sending.",
+    "date": "Date and time cannot be in the past.",
+    "dateTime": "Both date and time have to be selected."
   },
   "saveClose": "Save & Close Gallery",
   "save": "SAVE",
   "close": "Close",
   "upload": "UPLOAD",
   "delete": "Delete",
-  "none": "None"
+  "none": "None",
+  "submitted": "Submitted!",
+  "failed": "Failed!"
 }
