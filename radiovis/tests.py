@@ -25,6 +25,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 from PIL import Image as PILImage
+from stomp.exception import StompException
 
 from radioepg.models import Service, Bearer
 from .models import TextSlide, ImageSlide, Image
@@ -61,13 +62,23 @@ class TextSlideTest(APITestCase):
         self.assertEqual(TextSlide.objects.count(), 0)
 
     @patch('radiovis.views.stomp')
-    def test_post_textslide(self, mock_stomp):
+    def test_post_textslide_fm(self, mock_stomp):
         service = Service.objects.create(shortName='Testi')
         Bearer.objects.create(platform='fm', ecc='00', pi='TEST', frequency=7.7, service=service, cost=50)
         response = self.client.post(reverse('textslide-list'), {'message': 'Testmessage'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         mock_stomp.Connection().send.assert_called_with(body='TEXT Testmessage',
                                                         destination='/topic/fm/T00/TEST/00770/text')
+
+    @patch('radiovis.views.stomp')
+    def test_post_textslide_ip(self, mock_stomp):
+        service = Service.objects.create(shortName='Testi', serviceIdentifier='testidentifier')
+        Bearer.objects.create(platform='ip', url='https://example.com/teststream.mp3', mimeValue='audio/mp3',
+                              bitrate=128, service=service, cost=30)
+        response = self.client.post(reverse('textslide-list'), {'message': 'Testmessage'})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        mock_stomp.Connection().send.assert_called_with(body='TEXT Testmessage',
+                                                        destination='/topic/testidentifier/text')
 
 
 class ImageTest(APITestCase):
@@ -134,12 +145,41 @@ class ImageSlideTest(APITestCase):
 
     @patch('radiovis.views.stomp')
     @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
-    def test_post_imageslide(self, mock_stomp):
+    def test_post_imageslide_fm(self, mock_stomp):
         service = Service.objects.create(shortName='Testi')
         Bearer.objects.create(platform='fm', ecc='00', pi='TEST', frequency=7.7, service=service, cost=50)
         instance = Image.objects.create(image=image())
-        response = self.client.post(reverse('imageslide-list'), {'image': reverse('image-detail', args=[instance.id])})
+        response = self.client.post(reverse('imageslide-list'), {'image': reverse('image-detail', args=[instance.id]),
+                                                                 'link': 'http://testlink'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         mock_stomp.Connection().send.assert_called_with(body='SHOW http://testserver/media/images/testimage.png',
-                                                        headers={'trigger-time': 'NOW'},
+                                                        headers={'trigger-time': 'NOW', 'link': 'http://testlink'},
                                                         destination='/topic/fm/T00/TEST/00770/image')
+        response = self.client.post(reverse('imageslide-list'), {'image': reverse('image-detail', args=[instance.id]),
+                                                                 'trigger_time': '2021-05-10 12:00:00+00:00'})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        mock_stomp.Connection().send.assert_called_with(body='SHOW http://testserver/media/images/testimage.png',
+                                                        headers={'trigger-time': '2021-05-10T12:00:00Z'},
+                                                        destination='/topic/fm/T00/TEST/00770/image')
+
+    @patch('radiovis.views.stomp')
+    @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='mediatest').name)
+    def test_post_imageslide_ip(self, mock_stomp):
+        service = Service.objects.create(shortName='Testi', serviceIdentifier='testidentifier')
+        Bearer.objects.create(platform='ip', url='https://example.com/teststream.mp3', mimeValue='audio/mp3',
+                              bitrate=128, service=service, cost=30)
+        instance = Image.objects.create(image=image())
+        response = self.client.post(reverse('imageslide-list'),
+                                    {'image': reverse('image-detail', args=[instance.id]),
+                                     'link': 'http://testlink'})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        mock_stomp.Connection().send.assert_called_with(body='SHOW http://testserver/media/images/testimage.png',
+                                                        headers={'trigger-time': 'NOW', 'link': 'http://testlink'},
+                                                        destination='/topic/testidentifier/image')
+        response = self.client.post(reverse('imageslide-list'),
+                                    {'image': reverse('image-detail', args=[instance.id]),
+                                     'trigger_time': '2021-05-10 12:00:00+00:00'})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        mock_stomp.Connection().send.assert_called_with(body='SHOW http://testserver/media/images/testimage.png',
+                                                        headers={'trigger-time': '2021-05-10T12:00:00Z'},
+                                                        destination='/topic/testidentifier/image')

@@ -55,7 +55,7 @@ def send_stomp_image(instance, url):
             frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
             destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/image'
         elif bearer.platform == 'ip':
-            destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}/image'
+            destination = f'/topic/{bearer.service.serviceIdentifier}/image'
         else:
             raise stomp.exception.StompException('No bearers configured')
         conn.send(body=f'SHOW {url}',
@@ -85,7 +85,7 @@ def send_stomp_text(instance):
             frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
             destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/text'
         elif bearer.platform == 'ip':
-            destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}/text'
+            destination = f'/topic/{bearer.service.serviceIdentifier}/text'
         else:
             raise stomp.exception.StompException('No bearers configured')
         conn.send(body=f'TEXT {instance.message}',

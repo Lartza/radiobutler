@@ -57,12 +57,12 @@
 +            <default-queue-routing-type>MULTICAST</default-queue-routing-type>
 +            <retroactive-message-count>1</retroactive-message-count>
 +         </address-setting>
-+         <address-setting match="/topic/*/*/*/image">
++         <address-setting match="/topic/*/image">
 +            <default-address-routing-type>MULTICAST</default-address-routing-type>
 +            <default-queue-routing-type>MULTICAST</default-queue-routing-type>
 +            <retroactive-message-count>5</retroactive-message-count>
 +         </address-setting>
-+         <address-setting match="/topic/*/*/*/text">
++         <address-setting match="/topic/*/text">
 +            <default-address-routing-type>MULTICAST</default-address-routing-type>
 +            <default-queue-routing-type>MULTICAST</default-queue-routing-type>
 +            <retroactive-message-count>1</retroactive-message-count>

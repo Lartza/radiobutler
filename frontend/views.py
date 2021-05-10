@@ -34,7 +34,7 @@ def slideshow(request):
     """Renders the Visual Slideshow page when authenticated."""
     bearer = Bearer.objects.filter(service=Service.objects.first(), platform='ip').first()
     try:
-        destination = f'/topic/id/{bearer.service.fqdn}/{bearer.service.serviceIdentifier}'
+        destination = f'/topic/{bearer.service.serviceIdentifier}'
     except AttributeError:
         try:
             bearer = Bearer.objects.filter(service=Service.objects.first(), platform='fm').first()

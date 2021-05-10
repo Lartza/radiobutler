@@ -128,7 +128,7 @@ Allow guest access on /topic/#
 
 Make /image and /text topics retroactive. The values for /image can be adjusted, the /text addresses should be kept at one.
 Higher values cause more messages to be sent to receivers, sometimes unnecessarily.
-`/topic/*/*/*/*` addresses are for FM receivers and `/topic/*/*/*/` addresses for IP receivers.
+`/topic/*/*/*/*` addresses are for FM receivers and `/topic/*` addresses for IP receivers.
 ```
 +         <address-setting match="/queue/#">
 +            <default-address-routing-type>ANYCAST</default-address-routing-type>
@@ -144,12 +144,12 @@ Higher values cause more messages to be sent to receivers, sometimes unnecessari
 +            <default-queue-routing-type>MULTICAST</default-queue-routing-type>
 +            <retroactive-message-count>1</retroactive-message-count>
 +         </address-setting>
-+         <address-setting match="/topic/*/*/*/image">
++         <address-setting match="/topic/*/image">
 +            <default-address-routing-type>MULTICAST</default-address-routing-type>
 +            <default-queue-routing-type>MULTICAST</default-queue-routing-type>
 +            <retroactive-message-count>5</retroactive-message-count>
 +         </address-setting>
-+         <address-setting match="/topic/*/*/*/text">
++         <address-setting match="/topic/*/text">
 +            <default-address-routing-type>MULTICAST</default-address-routing-type>
 +            <default-queue-routing-type>MULTICAST</default-queue-routing-type>
 +            <retroactive-message-count>1</retroactive-message-count>
