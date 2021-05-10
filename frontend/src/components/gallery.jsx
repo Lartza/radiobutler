@@ -49,7 +49,7 @@ class Gallery extends React.Component {
     this.setState({ current: next }, this.reloadGallery);
   }
 
-  getImageClassNames(apiurl, iApiurl) {
+  static getImageClassNames(apiurl, iApiurl) {
     let classes = 'modal-image';
     if (apiurl === iApiurl) {
       classes += ' selected';
@@ -143,12 +143,13 @@ class Gallery extends React.Component {
     const imgElements = Object.values(results).map(
       (i) => (
         <img
+          alt={`${t('gallery.image')} ${i.index}`}
           key={i.apiurl}
           data-apiurl={i.apiurl}
           src={i.image}
           onClick={selectImage || this.selectImage.bind(this)}
-          className={selectImage ? this.getImageClassNames(apiurl, i.apiurl)
-            : this.getImageClassNames(selected.apiurl, i.apiurl)}
+          className={selectImage ? Gallery.getImageClassNames(apiurl, i.apiurl)
+            : Gallery.getImageClassNames(selected.apiurl, i.apiurl)}
         />
       ),
     );

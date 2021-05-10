@@ -56,7 +56,8 @@
     "imagesScheduled": "No images scheduled",
     "next": "Next up -",
     "nextImage": "Next image at",
-    "imageScheduled": "No image scheduled"
+    "imageScheduled": "No image scheduled",
+    "received": "Received slideshow"
   },
   "gallery": {
     "addNewImage": "Add a new image to the gallery",

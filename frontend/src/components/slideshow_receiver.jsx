@@ -43,9 +43,9 @@ const Receiver = () => (
           <div>
             <h2>{t('receiver.nowShowing')}</h2>
             <p><b>{t('receiver.message')}</b></p>
-            <p>{window.bearer ? <TextSubscribingComponent /> : t('receiver.notAvailable')}</p>
+            <div>{window.bearer ? <TextSubscribingComponent /> : t('receiver.notAvailable')}</div>
             <p><b>{t('receiver.image')}</b></p>
-            <p>{window.bearer ? <ImageSubscribingComponent /> : t('receiver.notAvailable')}</p>
+            <div>{window.bearer ? <ImageSubscribingComponent /> : t('receiver.notAvailable')}</div>
           </div>
         )}
       </Translation>
@@ -142,6 +142,7 @@ function ImageSubscribingComponent() {
       <div key={m.headers['message-id']}>
         <img
           src={m.body.split(' ', 2)[1]}
+          alt={`${t('receiver.received')} ${m.index}`}
         />
         <div>{m.headers.link}</div>
         <div>{new Date(m.headers['trigger-time']).toLocaleString()}</div>

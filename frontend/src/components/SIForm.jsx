@@ -23,6 +23,8 @@ import PropTypes from 'prop-types';
 import GalleryApp from './gallery';
 import './i18n';
 
+ReactModal.setAppElement('#app');
+
 // React form
 class MyForm extends React.Component {
   constructor(props) {

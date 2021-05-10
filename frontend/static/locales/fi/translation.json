@@ -56,7 +56,8 @@
     "imagesScheduled": "Ei ajastettuja kuvia",
     "next": "Seuraavaksi tulossa -",
     "nextImage": "Seuraava kuva näytetään",
-    "imageScheduled": "Ei ajastettua kuvaa"
+    "imageScheduled": "Ei ajastettua kuvaa",
+    "received": "Vastaanotettu kuva"
   },
   "gallery": {
     "addNewImage": "Lisää uusi kuva galleriaan",
