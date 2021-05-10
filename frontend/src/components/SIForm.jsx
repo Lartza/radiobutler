@@ -356,7 +356,7 @@ class MyForm extends React.Component {
     } = this.state;
     const { t, tReady } = this.props;
 
-    if (!tReady) return null;
+    if (!tReady) return <div className="loader" />;
 
     return (
       <div>

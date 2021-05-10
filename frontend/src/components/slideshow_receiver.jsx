@@ -36,7 +36,7 @@ function compare(a, b) {
 }
 
 const Receiver = () => (
-  <Suspense fallback="loading">
+  <Suspense fallback={<div className="loader" />}>
     <StompSessionProvider url={`wss://${window.location.hostname}/stomp`}>
       <Translation>
         {(t) => (

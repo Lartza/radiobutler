@@ -138,7 +138,7 @@ class Gallery extends React.Component {
       selectImage, apiurl, t, tReady,
     } = this.props;
 
-    if (!tReady) return null;
+    if (!tReady) return <div className="loader" />;
 
     const imgElements = Object.values(results).map(
       (i) => (

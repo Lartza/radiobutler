@@ -65,7 +65,7 @@ class TextSlideSender extends React.Component {
       errors, success,
     } = this.state;
     const { t, tReady } = this.props;
-    if (!tReady) return null;
+    if (!tReady) return <div className="loader" />;
     return (
       <form onSubmit={this.mySubmitHandler.bind(this)}>
         <h2>{t('sender.textMessage')}</h2>
