@@ -119,6 +119,12 @@ class MyForm extends React.Component {
     this.setState({ showModal: false });
   }
 
+  onKeyPressed(event) {
+    if (event.keyCode === 8 || event.keyCode === 46) {
+      this.setState({ modified: true });
+    }
+  }
+
   beforeunload(e) {
     const { modified } = this.state;
     if (modified) {
@@ -368,6 +374,7 @@ class MyForm extends React.Component {
                 id="shortname"
                 maxLength="8"
                 onChange={this.myChangeHandler.bind(this)}
+                onKeyDown={this.onKeyPressed.bind(this)}
               />
               <span className="errors">{errors.shortName}</span>
             </div>
@@ -382,6 +389,7 @@ class MyForm extends React.Component {
                 name="mediumName"
                 maxLength="16"
                 onChange={this.myChangeHandler.bind(this)}
+                onKeyDown={this.onKeyPressed.bind(this)}
               />
               <span className="errors">{errors.mediumName}</span>
             </div>
@@ -399,6 +407,7 @@ class MyForm extends React.Component {
                 maxLength="180"
                 rows="4"
                 onChange={this.myChangeHandler.bind(this)}
+                onKeyDown={this.onKeyPressed.bind(this)}
               />
               <span className="errors">{errors.shortDescription}</span>
             </div>
@@ -415,6 +424,7 @@ class MyForm extends React.Component {
                 id="link"
                 name="link"
                 onChange={this.myChangeHandler.bind(this)}
+                onKeyDown={this.onKeyPressed.bind(this)}
               />
               <span className="errors">{errors.link}</span>
             </div>
@@ -461,6 +471,7 @@ class MyForm extends React.Component {
                 name="ecc"
                 maxLength="2"
                 onChange={this.myChangeHandler.bind(this)}
+                onKeyDown={this.onKeyPressed.bind(this)}
               />
               <span className="errors">{errors.ecc}</span>
             </div>
@@ -475,6 +486,7 @@ class MyForm extends React.Component {
                 name="pi"
                 maxLength="4"
                 onChange={this.myChangeHandler.bind(this)}
+                onKeyDown={this.onKeyPressed.bind(this)}
               />
               <span className="errors">{errors.pi}</span>
             </div>
@@ -491,6 +503,7 @@ class MyForm extends React.Component {
                 id="frequency"
                 name="frequency"
                 onChange={this.myChangeHandler.bind(this)}
+                onKeyDown={this.onKeyPressed.bind(this)}
               />
               <span className="errors">{errors.frequency}</span>
             </div>
@@ -520,6 +533,7 @@ class MyForm extends React.Component {
                 id="url"
                 name="url"
                 onChange={this.myChangeHandler.bind(this)}
+                onKeyDown={this.onKeyPressed.bind(this)}
               />
               <span className="errors">{errors.url}</span>
             </div>
@@ -543,6 +557,7 @@ class MyForm extends React.Component {
                 min="1"
                 max="10000"
                 onChange={this.myChangeHandler.bind(this)}
+                onKeyDown={this.onKeyPressed.bind(this)}
               />
             </div>
           </div>
@@ -552,7 +567,14 @@ class MyForm extends React.Component {
             <div className="grid-item"><label htmlFor="fqdn">{t('form.fqdn')}</label></div>
 
             <div className="grid-item">
-              <input defaultValue={fqdn} type="text" name="fqdn" id="fqdn" onChange={this.myChangeHandler.bind(this)} />
+              <input
+                defaultValue={fqdn}
+                type="text"
+                name="fqdn"
+                id="fqdn"
+                onChange={this.myChangeHandler.bind(this)}
+                onKeyDown={this.onKeyPressed.bind(this)}
+              />
               <span className="errors">{errors.fqdn}</span>
             </div>
 
@@ -566,6 +588,7 @@ class MyForm extends React.Component {
                 id="fqdn"
                 maxLength="16"
                 onChange={this.myChangeHandler.bind(this)}
+                onKeyDown={this.onKeyPressed.bind(this)}
               />
               <span className="errors">{errors.serviceIdentifier}</span>
             </div>

@@ -87,5 +87,5 @@
   "delete": "Poista",
   "none": "Ei mitään",
   "submitted": "Tiedot lähetetty!",
-  "failed": "Lähetys epäonnistui!"
+  "failed": "Lähetys epäonnistui! Tarkista annetut tiedot."
 }
