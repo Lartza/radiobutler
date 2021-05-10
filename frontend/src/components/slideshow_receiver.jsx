@@ -43,9 +43,9 @@ const Receiver = () => (
           <div>
             <h2>{t('receiver.nowShowing')}</h2>
             <p><b>{t('receiver.message')}</b></p>
-            <div>{window.bearer ? <TextSubscribingComponent /> : t('receiver.notAvailable')}</div>
+            {window.bearer ? <TextSubscribingComponent /> : <p>{t('receiver.notAvailable')}</p>}
             <p><b>{t('receiver.image')}</b></p>
-            <div>{window.bearer ? <ImageSubscribingComponent /> : t('receiver.notAvailable')}</div>
+            {window.bearer ? <ImageSubscribingComponent /> : <p>{t('receiver.notAvailable')}</p>}
           </div>
         )}
       </Translation>
