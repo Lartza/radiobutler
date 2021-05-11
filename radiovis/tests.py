@@ -25,7 +25,6 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 from PIL import Image as PILImage
-from stomp.exception import StompException
 
 from radioepg.models import Service, Bearer
 from .models import TextSlide, ImageSlide, Image

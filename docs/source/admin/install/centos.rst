@@ -36,7 +36,7 @@ Build, configure and deploy the project
 .. code-block:: console
 
     cd ~
-    git clone https://github.com/mervij/radiodns
+    git clone https://github.com/Lartza/radiobutler
     cd radiodns
     cp docs/examples/docker-compose/standalone-http/* .
     mv radiodns.env .env
@@ -58,7 +58,7 @@ Finally everything can be brought up.
 The service is now available locally from http://127.0.0.1:8080 and should be reverse proxied to serve to the internet through https.
 An example nginx configuration for this is available here_.
 
-.. _here: https://github.com/mervij/radiodns/docs/examples/docker-compose/standalone-http/nginx-proxy-example.conf
+.. _here: https://github.com/Lartza/radiobutler/docs/examples/docker-compose/standalone-http/nginx-proxy-example.conf
 
 A Django superuser can be created with the following command, further user management is then possible through web.
 
