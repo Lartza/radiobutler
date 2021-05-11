@@ -1,10 +1,9 @@
-# radiodns
-[![Build Status](https://drone.ltn.fi/api/badges/mervij/radiodns/status.svg)](https://drone.ltn.fi/mervij/radiodns)
+# Radio Butler
+[![Build Status](https://drone.ltn.fi/api/badges/Lartza/radiobutler/status.svg?ref=refs/heads/main)](https://drone.ltn.fi/Lartza/radiobutler)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Creating RadioDNS-application for Radio Moreeni.
-
-Django + React powered service for providing RadioDNS services.
+Radio Butler provides RadioDNS services for your radio station, powered by Django and React.
+Created for Radio Moreeni.
 
 ## Deployment
 Deployment of project and Artemis is possible manually or in Docker.
