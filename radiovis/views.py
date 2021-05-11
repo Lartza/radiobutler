@@ -22,7 +22,6 @@ from django.db.models import ProtectedError
 from rest_framework import viewsets, permissions, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from stomp.exception import ConnectFailedException
 
 from radiodns.settings import STOMP_HOST, STOMP_PORT, STOMP_USERNAME, STOMP_PASSWORD
 
@@ -49,26 +48,28 @@ def send_stomp_image(instance, url):
     conn.set_listener('', lst)
 
     conn.connect(STOMP_USERNAME, STOMP_PASSWORD, wait=True)
-    for bearer in Bearer.objects.all():
-        if bearer.platform == 'fm':
-            integer, decimal = str(bearer.frequency).split('.')
-            frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
-            destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/image'
-        elif bearer.platform == 'ip':
-            destination = f'/topic/{bearer.service.serviceIdentifier}/image'
-        else:
-            raise stomp.exception.StompException('No bearers configured')
-        conn.send(body=f'SHOW {url}',
-                  headers=headers,
-                  destination=destination)
-    conn.disconnect()
-    time.sleep(2)
+    bearers = Bearer.objects.all()
+    if len(bearers) > 0:
+        for bearer in bearers:
+            if bearer.platform == 'fm':
+                integer, decimal = str(bearer.frequency).split('.')
+                frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
+                destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/image'
+            elif bearer.platform == 'ip':
+                destination = f'/topic/{bearer.service.serviceIdentifier}/image'
+            conn.send(body=f'SHOW {url}',
+                      headers=headers,
+                      destination=destination)
+        conn.disconnect()
+        time.sleep(2)
 
-    # Check for received error messages
-    if lst.error:
-        raise stomp.exception.StompException(f'{lst.error}')
-    instance.sent = datetime.now(timezone.utc)
-    instance.save()
+        # Check for received error messages
+        if lst.error:
+            raise stomp.exception.StompException(f'{lst.error}')
+        instance.sent = datetime.now(timezone.utc)
+        instance.save()
+    else:
+        raise stomp.exception.StompException('No bearers configured')
 
 
 def send_stomp_text(instance):
@@ -79,25 +80,27 @@ def send_stomp_text(instance):
     conn.set_listener('', lst)
 
     conn.connect(STOMP_USERNAME, STOMP_PASSWORD, wait=True)
-    for bearer in Bearer.objects.all():
-        if bearer.platform == 'fm':
-            integer, decimal = str(bearer.frequency).split('.')
-            frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
-            destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/text'
-        elif bearer.platform == 'ip':
-            destination = f'/topic/{bearer.service.serviceIdentifier}/text'
-        else:
-            raise stomp.exception.StompException('No bearers configured')
-        conn.send(body=f'TEXT {instance.message}',
-                  destination=destination)
-    conn.disconnect()
-    time.sleep(2)
+    bearers = Bearer.objects.all()
+    if len(bearers) > 0:
+        for bearer in bearers:
+            if bearer.platform == 'fm':
+                integer, decimal = str(bearer.frequency).split('.')
+                frequency = f'{integer.rjust(3, "0")}{decimal.ljust(2, "0")}'
+                destination = f'/topic/fm/{bearer.pi[0]}{bearer.ecc}/{bearer.pi}/{frequency}/text'
+            elif bearer.platform == 'ip':
+                destination = f'/topic/{bearer.service.serviceIdentifier}/text'
+            conn.send(body=f'TEXT {instance.message}',
+                      destination=destination)
+        conn.disconnect()
+        time.sleep(2)
 
-    # Check for received error messages
-    if lst.error:
-        raise stomp.exception.StompException(f'{lst.error}')
-    instance.sent = datetime.now(timezone.utc)
-    instance.save()
+        # Check for received error messages
+        if lst.error:
+            raise stomp.exception.StompException(f'{lst.error}')
+        instance.sent = datetime.now(timezone.utc)
+        instance.save()
+    else:
+        raise stomp.exception.StompException('No bearers configured')
 
 
 class ErrorListener(stomp.ConnectionListener):
@@ -127,7 +130,7 @@ class ImageSlideViewSet(viewsets.ModelViewSet):
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        except (ConnectFailedException, stomp.exception.StompException) as e:
+        except (stomp.exception.ConnectFailedException, stomp.exception.StompException) as e:
             return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def destroy(self, request, *_, **__):
@@ -156,7 +159,7 @@ class TextSlideViewSet(viewsets.ModelViewSet):
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        except (ConnectFailedException, stomp.exception.StompException) as e:
+        except (stomp.exception.ConnectFailedException, stomp.exception.StompException) as e:
             return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def destroy(self, request, *_, **__):
