@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-08 13:14+0300\n"
+"POT-Creation-Date: 2021-05-11 14:09+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,17 +61,13 @@ msgstr "Kirjaudu sisään"
 msgid "Help"
 msgstr "Apua"
 
-#: .\frontend\templates\frontend\index.html:4
+#: .\frontend\templates\frontend\index.html:5
 msgid "Welcome"
 msgstr "Tervetuloa"
 
-#: .\frontend\templates\frontend\index.html:5
-msgid ""
-"This project is a work in progress. Features are missing, and features that "
-"are there may be broken."
-msgstr ""
-"Tämä projekti on vielä kesken. Se sisältää puuttuvia ominaisuuksia sekä "
-"ominaisuuksia, jotka ovat vielä rikki."
+#: .\frontend\templates\frontend\index.html:6
+msgid "Radio Butler provides RadioDNS services for your radio station."
+msgstr "Radio Butler tarjoaa RadioDNS-palveluita radioasemallesi."
 
 #: .\frontend\templates\frontend\service.html:5
 msgid "Edit Station Information"
@@ -122,8 +118,8 @@ msgid ""
 "Please enter your old password, for security’s sake, and then enter your new "
 "password twice so we can verify you typed it in correctly."
 msgstr ""
-"Ole hyvä ja syötä vanha salasanasi, tietoturvan vuoksi, ja sitten "
-"syötä uusi salasanasi kahdesti jotta voimme varmistaa että kirjoitit sen oikein."
+"Ole hyvä ja syötä vanha salasanasi, tietoturvan vuoksi, ja sitten syötä uusi "
+"salasanasi kahdesti jotta voimme varmistaa että kirjoitit sen oikein."
 
 #: .\frontend\templates\registration\password_change_form.html:40
 msgid "Change my password"
