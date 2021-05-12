@@ -2,4 +2,10 @@
 User documentation
 ##################
 
-Nothing here yet!
+.. toctree::
+   :maxdepth: 2
+
+   about.rst
+   station_information.rst
+   visual_content.rst
+   gallery.rst
