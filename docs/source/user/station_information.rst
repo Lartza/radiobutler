@@ -22,7 +22,7 @@ To get started, you need to input the informative content of your station to Rad
 
 #. **Logo**
 
-   Place the station logo. The logo is shown to viewers during a broadcast. Please notice that the ideal size of the logo is 600x600px. The logo is scaled to appropriate size, but to avoid any quality problems please stick to ideal size.
+   Place the station logo. The logo is shown to viewers during a broadcast. **Please notice that the ideal size of the logo is 600x600px.** The logo is scaled to appropriate size, but to avoid any quality problems please stick to ideal size.
 
    Type short name and medium name separately. The character limit for the short name is 8 characters, and for the medium name 16 characters.
 

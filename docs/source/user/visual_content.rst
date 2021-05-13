@@ -16,7 +16,7 @@ When you have saved the station info, you are ready to send visual content to yo
 
 #. **Set link and timing for the content**
 
-   Now set the link you want to associate with the visual content and then set the timing for the content to be shown. If you don’t set specific time, the content is shown immediately.
+   Now set the link you want to associate with the visual content and then set the timing for the content to be shown. **If you don’t set specific time, the content is shown immediately.**
 
 **Text**
 
