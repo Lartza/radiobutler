@@ -9,7 +9,7 @@ RUN npm ci
 COPY frontend/.babelrc .
 COPY frontend/webpack.config.js .
 COPY frontend/src src
-RUN npm run dev
+RUN npm run build
 
 
 FROM python:3
