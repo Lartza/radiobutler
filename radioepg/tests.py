@@ -93,7 +93,7 @@ class ServiceTest(APITestCase):
         response = self.client.put(service_apiurl,
                                    {'shortName': 'Testi', 'mediumName': 'Testikanava', 'fqdn': 'radiodns.test',
                                     'serviceIdentifier': 'testservice', 'bearers[0][platform]': "fm",
-                                    "bearers[0][ecc]": "g1", "bearers[0][pi]": "test", "bearers[0][frequency]": 7.7,
+                                    "bearers[0][ecc]": "g1", "bearers[0][pi]": "test", "bearers[0][frequency]": 7.8,
                                     "bearers[0][apiurl]": reverse('bearer-detail', args=[1])})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Bearer.objects.count(), 1)

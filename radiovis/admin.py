@@ -35,7 +35,7 @@ class ImageSlideAdmin(admin.ModelAdmin):
             self.message_user(request, str(e), messages.ERROR)
             opts = self.model._meta
             return_url = reverse(
-                'admin:%s_%s_change' % (opts.app_label, opts.model_name),
+                f'admin:{opts.app_label}_{opts.model_name}_change',
                 args=(object_id,),
                 current_app=self.admin_site.name,
             )
@@ -56,7 +56,7 @@ class TextSlideAdmin(admin.ModelAdmin):
             self.message_user(request, str(e), messages.ERROR)
             opts = self.model._meta
             return_url = reverse(
-                'admin:%s_%s_change' % (opts.app_label, opts.model_name),
+                f'admin:{opts.app_label}_{opts.model_name}_change',
                 args=(object_id,),
                 current_app=self.admin_site.name,
             )
